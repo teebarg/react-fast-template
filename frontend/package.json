@@ -13,7 +13,7 @@
     },
     "license": "MIT",
     "scripts": {
-        "dev": "vite",
+        "dev": "vite --host",
         "build": "tsc && vite build",
         "preview": "vite preview",
         "https-preview": "serve dist",
@@ -69,6 +69,9 @@
     "lint-staged": {
         "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
             "prettier --write"
+        ],
+        "src/**/*.{js,jsx,ts,tsx,json}": [
+            "eslint --max-warnings=0 --fix"
         ]
     },
     "author": {

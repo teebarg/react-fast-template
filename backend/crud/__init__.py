@@ -4,12 +4,8 @@ from fastapi.encoders import jsonable_encoder
 from sqlmodel import Session, select
 
 import schemas
-from models.models import User, UserCreate
+from models.user import User, UserCreate
 
-from .crud_collection import collection
-from .crud_item import item
-from .crud_product import product
-from .crud_tag import tag
 from .crud_user import user
 
 # For a new basic set of CRUD operations you could just do

@@ -36,7 +36,7 @@ const Homepage: React.FC<Props> = () => {
                         <h1 className="text-4xl font-bold tracking-tight text-gray-700 font-display">
                             The fast, easy way to
                             <span className="from-[#FF1CF7] to-[#b249f8] bg-clip-text text-transparent bg-gradient-to-b"> develop </span> apps and
-                            websites
+                            websites.
                         </h1>
                         <p className="mt-6 text-lg text-gray-600">
                             Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam
