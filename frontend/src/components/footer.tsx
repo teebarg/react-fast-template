@@ -4,10 +4,10 @@ import { siteConfig } from "@/config/site";
 
 export default function Footer() {
     return (
-        <footer className="border-t">
+        <footer className="border-t border-default-200">
             <div className="py-2 flex justify-between max-w-7xl mx-auto">
                 <aside className="items-center grid-flow-col">
-                    <p>
+                    <p className="text-default-500">
                         <span className="font-semibold text-xl">ShpIT</span> <br />
                         Providing reliable tech since 1992
                     </p>

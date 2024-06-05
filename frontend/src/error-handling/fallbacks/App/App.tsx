@@ -3,7 +3,7 @@ import resetApp from "@/utils/reset-app";
 import { Button } from "@nextui-org/react";
 import { Link } from "@nextui-org/link";
 import Navbar from "@/components/navbar";
-import Footer from "@/sections/Footer";
+import Footer from "@/components/footer";
 
 function AppErrorBoundaryFallback() {
     return (
@@ -11,7 +11,7 @@ function AppErrorBoundaryFallback() {
             <div className="h-screen flex flex-col">
                 <Navbar />
                 <div className="flex items-center justify-center flex-1">
-                    <div className="max-w-lg mx-auto rounded-lg shadow-lg overflow-hidden">
+                    <div className="max-w-lg mx-auto rounded-lg shadow-lg overflow-hidden bg-content1 p-8">
                         <div className="px-6 py-8">
                             <p className="text-xl mb-6">Internal Server Error</p>
                             <p className="mb-8">{messages.app.crash.title}</p>
@@ -25,7 +25,7 @@ function AppErrorBoundaryFallback() {
                                 {messages.app.crash.options.reset}
                             </Button>
                         </div>
-                        <div className="px-6 py-4 border-t border-gray-200 text-sm text-gray-700">
+                        <div className="px-6 py-4 border-t border-default-200 text-sm text-default-700">
                             If the problem persists, please contact our support team.
                         </div>
                     </div>

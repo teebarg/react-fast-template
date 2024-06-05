@@ -31,9 +31,19 @@ const routes: Routes = {
         path: "/page-4",
         title: "Page 4",
     },
+    [Pages.Login]: {
+        component: asyncComponentLoader(() => import("@/pages/Login")),
+        path: "/login",
+        title: "Login",
+    },
     [Pages.NotFound]: {
         component: asyncComponentLoader(() => import("@/pages/NotFound.tsx")),
         path: "*",
+    },
+    [Pages.Landing]: {
+        component: asyncComponentLoader(() => import("@/pages/Landing")),
+        path: "/landing",
+        title: "landing",
     },
 };
 
