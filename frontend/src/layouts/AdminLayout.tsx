@@ -2,6 +2,8 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { fakeAuthProvider } from "@/hooks/auth";
 import { redirect, LoaderFunction } from "react-router-dom";
+import Sidebar from "@/components/core/sidebar";
+import AdminNavbar from "@/components/admin-navbar";
 
 const adminLoader: LoaderFunction = ({ request }) => {
     // function profileLoader({ request }: LoaderFunctionArgs) {
@@ -21,7 +23,15 @@ interface Props {}
 const AdminLayout: React.FC<Props> = () => {
     return (
         <React.Fragment>
-            <Outlet />
+            <div className="flex min-h-screen">
+                <div className="hidden sm:block">
+                    <Sidebar />
+                </div>
+                <div className="flex-1">
+                    <AdminNavbar />
+                    <Outlet />
+                </div>
+            </div>
         </React.Fragment>
     );
 };

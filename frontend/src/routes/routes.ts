@@ -1,5 +1,5 @@
-import AdminHomepage from "@/pages/AdminHomepage";
 import Settings from "@/pages/Settings";
+import AdminHomepage from "@/pages/admin/homepage";
 
 const adminRoutes = [
     {
