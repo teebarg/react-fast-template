@@ -11,8 +11,10 @@ import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { TwitterIcon, GithubIcon, SearchIcon, Logo } from "@/components/icons";
 import UserDropDown from "@/components/user-menu";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const session: any = {};
     const searchInput = (
         <Input
@@ -37,13 +39,13 @@ const Navbar = () => {
         <NextUINavbar maxWidth="xl" position="sticky">
             <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
                 <NavbarBrand as="li" className="gap-3 max-w-fit">
-                    <Link className="flex justify-start items-center gap-1" href="/">
+                    <Link className="flex justify-start items-center gap-1" to="/">
                         <Logo />
                         <p className="font-bold text-inherit">ShpIT</p>
                     </Link>
                 </NavbarBrand>
                 <ul className="hidden lg:flex gap-4 justify-start ml-2">
-                    {siteConfig.navItems.map((item: any) => (
+                    {siteConfig.navItems.map((item) => (
                         <NavbarItem key={item.href}>
                             {item.external ? (
                                 <Link
@@ -58,16 +60,16 @@ const Navbar = () => {
                                     {item.label}
                                 </Link>
                             ) : (
-                                <Link
+                                <NavLink
                                     className={cn(
                                         linkStyles({ color: "foreground" }),
                                         "data-[active=true]:text-primary data-[active=true]:font-medium"
                                     )}
                                     color="foreground"
-                                    href={item.href}
+                                    to={item.href}
                                 >
                                     {item.label}
-                                </Link>
+                                </NavLink>
                             )}
                         </NavbarItem>
                     ))}
@@ -89,9 +91,9 @@ const Navbar = () => {
                     {session ? (
                         <UserDropDown />
                     ) : (
-                        <Link href="/login" className="text-sm font-semibold leading-6">
+                        <NavLink to="/login" className="text-sm font-semibold leading-6">
                             Log In <span aria-hidden="true">&rarr;</span>
-                        </Link>
+                        </NavLink>
                     )}
                 </NavbarItem>
             </NavbarContent>
@@ -107,15 +109,11 @@ const Navbar = () => {
             <NavbarMenu>
                 {searchInput}
                 <div className="mx-4 mt-2 flex flex-col gap-2">
-                    {siteConfig.navItems.map((item: any, index: number) => (
+                    {siteConfig.navItems.map((item, index: number) => (
                         <NavbarMenuItem key={`${item}-${index}`}>
-                            <Link
-                                color={index === 2 ? "primary" : index === siteConfig.navItems.length - 1 ? "danger" : "foreground"}
-                                href="#"
-                                size="lg"
-                            >
+                            <NavLink color={index === 2 ? "primary" : index === siteConfig.navItems.length - 1 ? "danger" : "foreground"} to="#">
                                 {item.label}
-                            </Link>
+                            </NavLink>
                         </NavbarMenuItem>
                     ))}
                 </div>

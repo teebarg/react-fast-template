@@ -1,35 +1,19 @@
 import { Fragment } from "react";
 
-import { withErrorHandler } from "@/error-handling";
-import AppErrorBoundaryFallback from "@/error-handling/fallbacks/App";
-import Pages from "@/routes/Pages";
 import HotKeys from "@/sections/HotKeys";
 import Notifications from "@/sections/Notifications";
 import SW from "@/sections/SW";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
 
-import type { LoaderFunctionArgs } from "react-router-dom";
-import {
-    Form,
-    Link,
-    Outlet,
-    RouterProvider,
-    createBrowserRouter,
-    redirect,
-    useActionData,
-    useFetcher,
-    useLocation,
-    useNavigation,
-    useRouteLoaderData,
-} from "react-router-dom";
+import { RouterProvider, createBrowserRouter, redirect } from "react-router-dom";
 import { fakeAuthProvider } from "@/hooks/auth";
-import Layout from "./layouts/Layout";
-import PublicPage from "./layouts/PublicPage";
-import { LoginPage, loginAction, loginLoader } from "./layouts/LoginPage";
-import { ProtectedPage, protectedLoader } from "./layouts/ProtectedPage";
-import Homepage from "./pages/Homepage";
-import NotFound from "./pages/NotFound";
+import Homepage from "@/pages/Homepage";
+import NotFound from "@/pages/NotFound";
+import ErrorPage from "@/pages/ErrorPage";
+import Login, { loginAction, loginLoader } from "@/pages/Login";
+import Profile, { profileLoader } from "@/pages/Profile";
+import Layout from "@/layouts/Layout";
+import AdminLayout, { adminLoader } from "@/layouts/AdminLayout";
+import { adminRoutes } from "@/routes/routes";
 
 const router = createBrowserRouter([
     {
@@ -40,6 +24,7 @@ const router = createBrowserRouter([
             return { user: fakeAuthProvider.username };
         },
         Component: Layout,
+        errorElement: <ErrorPage />,
         children: [
             {
                 index: true,
@@ -49,12 +34,18 @@ const router = createBrowserRouter([
                 path: "login",
                 action: loginAction,
                 loader: loginLoader,
-                Component: LoginPage,
+                Component: Login,
             },
             {
                 path: "protected",
-                loader: protectedLoader,
-                Component: ProtectedPage,
+                loader: profileLoader,
+                Component: Profile,
+            },
+            {
+                path: "admin",
+                loader: adminLoader,
+                Component: AdminLayout,
+                children: adminRoutes,
             },
         ],
     },
@@ -76,15 +67,9 @@ function App() {
             <HotKeys />
             <SW />
             <RouterProvider router={router} fallbackElement={<p>Initial Load...</p>} />
-            {/* <div className="flex flex-col min-h-screen">
-                <Navbar />
-                <main className="flex-1">
-                    <Pages />
-                </main>
-                <Footer />
-            </div> */}
         </Fragment>
     );
 }
 
-export default withErrorHandler(App, AppErrorBoundaryFallback);
+// export default withErrorHandler(App, AppErrorBoundaryFallback);
+export default App;

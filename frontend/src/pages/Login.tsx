@@ -1,22 +1,64 @@
+import { fakeAuthProvider } from "@/hooks/auth";
+import type { LoaderFunctionArgs } from "react-router-dom";
+import { Form, redirect, useActionData, useLocation, useNavigation } from "react-router-dom";
+
 import { ThemeSwitch } from "@/components/theme-switch";
 
-import { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Alert from "@/components/core/alert";
-import { TextField, PasswordField } from "@/components/core/fields";
-import { Button, Divider, Link } from "@nextui-org/react";
+import { PasswordField } from "@/components/core/fields";
+import { Button, Divider, Input, Link } from "@nextui-org/react";
+
+async function loginAction({ request }: LoaderFunctionArgs) {
+    const formData = await request.formData();
+    const username = formData.get("username") as string | null;
+
+    // Validate our form inputs and return validation errors via useActionData()
+    if (!username) {
+        return {
+            error: "You must provide a username to log in",
+        };
+    }
+
+    // Sign in and redirect to the proper destination if successful.
+    try {
+        await fakeAuthProvider.signin(username);
+    } catch (error) {
+        // Unused as of now but this is how you would handle invalid
+        // username/password combinations - just like validating the inputs
+        // above
+        return {
+            error: "Invalid login attempt",
+        };
+    }
+
+    const redirectTo = formData.get("redirectTo") as string | null;
+    return redirect(redirectTo || "/");
+}
+
+async function loginLoader() {
+    if (fakeAuthProvider.isAuthenticated) {
+        return redirect("/");
+    }
+    return null;
+}
 
 type Inputs = {
-    email: string;
+    // email: string;
     password: string;
 };
 
 interface Props {}
 
 const Login: React.FC<Props> = () => {
-    const [error, setError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [loading, setLoading] = useState(false);
+    const location = useLocation();
+    const params = new URLSearchParams(location.search);
+    const from = params.get("from") || "/";
+
+    const navigation = useNavigation();
+    const isLoggingIn = navigation.formData?.get("username") != null;
+
+    const actionData = useActionData() as { error: string } | undefined;
 
     const handleGoogleSignIn = async () => {
         // handle google sign in
@@ -24,42 +66,9 @@ const Login: React.FC<Props> = () => {
 
     const {
         register,
-        handleSubmit,
         formState: { errors },
     } = useForm<Inputs>();
-    const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        if (loading) {
-            return;
-        }
-        setError(false);
-        setErrorMessage("");
-        setLoading(true);
-        const { email, password } = data;
-        try {
-            const response = await fetch("/api/auth/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email, password }),
-            });
-            if (response?.ok) {
-                // eslint-disable-next-line no-undef
-                window.location.href = "/";
-                setLoading(false);
-                return;
-            }
 
-            setError(true);
-            if (response?.status === 401) {
-                setErrorMessage("Invalid credentials");
-            }
-            setLoading(false);
-        } catch (error) {
-            setErrorMessage("An error occurred, please contact the administrator");
-            setLoading(false);
-        }
-    };
     return (
         <div className="flex">
             <div className="fixed left-4 top-4">
@@ -79,18 +88,10 @@ const Login: React.FC<Props> = () => {
                     </div>
 
                     <div className="mt-8">
-                        <form className="space-y-8" onSubmit={handleSubmit(onSubmit)}>
+                        <Form className="space-y-8" method="post" replace>
+                            <input type="hidden" name="redirectTo" value={from} />
                             <div>
-                                <TextField
-                                    name="email"
-                                    label="Email"
-                                    type="email"
-                                    placeholder="Ex. email@email.com"
-                                    register={register}
-                                    error={errors?.email}
-                                    rules={{ required: true, email: true }}
-                                    isClearable
-                                />
+                                <Input name="username" isRequired type="text" label="Email" defaultValue="junior" className="" />
                             </div>
                             <div>
                                 <PasswordField
@@ -101,13 +102,13 @@ const Login: React.FC<Props> = () => {
                                     rules={{ required: true }}
                                 />
                             </div>
-                            {loading ? (
+                            {isLoggingIn ? (
                                 <Button color="primary" isLoading size="lg" fullWidth type="submit">
-                                    Loading
+                                    Logging in...
                                 </Button>
                             ) : (
                                 <Button color="primary" variant="shadow" size="lg" fullWidth type="submit">
-                                    Submit
+                                    Login
                                 </Button>
                             )}
                             <Divider className="my-4" />
@@ -121,12 +122,12 @@ const Login: React.FC<Props> = () => {
                             >
                                 Sign in with Google
                             </Button>
-                            {error && (
-                                <Alert type="alert" delay={500000} onClose={() => setError(false)}>
-                                    <p>{errorMessage}</p>
+                            {actionData && actionData.error && (
+                                <Alert type="alert" delay={500000}>
+                                    <p>{actionData.error}</p>
                                 </Alert>
                             )}
-                        </form>
+                        </Form>
                     </div>
                 </div>
             </div>
@@ -137,4 +138,5 @@ const Login: React.FC<Props> = () => {
     );
 };
 
+export { loginAction, loginLoader };
 export default Login;
