@@ -2,7 +2,7 @@ import React, { useId } from "react";
 import { Controller, UseFormRegister } from "react-hook-form";
 import { Input } from "@nextui-org/input";
 import { EyeSlashFilledIcon, EyeFilledIcon } from "@/components/icons";
-import { Checkbox, Switch, Select, SelectItem } from "@nextui-org/react";
+import { Checkbox, Switch, Select, SelectItem, Textarea } from "@nextui-org/react";
 
 const formClasses = "input input-bordered w-full form-fix";
 
@@ -15,7 +15,7 @@ type RulesProps = {
     maxLength?: number;
     required?: boolean;
     email?: boolean;
-    confirmPassword?: {};
+    confirmPassword?: object;
     pattern?: RegExp;
 };
 
@@ -311,5 +311,58 @@ export function CheckBoxField({ name, label, className, control }: FieldProps) {
                 )}
             />
         </div>
+    );
+}
+
+export function TextAreaField2({ name, label, defaultValue, register, rules, error, variant, description = "", ...props }: FieldProps) {
+    let id = useId();
+    const formRules: Rules = {};
+    const { minLength, maxLength, required } = rules || {};
+
+    if (required) {
+        formRules["required"] = typeof required === "boolean" ? `${label} is required` : required;
+    }
+
+    if (minLength) {
+        formRules["minLength"] = {
+            value: minLength,
+            message: `${label} must have a minimum of ${minLength} characters`,
+        };
+    }
+
+    if (maxLength) {
+        formRules["maxLength"] = {
+            value: maxLength,
+            message: `${label} must have a minimum of ${maxLength} characters`,
+        };
+    }
+
+    return (
+        <Textarea
+            id={id}
+            isRequired={required}
+            description={description}
+            variant={variant}
+            defaultValue={defaultValue}
+            label={label}
+            {...register(name, formRules)}
+            isInvalid={error}
+            errorMessage={error?.message}
+            {...props}
+            placeholder="Enter your description (Default autosize)"
+        />
+        // <Input
+        //     isClearable
+        //     isRequired={required}
+        //     id={id}
+        //     type={type}
+        //     label={label}
+        //     {...props}
+        //     defaultValue={defaultValue}
+        //     className={formClasses}
+        //     {...register(name, formRules)}
+        //     isInvalid={error}
+        //     errorMessage={error?.message}
+        // />
     );
 }

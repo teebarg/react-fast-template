@@ -321,3 +321,17 @@ export const DeleteIcon = ({ height = "1em", width = "1em", ...props }: IconSvgP
         <path d="M7.91669 10.4167H12.0834" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} />
     </svg>
 );
+
+export const MailIcon = ({ height = "24", width = "24", ...props }: IconSvgProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={width} height={height} {...props}>
+        <path d="M12 13.5l-11.2-7.2c-.3-.2-.3-.6-.1-.8.2-.2.6-.2.8 0l11 7.1 11-7.1c.3-.2.6-.2.8 0 .2.2.2.6 0 .8l-11.2 7.2-11.2-7.2z" />
+        <path d="M21 4h-18c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2v-12c0-1.1-.9-2-2-2zm-1 14h-16c-.6 0-1-.4-1-1v-10.5l8.7 5.6c.1.1.3.1.4.1s.3 0 .4-.1l8.7-5.6v10.5c0 .6-.4 1-1 1z" />
+    </svg>
+);
+
+export const LocationIcon = ({ height = "24", width = "24", ...props }: IconSvgProps) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={width} height={height} {...props}>
+        <path d="M12 2C8.1 2 5 5.1 5 9c0 4.9 7 13 7 13s7-8.1 7-13c0-3.9-3.1-7-7-7zm0 17.2c-1.5-1.8-6-7.5-6-11.2 0-3.3 2.7-6 6-6s6 2.7 6 6c0 3.7-4.5 9.4-6 11.2z" />
+        <circle cx="12" cy="9" r="2.5" />
+    </svg>
+);

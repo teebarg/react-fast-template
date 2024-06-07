@@ -56,7 +56,11 @@ export default function TableData({
         }
     };
 
-    const rowRender = (user: Record<string, string>, columnKey: string | number) => {
+    const handleEdit = (id: number | string) => {
+        navigate(`/admin/user/${id}`);
+    };
+
+    const rowRender = React.useCallback((user: Record<string, string>, columnKey: string | number) => {
         const cellValue = user[columnKey];
 
         switch (columnKey) {
@@ -103,7 +107,7 @@ export default function TableData({
                         </Tooltip>
                         <Tooltip content="Edit user">
                             <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                                <EditIcon />
+                                <EditIcon onClick={() => handleEdit(user.id)} />
                             </span>
                         </Tooltip>
                         <Tooltip color="danger" content="Delete user">
@@ -116,7 +120,7 @@ export default function TableData({
             default:
                 return cellValue;
         }
-    };
+    }, []);
 
     return (
         <>

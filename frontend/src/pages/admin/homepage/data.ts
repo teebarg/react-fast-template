@@ -58,4 +58,8 @@ const pagination: Pagination = {
     total_pages: 2,
 };
 
-export { users, pagination };
+const getUserById = (id: number) => {
+    return users.find((user) => user.id === id);
+};
+
+export { users, pagination, getUserById };
