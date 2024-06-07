@@ -21,3 +21,5 @@ jsconfig.json
 *.bkp
 docker/local.env
 frontend/node_modules
+frontend/build
+frontend/dist

@@ -3,11 +3,13 @@ import Meta from "@/components/Meta";
 import { Card, CardHeader, CardBody, CardFooter, Avatar, Button } from "@nextui-org/react";
 import TableData from "./components/TableData";
 import { users, pagination } from "../homepage/data";
+import { useLocation } from "react-router-dom";
 
 interface Props {}
 
 const AdminHomepage: React.FC<Props> = () => {
     const [isFollowed, setIsFollowed] = React.useState(false);
+    let location = useLocation();
     return (
         <React.Fragment>
             <Meta title="Admin Dashboard" />

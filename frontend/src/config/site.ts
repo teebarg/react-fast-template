@@ -21,6 +21,10 @@ export const siteConfig = {
             href: "/sandbox",
         },
         {
+            label: "TBO",
+            href: "/tbo",
+        },
+        {
             label: "Blog",
             href: "https://blog.niyi.com.ng",
             external: true,

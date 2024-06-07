@@ -23,7 +23,7 @@ const loginLoader: LoaderFunction = async () => {
     return null;
 };
 
-const profileLoader: LoaderFunction = ({ request }) => {
+const profileLoader: LoaderFunction = async ({ request }) => {
     const { isAuthenticated } = useAuth;
     // function profileLoader({ request }: LoaderFunctionArgs) {
     // If the user is not logged in and tries to access `/protected`, we redirect
