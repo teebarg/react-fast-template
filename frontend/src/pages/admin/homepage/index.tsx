@@ -10,7 +10,7 @@ const AdminHomepage: React.FC<Props> = () => {
     const [isFollowed, setIsFollowed] = React.useState(false);
     return (
         <React.Fragment>
-            <Meta title="Homepage" />
+            <Meta title="Admin Dashboard" />
             <div className="px-6">
                 <div className="px-4 py-8">
                     <Card className="max-w-[340px] mb-8">

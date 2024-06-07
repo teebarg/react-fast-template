@@ -1,26 +1,10 @@
 import React from "react";
-import { fakeAuthProvider } from "@/hooks/auth";
-import { LoaderFunctionArgs, redirect, useFetcher, useRouteLoaderData } from "react-router-dom";
+import { useFetcher, useRouteLoaderData } from "react-router-dom";
 import { Button, Image } from "@nextui-org/react";
 
-export const metadata = {
-    title: "Profile | Starter Template",
-    description: "Shopit profile starter template built with Tailwind CSS and Next.js.",
-};
+interface Props {}
 
-function profileLoader({ request }: LoaderFunctionArgs) {
-    // If the user is not logged in and tries to access `/protected`, we redirect
-    // them to `/login` with a `from` parameter that allows login to redirect back
-    // to this page upon successful authentication
-    if (!fakeAuthProvider.isAuthenticated) {
-        const params = new URLSearchParams();
-        params.set("from", new URL(request.url).pathname);
-        return redirect("/login?" + params.toString());
-    }
-    return null;
-}
-
-export default function Profile() {
+const Profile: React.FC<Props> = () => {
     // Get our logged in user, if they exist, from the root route loader data
     const { user } = useRouteLoaderData("root") as { user: string | null };
     const fetcher = useFetcher();
@@ -64,6 +48,6 @@ export default function Profile() {
             </div>
         </React.Fragment>
     );
-}
+};
 
-export { profileLoader };
+export default Profile;

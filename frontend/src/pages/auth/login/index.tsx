@@ -1,6 +1,4 @@
-import { fakeAuthProvider } from "@/hooks/auth";
-import type { LoaderFunctionArgs } from "react-router-dom";
-import { Form, Link, redirect, useActionData, useLocation, useNavigation } from "react-router-dom";
+import { Form, Link, useActionData, useLocation, useNavigation } from "react-router-dom";
 
 import { ThemeSwitch } from "@/components/theme-switch";
 
@@ -8,40 +6,6 @@ import { useForm } from "react-hook-form";
 import Alert from "@/components/core/alert";
 import { PasswordField } from "@/components/core/fields";
 import { Button, Divider, Input } from "@nextui-org/react";
-
-async function loginAction({ request }: LoaderFunctionArgs) {
-    const formData = await request.formData();
-    const username = formData.get("username") as string | null;
-
-    // Validate our form inputs and return validation errors via useActionData()
-    if (!username) {
-        return {
-            error: "You must provide a username to log in",
-        };
-    }
-
-    // Sign in and redirect to the proper destination if successful.
-    try {
-        await fakeAuthProvider.signin(username);
-    } catch (error) {
-        // Unused as of now but this is how you would handle invalid
-        // username/password combinations - just like validating the inputs
-        // above
-        return {
-            error: "Invalid login attempt",
-        };
-    }
-
-    const redirectTo = formData.get("redirectTo") as string | null;
-    return redirect(redirectTo || "/");
-}
-
-async function loginLoader() {
-    if (fakeAuthProvider.isAuthenticated) {
-        return redirect("/");
-    }
-    return null;
-}
 
 type Inputs = {
     // email: string;
@@ -116,7 +80,7 @@ const Login: React.FC<Props> = () => {
                             <Divider className="my-4" />
                             <Button
                                 className="w-full"
-                                color="primary"
+                                color="secondary"
                                 size="lg"
                                 variant="flat"
                                 startContent={<img src="/google.svg" alt="Google" className="w-6" />}
@@ -140,5 +104,4 @@ const Login: React.FC<Props> = () => {
     );
 };
 
-export { loginAction, loginLoader };
 export default Login;

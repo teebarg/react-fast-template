@@ -17,8 +17,8 @@ export const siteConfig = {
             href: "/admin",
         },
         {
-            label: "Marketplace",
-            href: "/marketplace",
+            label: "SandBox",
+            href: "/sandbox",
         },
         {
             label: "Blog",

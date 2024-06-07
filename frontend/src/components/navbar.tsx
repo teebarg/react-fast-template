@@ -39,10 +39,10 @@ const Navbar = () => {
         <NextUINavbar maxWidth="xl" position="sticky">
             <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
                 <NavbarBrand as="li" className="gap-3 max-w-fit">
-                    <Link className="flex justify-start items-center gap-1" to="/">
+                    <NavLink className="flex justify-start items-center gap-1" to="/">
                         <Logo />
                         <p className="font-bold text-inherit">ShpIT</p>
-                    </Link>
+                    </NavLink>
                 </NavbarBrand>
                 <ul className="hidden lg:flex gap-4 justify-start ml-2">
                     {siteConfig.navItems.map((item) => (

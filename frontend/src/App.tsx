@@ -5,62 +5,66 @@ import Notifications from "@/sections/Notifications";
 import SW from "@/sections/SW";
 
 import { RouterProvider, createBrowserRouter, redirect } from "react-router-dom";
-import { fakeAuthProvider } from "@/hooks/auth";
-import Homepage from "@/pages/Homepage";
 import NotFound from "@/pages/NotFound";
 import ErrorPage from "@/pages/ErrorPage";
-import Login, { loginAction, loginLoader } from "@/pages/Login";
-import Profile, { profileLoader } from "@/pages/Profile";
-import Layout from "@/layouts/Layout";
-import AdminLayout, { adminLoader } from "@/layouts/AdminLayout";
 import { adminRoutes } from "@/routes/routes";
-
-const router = createBrowserRouter([
-    {
-        id: "root",
-        path: "/",
-        loader() {
-            // Our root route always provides the user, if logged in
-            return { user: fakeAuthProvider.username };
-        },
-        Component: Layout,
-        errorElement: <ErrorPage />,
-        children: [
-            {
-                index: true,
-                Component: Homepage,
-            },
-            {
-                path: "login",
-                action: loginAction,
-                loader: loginLoader,
-                Component: Login,
-            },
-            {
-                path: "protected",
-                loader: profileLoader,
-                Component: Profile,
-            },
-            {
-                path: "admin",
-                loader: adminLoader,
-                Component: AdminLayout,
-                children: adminRoutes,
-            },
-        ],
-    },
-    {
-        path: "/logout",
-        async action() {
-            // We signout in a "resource route" that we can hit from a fetcher.Form
-            await fakeAuthProvider.signout();
-            return redirect("/");
-        },
-    },
-    { path: "*", element: <NotFound /> },
-]);
+import asyncComponentLoader from "@/utils/loader";
+import { useAuth } from "@/hooks/use-auth";
+import { adminLoader, loginLoader, profileLoader } from "@/gate";
+import { loginAction } from "@/actions";
 
 function App() {
+    const { username, signout } = useAuth;
+
+    const router = createBrowserRouter([
+        {
+            id: "root",
+            path: "/",
+            loader() {
+                // Our root route always provides the user, if logged in
+                return { user: username };
+            },
+            Component: asyncComponentLoader(() => import("@/pages/layout")),
+            errorElement: <ErrorPage />,
+            children: [
+                {
+                    index: true,
+                    Component: asyncComponentLoader(() => import("@/pages/Homepage")),
+                },
+                {
+                    path: "login",
+                    action: loginAction,
+                    loader: loginLoader,
+                    Component: asyncComponentLoader(() => import("@/pages/auth/login")),
+                },
+                {
+                    path: "profile",
+                    loader: profileLoader,
+                    Component: asyncComponentLoader(() => import("@/pages/generic/profile")),
+                },
+                {
+                    path: "admin",
+                    loader: adminLoader,
+                    Component: asyncComponentLoader(() => import("@/pages/admin/layout")),
+                    children: adminRoutes,
+                },
+                {
+                    path: "sandbox",
+                    Component: asyncComponentLoader(() => import("@/pages/generic/sandbox")),
+                },
+            ],
+        },
+        {
+            path: "/logout",
+            async action() {
+                // We signout in a "resource route" that we can hit from a fetcher.Form
+                await signout();
+                return redirect("/");
+            },
+        },
+        { path: "*", element: <NotFound /> },
+    ]);
+
     return (
         <Fragment>
             <Notifications />

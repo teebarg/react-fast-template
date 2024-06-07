@@ -56,7 +56,7 @@ export default function TableData({
         }
     };
 
-    const rowRender = (user, columnKey: string | number) => {
+    const rowRender = (user: Record<string, string>, columnKey: string | number) => {
         const cellValue = user[columnKey];
 
         switch (columnKey) {

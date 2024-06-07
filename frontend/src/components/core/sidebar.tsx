@@ -1,7 +1,7 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Sidebar as ProSidebar, Menu, MenuItem, SubMenu, sidebarClasses, MenuItemStyles, menuClasses } from "react-pro-sidebar";
 import { NavLink } from "react-router-dom";
-import { EyeIcon } from "@/components/icons";
+import { ChevronRightIcon, EyeIcon, HeartFilledIcon, NotificationIcon, PlusIcon } from "@/components/icons";
 import { Badge, Chip } from "@nextui-org/react";
 
 interface Props {}
@@ -9,14 +9,14 @@ interface Props {}
 const Sidebar: React.FC<Props> = () => {
     const menuItemStyles: MenuItemStyles = {
         root: {
-            fontSize: "13px",
+            fontSize: "14px",
             fontWeight: 400,
-            // backgroundColor: `hsl(var(--nextui-content1))`,
+            color: `hsl(var(--nextui-default-500))`,
         },
         icon: {
-            color: "blue",
+            color: `hsl(var(--nextui-secondary))`,
             [`&.${menuClasses.disabled}`]: {
-                color: "green",
+                color: `hsl(var(--nextui-secondary-500))`,
             },
         },
         SubMenuExpandIcon: {
@@ -24,33 +24,187 @@ const Sidebar: React.FC<Props> = () => {
         },
         subMenuContent: ({ level }) => ({
             backgroundColor: level === 0 ? `hsl(var(--nextui-content1))` : `hsl(var(--nextui-content2))`,
-            // backgroundColor: "yellow",
         }),
         button: {
             [`&.${menuClasses.disabled}`]: {
-                // color: `hsl(var(--nextui-warning-50))`,
                 backgroundColor: `hsl(var(--nextui-warning-50))`,
             },
             "&:hover": {
                 backgroundColor: `hsl(var(--nextui-content3))`,
-                // color: "violet",
+                color: `hsl(var(--nextui-default-900))`,
+                fontWeight: 600,
             },
             [`&.active`]: {
-                backgroundColor: `hsl(var(--nextui-danger-600))`,
-                color: "#ffffff",
+                backgroundColor: `hsl(var(--nextui-danger-200))`,
+                borderRadius: "20px 20px",
+                color: `hsl(var(--nextui-default-900))`,
+                fontWeight: 600,
+                marginRight: "1rem",
+                marginLeft: "1rem",
+                paddingRight: "1rem",
+                paddingLeft: "1.5rem",
+            },
+            [`&.active svg`]: {
+                display: "block",
             },
         },
         label: ({ open }) => ({
             fontWeight: open ? 600 : undefined,
         }),
     };
+    const navlink = [
+        {
+            subMenu: "Admin",
+            icon: <EyeIcon />,
+            suffix: (
+                <Badge content="5" color="danger" className="mr-4 -mt-0.5">
+                    {""}
+                </Badge>
+            ),
+            menuItems: [
+                {
+                    label: "Dashboad",
+                    href: "/admin",
+                },
+                {
+                    label: "Settings",
+                    href: "/admin/settings",
+                },
+                {
+                    label: "Bar charts",
+                    href: "/admin/bar-chart",
+                },
+            ],
+        },
+        {
+            subMenu: "Components",
+            icon: <PlusIcon />,
+            menuItems: [
+                {
+                    label: "Grid",
+                    href: "/grid",
+                },
+                {
+                    label: "Layout",
+                    href: "/layout",
+                },
+                {
+                    subMenu: "Forms",
+                    menuItems: [
+                        {
+                            label: "Input",
+                            href: "/input",
+                        },
+                        {
+                            label: "Select",
+                            href: "/select",
+                        },
+                        {
+                            subMenu: "More",
+                            menuItems: [
+                                {
+                                    label: "CheckBox",
+                                    href: "/checkbox",
+                                },
+                                {
+                                    label: "Radio",
+                                    href: "/radio",
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+        },
+        {
+            subMenu: "E-commerce",
+            icon: <EyeIcon />,
+            menuItems: [
+                {
+                    label: "Product",
+                    href: "/product",
+                },
+                {
+                    label: "Orders",
+                    href: "/orders",
+                },
+                {
+                    label: "Credit card",
+                    href: "/credit-card",
+                },
+            ],
+        },
+    ];
+
+    const section2 = [
+        {
+            label: "Profile",
+            href: "/profile",
+            icon: <NotificationIcon />,
+        },
+        {
+            label: "Calendar",
+            href: "/calendar",
+            icon: <HeartFilledIcon />,
+            suffix: (
+                <Chip color="success" variant="flat" size="sm">
+                    New
+                </Chip>
+            ),
+        },
+        {
+            label: "Documentation",
+            href: "/documentation",
+            icon: <HeartFilledIcon />,
+        },
+        {
+            label: "Examples",
+            href: "/examples",
+            icon: <HeartFilledIcon />,
+            disabled: true,
+        },
+    ];
+
+    interface MenuItem {
+        label: string;
+        href: string;
+    }
+    type SubMenu = {
+        subMenu: string;
+        icon?: ReactNode;
+        suffix?: ReactNode;
+        menuItems: (MenuItem | SubMenu)[];
+    };
+
+    const menuItems = (item: (MenuItem | SubMenu)[]) => {
+        return item.map((menuItem: MenuItem | SubMenu, index: number) => {
+            if ("subMenu" in menuItem) {
+                return (
+                    <SubMenu key={index} label={menuItem.subMenu} icon={menuItem.icon}>
+                        {menuItems(menuItem.menuItems)}
+                    </SubMenu>
+                );
+            }
+            return (
+                <MenuItem
+                    key={index}
+                    component={<NavLink end to={menuItem.href} />}
+                    suffix={<ChevronRightIcon strokeWidth={2.5} width="2em" height="2em" className="hidden" />}
+                >
+                    {menuItem.label}
+                </MenuItem>
+            );
+        });
+    };
+
     return (
         <ProSidebar
             image="https://user-images.githubusercontent.com/25878302/144499035-2911184c-76d3-4611-86e7-bc4e8ff84ff5.jpg"
             rootStyles={{
                 [`.${sidebarClasses.container}`]: {
-                    backgroundColor: `hsl(var(--nextui-background))`,
+                    backgroundColor: `hsl(var(--nextui-content1))`,
                     height: "100vh",
+                    minWidth: "20rem",
                     overflowY: "auto",
                 },
             }}
@@ -64,38 +218,7 @@ const Sidebar: React.FC<Props> = () => {
                             General
                         </p>
                     </div>
-                    <Menu menuItemStyles={menuItemStyles}>
-                        <SubMenu
-                            label="Charts"
-                            icon={<EyeIcon />}
-                            suffix={
-                                <Badge content="5" color="danger" className="mr-4 -mt-0.5">
-                                    {""}
-                                </Badge>
-                            }
-                        >
-                            <MenuItem> Pie charts</MenuItem>
-                            <MenuItem component={<NavLink to="/admin" />}> Admin</MenuItem>
-                            <MenuItem> Bar charts</MenuItem>
-                        </SubMenu>
-                        <SubMenu label="Components" icon={<EyeIcon />}>
-                            <MenuItem> Grid</MenuItem>
-                            <MenuItem> Layout</MenuItem>
-                            <SubMenu label="Forms">
-                                <MenuItem> Input</MenuItem>
-                                <MenuItem> Select</MenuItem>
-                                <SubMenu label="More">
-                                    <MenuItem> CheckBox</MenuItem>
-                                    <MenuItem> Radio</MenuItem>
-                                </SubMenu>
-                            </SubMenu>
-                        </SubMenu>
-                        <SubMenu label="E-commerce" icon={<EyeIcon />}>
-                            <MenuItem> Product</MenuItem>
-                            <MenuItem> Orders</MenuItem>
-                            <MenuItem> Credit card</MenuItem>
-                        </SubMenu>
-                    </Menu>
+                    <Menu menuItemStyles={menuItemStyles}>{menuItems(navlink)}</Menu>
 
                     <div className="py-0 px-6 mb-2 mt-8">
                         <p className="font-semibold" style={{ opacity: 0.7, letterSpacing: "0.5px" }}>
@@ -104,20 +227,17 @@ const Sidebar: React.FC<Props> = () => {
                     </div>
 
                     <Menu menuItemStyles={menuItemStyles}>
-                        <MenuItem
-                            icon={<EyeIcon />}
-                            suffix={
-                                <Chip color="success" variant="flat" size="sm">
-                                    New
-                                </Chip>
-                            }
-                        >
-                            Calendar
-                        </MenuItem>
-                        <MenuItem icon={<EyeIcon />}>Documentation</MenuItem>
-                        <MenuItem disabled icon={<EyeIcon />}>
-                            Examples
-                        </MenuItem>
+                        {section2.map((menuItem, index) => (
+                            <MenuItem
+                                key={index}
+                                icon={menuItem.icon}
+                                suffix={menuItem.suffix}
+                                disabled={menuItem.disabled}
+                                component={<NavLink end to={menuItem.href} />}
+                            >
+                                {menuItem.label}
+                            </MenuItem>
+                        ))}
                     </Menu>
                 </div>
             </div>

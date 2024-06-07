@@ -1,14 +1,13 @@
-import Settings from "@/pages/Settings";
-import AdminHomepage from "@/pages/admin/homepage";
+import asyncComponentLoader from "@/utils/loader";
 
 const adminRoutes = [
     {
         index: true,
-        Component: AdminHomepage,
+        Component: asyncComponentLoader(() => import("@/pages/admin/homepage")),
     },
     {
         path: "settings",
-        Component: Settings,
+        Component: asyncComponentLoader(() => import("@/pages/admin/settings")),
     },
 ];
 

@@ -4,7 +4,6 @@ import { HelmetProvider } from "react-helmet-async";
 import { RecoilRoot } from "recoil";
 
 import { Provider } from "./provider";
-// import { BrowserRouter } from "react-router-dom";
 
 import "@/styles/globals.css";
 
@@ -16,11 +15,9 @@ function render(App: ComponentType) {
         <StrictMode>
             <RecoilRoot>
                 <HelmetProvider>
-                    {/* <BrowserRouter> */}
                     <Provider>
                         <App />
                     </Provider>
-                    {/* </BrowserRouter> */}
                 </HelmetProvider>
             </RecoilRoot>
         </StrictMode>
