@@ -34,13 +34,30 @@ const TBONavbar = () => {
 
     return (
         <NextUINavbar maxWidth="xl" position="sticky" className="my-2">
-            <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
+            <NavbarContent className="basis-1/5 sm:basis-full flex" justify="start">
                 <NavbarBrand as="li" className="gap-3 max-w-fit">
                     <Link className="flex justify-start items-center gap-1" to="/">
                         <Logo />
-                        <p className="font-bold text-inherit">TBO</p>
+                        <p className="font-bold text-inherit text-2xl">TBO</p>
                     </Link>
                 </NavbarBrand>
+                <div className="flex gap-2 text-sm">
+                    <NavbarMenuItem>
+                        <NavLink className={({ isActive, isPending }) => (isPending ? "pending" : isActive ? "text-danger" : "")} to={"/"}>
+                            Home
+                        </NavLink>
+                    </NavbarMenuItem>
+                    <NavbarMenuItem>
+                        <NavLink className={({ isActive, isPending }) => (isPending ? "pending" : isActive ? "text-danger" : "")} to={"/"}>
+                            About
+                        </NavLink>
+                    </NavbarMenuItem>
+                    <NavbarMenuItem>
+                        <NavLink className={({ isActive, isPending }) => (isPending ? "pending" : isActive ? "text-danger" : "")} to={"/"}>
+                            Services
+                        </NavLink>
+                    </NavbarMenuItem>
+                </div>
             </NavbarContent>
 
             <NavbarContent className="flex basis-1/5 sm:basis-full" justify="end">

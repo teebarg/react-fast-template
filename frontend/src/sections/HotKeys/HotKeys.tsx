@@ -21,6 +21,7 @@ function HotKeys() {
 
     return (
         <NextModal>
+            <p>{isHotKeysDialogOpen}</p>
             <Button onClick={hotKeysDialogActions.toggle} variant="bordered">
                 Hot Keys
             </Button>

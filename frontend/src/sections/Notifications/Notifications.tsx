@@ -1,23 +1,16 @@
-import { CustomContentProps, SnackbarProvider } from "notistack";
+import { SnackbarProvider } from "notistack";
 
 import { notifications } from "@/config";
 
 import Notifier from "./Notifier";
-import { Ref, forwardRef } from "react";
-import NextModal from "@/components/modal";
-
-// here how you can define your own notification component
-
-const CustomNotification = forwardRef(function CustomNotification({ message }: CustomContentProps, ref: Ref<HTMLDivElement>) {
-    return <NextModal>{message}</NextModal>;
-});
+import SnackBar from "@/components/snackbar";
 
 function Notifications() {
     return (
         <SnackbarProvider
             maxSnack={notifications.maxSnack}
             Components={{
-                customNotification: CustomNotification,
+                customNotification: SnackBar,
             }}
         >
             <Notifier />

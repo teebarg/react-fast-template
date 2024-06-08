@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Alert from "@/components/core/alert";
-import { TextField, TextAreaField2 } from "@/components/core/fields";
+import { TextField, TextAreaField2, CheckBoxField } from "@/components/core/fields";
 import { Button } from "@nextui-org/react";
 
 type Inputs = {
@@ -11,6 +11,16 @@ type Inputs = {
     email: string;
     phone: string;
     message: string;
+    agreement: boolean;
+};
+
+const inputClass = {
+    inputWrapper: "!bg-white/70 hover:!bg-white/50 focus:!bg-white/50 !text-blue-700",
+    label: "!text-black/60 font-semibold text-lg",
+    description: "text-black/30 font-medium",
+    input: "focus:!bg-white/50",
+    innerWrapper: "focus:!bg-white/50",
+    base: "focus:!bg-red-500",
 };
 
 export default function ContactForm() {
@@ -19,6 +29,7 @@ export default function ContactForm() {
     const [loading, setLoading] = useState(false);
 
     const {
+        control,
         register,
         handleSubmit,
         formState: { errors },
@@ -29,31 +40,33 @@ export default function ContactForm() {
         }
         // setLoading(true);
         const body = JSON.stringify(data);
-        console.log("🚀 ~ constonSubmit:SubmitHandler<Inputs>= ~ body:", body);
-        // try {
-        //     // Sign Up
-        //     const res = await fetch(`${process.env.NEXT_PUBLIC_AUTH_API_DOMAIN}/signup`, {
-        //         method: "POST",
-        //         headers: {
-        //             accept: "application/json",
-        //             "Content-Type": "application/json",
-        //         },
-        //         body,
-        //     });
-        //     const data = await res.json();
-        //     setLoading(false);
-        //     setError(true);
-        //     if (res.status === 400) {
-        //         setErrorMessage(data.detail);
-        //         return;
-        //     } else if (res.status === 422) {
-        //         setErrorMessage("Please check your inputs and try again");
-        //         return;
-        //     }
-        // } catch (error) {
-        //     setErrorMessage("An error occurred, please contact the administrator");
-        //     setLoading(false);
-        // }
+        try {
+            // Sign Up
+            const res = await fetch(`${process.env.API_DOMAIN}/message`, {
+                method: "POST",
+                headers: {
+                    accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body,
+            });
+            const data = await res.json();
+            setLoading(false);
+            if (res.ok) {
+                return;
+            }
+            setError(true);
+            if (res.status === 400) {
+                setErrorMessage(data.detail);
+                return;
+            } else if (res.status === 422) {
+                setErrorMessage("Please check your inputs and try again");
+                return;
+            }
+        } catch (error) {
+            setErrorMessage("An error occurred, please contact the administrator");
+            setLoading(false);
+        }
     };
 
     return (
@@ -67,6 +80,7 @@ export default function ContactForm() {
                     register={register}
                     error={errors?.name}
                     rules={{ required: true }}
+                    classNames={inputClass}
                 />
 
                 <TextField
@@ -77,6 +91,7 @@ export default function ContactForm() {
                     register={register}
                     error={errors.email}
                     rules={{ required: true, email: true }}
+                    classNames={inputClass}
                 />
 
                 <TextField
@@ -87,16 +102,24 @@ export default function ContactForm() {
                     register={register}
                     error={errors.phone}
                     rules={{ minLength: 11, maxLength: 11 }}
+                    classNames={inputClass}
                 />
 
                 <TextAreaField2
                     name="message"
                     label="Message"
                     placeholder="Ex. I want to make an enquiry about..."
+                    description="Testing description"
                     register={register}
                     error={errors?.name}
                     rules={{ required: true }}
+                    classNames={inputClass}
                 />
+
+                <div className="flex gap-4">
+                    <CheckBoxField name="agreement" register={register} control={control} rules={{ required: true }} />
+                    <p>I allow this website to store my submission so they can respond to my inquiry.</p>
+                </div>
 
                 <div className="">
                     {loading ? (

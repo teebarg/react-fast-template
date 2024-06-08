@@ -1,8 +1,12 @@
 import type { OptionsObject, SnackbarKey, SnackbarMessage } from "notistack";
 
+interface NewOption extends OptionsObject {
+    type?: string | undefined;
+}
+
 interface Notification {
     message: SnackbarMessage;
-    options: OptionsObject;
+    options: NewOption;
     dismissed: boolean;
 }
 

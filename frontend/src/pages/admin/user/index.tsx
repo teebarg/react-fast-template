@@ -7,9 +7,9 @@ import { Button, Chip, Image } from "@nextui-org/react";
 interface Props {}
 
 const User: React.FC<Props> = () => {
-    let navigate = useNavigate();
-    let { id } = useParams<"id">();
-    let user = getUserById(Number(id));
+    const navigate = useNavigate();
+    const { id } = useParams<"id">();
+    const user = getUserById(Number(id));
 
     if (!user) {
         navigate(-1);

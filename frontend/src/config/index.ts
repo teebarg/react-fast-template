@@ -33,7 +33,7 @@ const notifications: Notifications = {
     options: {
         anchorOrigin: {
             vertical: "bottom",
-            horizontal: "left",
+            horizontal: "right",
         },
         autoHideDuration: 6000,
     },

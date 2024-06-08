@@ -3,8 +3,17 @@
 import React from "react";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, User } from "@nextui-org/react";
 
+interface User {
+    name: string;
+    email: string;
+    image: string;
+}
+interface Session {
+    user?: User;
+}
+
 export default function UserDropDown() {
-    const session: any = {};
+    const session: Session = {};
     return (
         <Dropdown placement="bottom-start">
             <DropdownTrigger>

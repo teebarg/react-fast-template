@@ -7,7 +7,7 @@ import AdminNavbar from "@/components/admin-navbar";
 interface Props {}
 
 const AdminLayout: React.FC<Props> = () => {
-    let navigation = useNavigation();
+    const navigation = useNavigation();
     // You can provide a custom implementation of what "key" should be used to
     // cache scroll positions for a given location.  Using the location.key will
     // provide standard browser behavior and only restore on back/forward
@@ -15,8 +15,10 @@ const AdminLayout: React.FC<Props> = () => {
     // restoration and will also restore on normal link navigations to a
     // previously-accessed path.  Or - go nuts and lump many pages into a
     // single key (i.e., anything /wizard/* uses the same key)!
-    let getKey = React.useCallback((location: Location, matches: ReturnType<typeof useMatches>) => {
-        let match = matches.find((m) => (m.handle as any)?.scrollMode);
+    const getKey = React.useCallback((location: Location, matches: ReturnType<typeof useMatches>) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const match = matches.find((m) => (m.handle as any)?.scrollMode);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         if ((match?.handle as any)?.scrollMode === "pathname") {
             return location.pathname;
         }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useId } from "react";
 import { Controller, UseFormRegister } from "react-hook-form";
 import { Input } from "@nextui-org/input";
@@ -25,6 +26,8 @@ type FieldProps = {
     className?: string;
     type?: Types;
     rules?: RulesProps;
+    disabled?: boolean;
+    labelPlacement?: "outside" | "inside";
     register: UseFormRegister<any>;
     [key: string]: any;
 };
@@ -48,12 +51,12 @@ type Rules = {
         value: RegExp;
         message: string;
     };
-    // eslint-disable-next-line no-unused-vars
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/ban-types
     validate?: (value: {}) => boolean | string;
 };
 
-export function TextField({ name, label, type = "text", defaultValue, register, rules, error, ...props }: FieldProps) {
-    let id = useId();
+export function TextField({ name, label, labelPlacement = "inside", type = "text", defaultValue, register, rules, error, ...props }: FieldProps) {
+    const id = useId();
     const formRules: Rules = {};
     const { min, max, minLength, maxLength, email, required, pattern } = rules || {};
 
@@ -110,12 +113,14 @@ export function TextField({ name, label, type = "text", defaultValue, register, 
             id={id}
             type={type}
             label={label}
+            labelPlacement={labelPlacement}
             {...props}
             defaultValue={defaultValue}
             className={formClasses}
             {...register(name, formRules)}
             isInvalid={error}
             errorMessage={error?.message}
+            size="lg"
         />
     );
 }
@@ -132,7 +137,7 @@ export function SelectField({
     labelPlacement = "inside",
     description = "",
 }: any) {
-    let id = useId();
+    const id = useId();
     const { required } = rules || {};
 
     return (
@@ -166,7 +171,7 @@ export function SelectField({
 }
 
 export function TextAreaField({ name, register, rules, error, handleClick, loading, ...props }: FieldProps) {
-    let id = useId();
+    const id = useId();
     // eslint-disable-next-line no-undef
     const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         e.target.style.height = "auto";
@@ -225,7 +230,7 @@ export function PasswordField({ name, label, register, rules, error, ...props }:
     const [isVisible, setIsVisible] = React.useState(false);
 
     const toggleVisibility = () => setIsVisible(!isVisible);
-    let id = useId();
+    const id = useId();
     const formRules: Rules = {};
     const { minLength, maxLength, confirmPassword, required, pattern } = rules || {};
 
@@ -248,6 +253,7 @@ export function PasswordField({ name, label, register, rules, error, ...props }:
     }
 
     if (confirmPassword) {
+        // eslint-disable-next-line @typescript-eslint/ban-types
         formRules["validate"] = (value: {}) => value === confirmPassword || "Passwords do not match";
     }
 
@@ -314,8 +320,8 @@ export function CheckBoxField({ name, label, className, control }: FieldProps) {
     );
 }
 
-export function TextAreaField2({ name, label, defaultValue, register, rules, error, variant, description = "", ...props }: FieldProps) {
-    let id = useId();
+export function TextAreaField2({ name, label, labelPlacement = "inside", register, rules, error, disabled, variant, ...props }: FieldProps) {
+    const id = useId();
     const formRules: Rules = {};
     const { minLength, maxLength, required } = rules || {};
 
@@ -341,28 +347,14 @@ export function TextAreaField2({ name, label, defaultValue, register, rules, err
         <Textarea
             id={id}
             isRequired={required}
-            description={description}
+            isDisabled={disabled}
             variant={variant}
-            defaultValue={defaultValue}
             label={label}
+            labelPlacement={labelPlacement}
             {...register(name, formRules)}
             isInvalid={error}
             errorMessage={error?.message}
             {...props}
-            placeholder="Enter your description (Default autosize)"
         />
-        // <Input
-        //     isClearable
-        //     isRequired={required}
-        //     id={id}
-        //     type={type}
-        //     label={label}
-        //     {...props}
-        //     defaultValue={defaultValue}
-        //     className={formClasses}
-        //     {...register(name, formRules)}
-        //     isInvalid={error}
-        //     errorMessage={error?.message}
-        // />
     );
 }

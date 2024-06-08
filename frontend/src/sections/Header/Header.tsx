@@ -1,14 +1,12 @@
-import { repository, title } from "@/config";
-import useHotKeysDialog from "@/store/hotkeys";
+import { title } from "@/config";
 import useNotifications from "@/store/notifications";
-import { useTheme } from "@/hooks/use-theme";
-import { ThemeSwitch } from "@/components/theme-switch";
+// import { useTheme } from "@/hooks/use-theme";
 
 import { getRandomJoke } from "./utils";
 import { Button } from "@nextui-org/react";
 
 function Header() {
-    const { theme } = useTheme();
+    // const { theme } = useTheme();
     const [, notificationsActions] = useNotifications();
 
     function showNotification() {
@@ -21,13 +19,19 @@ function Header() {
                 // If you want to show a fully customized notification, you can define
                 // your own `variant`s, see @/sections/Notifications/Notifications.tsx
                 variant: "customNotification",
+                anchorOrigin: {
+                    vertical: "top",
+                    horizontal: "right",
+                },
+                type: "success",
+                autoHideDuration: 3000,
             },
             message: getRandomJoke(),
         });
     }
 
     return (
-        <div className="flex-grow" data-pw={`theme-${theme}`}>
+        <div className="flex-grow">
             <div>
                 <div>
                     <div className="">
@@ -39,7 +43,6 @@ function Header() {
                         <div className="flex"></div>
                         <div className="divider" />
                         <div className="divider" />
-                        <ThemeSwitch />
                     </div>
                 </div>
             </div>
