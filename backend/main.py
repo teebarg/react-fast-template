@@ -12,7 +12,7 @@ app.include_router(
     users_router, prefix="/api/users", tags=["users"]
 )  # Include the user router
 app.include_router(
-    auth_router, prefix="/auth", tags=["auth"]
+    auth_router, prefix="/api/auth", tags=["auth"]
 )  # Include the user router
 
 app.add_middleware(

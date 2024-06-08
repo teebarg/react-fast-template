@@ -62,7 +62,7 @@ The API will be available at <http://localhost:8000>.
 
 ## API Documentation
 
-Swagger UI: <http://localhost:7000/docs>
-ReDoc: <http://localhost:7000/redoc>
+Swagger UI: <http://localhost:4010/docs>
+ReDoc: <http://localhost:4010/redoc>
 
  sudo lsof -t -i tcp:8000 | xargs kill -9

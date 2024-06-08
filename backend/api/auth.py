@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from firebase_admin import auth as firebase_auth
@@ -18,9 +18,10 @@ router = APIRouter()
 
 @router.post("/login")
 async def login_for_access_token(
+    response: Response,
     credentials: schemas.SignIn,
     auth: Any = Depends(deps.get_auth),
-    db=Depends(deps.get_db)
+    db=Depends(deps.get_db),
 ) -> Any:
     """
     User login to get access token (JWT).
@@ -41,6 +42,15 @@ async def login_for_access_token(
             details = user.dict()
             details["name"] = details["firstname"] + " " + details["lastname"]
             content |= details
+
+        response.set_cookie(
+            key="token",
+            value=details["access_token"],
+            # value="lk",
+            httponly=True,
+            secure=True,  # Set to True in production with HTTPS
+            samesite="strict",
+        )
 
         return content
     except Exception as e:

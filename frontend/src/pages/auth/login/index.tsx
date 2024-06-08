@@ -8,7 +8,7 @@ import { PasswordField } from "@/components/core/fields";
 import { Button, Divider, Input } from "@nextui-org/react";
 
 type Inputs = {
-    // email: string;
+    email: string;
     password: string;
 };
 
@@ -20,7 +20,8 @@ const Login: React.FC<Props> = () => {
     const from = params.get("from") || "/";
 
     const navigation = useNavigation();
-    const isLoggingIn = navigation.formData?.get("username") != null;
+    console.log("🚀 ~ navigation:", navigation);
+    const isLoggingIn = navigation.formData?.get("email") != null;
 
     const actionData = useActionData() as { error: string } | undefined;
 
@@ -57,7 +58,7 @@ const Login: React.FC<Props> = () => {
                         <Form className="space-y-8" method="post" replace>
                             <input type="hidden" name="redirectTo" value={from} />
                             <div>
-                                <Input name="username" isRequired type="text" label="Email" defaultValue="junior" className="" />
+                                <Input name="email" isRequired type="email" label="Email" defaultValue="admin@email.com" />
                             </div>
                             <div>
                                 <PasswordField
@@ -89,7 +90,7 @@ const Login: React.FC<Props> = () => {
                                 Sign in with Google
                             </Button>
                             {actionData && actionData.error && (
-                                <Alert type="alert" delay={500000}>
+                                <Alert type="alert" delay={5000}>
                                     <p>{actionData.error}</p>
                                 </Alert>
                             )}
