@@ -15,12 +15,21 @@ app.include_router(
     auth_router, prefix="/api/auth", tags=["auth"]
 )  # Include the user router
 
+# List of allowed origins
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+    "http://localhost:4000",
+    "http://localhost:4010",
+    "https://react-pwa.niyi.com.ng"
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=origins,  # Allows specific origins
+    allow_credentials=True,  # Allows cookies to be included in requests
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
 )
 
 
