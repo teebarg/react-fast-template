@@ -1,6 +1,8 @@
 // import React, { useState, useContext, createContext, ReactNode } from 'react';
 // import { useState } from "react";
 
+import { useCookie } from "./use-cookie";
+
 // // Define the shape of the auth context
 // interface AuthContextType {
 //     isAuthenticated: boolean;
@@ -31,27 +33,17 @@
 
 interface AuthProvider {
     isAuthenticated: boolean;
-    username: null | string;
-    signin(username: string): Promise<void>;
-    signout(): Promise<void>;
 }
 
 /**
  * This represents some generic auth provider API, like Firebase.
  */
-const useAuth: AuthProvider = {
-    isAuthenticated: false,
-    username: null,
-    async signin(username: string) {
-        await new Promise((r) => setTimeout(r, 1000)); // fake delay
-        useAuth.isAuthenticated = true;
-        useAuth.username = username;
-    },
-    async signout() {
-        await new Promise((r) => setTimeout(r, 1000)); // fake delay
-        useAuth.isAuthenticated = false;
-        useAuth.username = "";
-    },
+const useAuth = (): AuthProvider => {
+    const { getCookie } = useCookie();
+    const currentUser = getCookie("user");
+    const isAuthenticated = Boolean(currentUser);
+
+    return { isAuthenticated };
 };
 
 export { useAuth };

@@ -63,18 +63,15 @@ def get_storage() -> Generator:
         logger.debug("storage closed")
 
 
-def get_token_uid(token: TokenDep2, auth2: Any = Depends(get_auth)) -> str:
-    print("🚀 ~ token111111:")
-    print("🚀 ~ token:", token)
-    print("🚀 ~ token:222222222")
+def get_token_uid(access_token: TokenDep2, auth2: Any = Depends(get_auth)) -> str:
     try:
-        if token is None:
+        if access_token is None:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Token cannot be none",
             )
 
-        data = auth.verify_id_token(token)
+        data = auth.verify_id_token(access_token)
         if "uid" in data:
             return data["uid"]
         else:
@@ -88,19 +85,16 @@ def get_token_uid(token: TokenDep2, auth2: Any = Depends(get_auth)) -> str:
 
 
 def get_current_user(
-    db: SessionDep, token: TokenDep2, auth2: Any = Depends(get_auth)
+    db: SessionDep, access_token: TokenDep2, auth2: Any = Depends(get_auth)
 ) -> User:
-    print("🚀 ~ token111111:")
-    print("🚀 ~ token:", token)
-    print("🚀 ~ token:222222222")
     try:
-        if token is None:
+        if access_token is None:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Token cannot be none",
             )
 
-        data = auth.verify_id_token(token, check_revoked=True)
+        data = auth.verify_id_token(access_token, check_revoked=True)
         if "email" in data:
             if user := crud.get_user_by_email(db=db, email=data["email"]):
                 return user

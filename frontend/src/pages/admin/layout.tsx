@@ -1,8 +1,23 @@
 import React from "react";
-import { Outlet, ScrollRestoration, useNavigation } from "react-router-dom";
-import type { Location, useMatches } from "react-router-dom";
+import { Outlet, ScrollRestoration, redirect, useNavigation } from "react-router-dom";
+import type { LoaderFunction, Location, useMatches } from "react-router-dom";
 import Sidebar from "@/components/core/sidebar";
 import AdminNavbar from "@/components/admin-navbar";
+import { useAuth } from "@/hooks/use-auth";
+
+const adminLoader: LoaderFunction = ({ request }) => {
+    const { isAuthenticated } = useAuth();
+    // function profileLoader({ request }: LoaderFunctionArgs) {
+    // If the user is not logged in and tries to access `/protected`, we redirect
+    // them to `/login` with a `from` parameter that allows login to redirect back
+    // to this page upon successful authentication
+    if (!isAuthenticated) {
+        const params = new URLSearchParams();
+        params.set("from", new URL(request.url).pathname);
+        return redirect("/login?" + params.toString());
+    }
+    return null;
+};
 
 interface Props {}
 
@@ -49,4 +64,4 @@ const AdminLayout: React.FC<Props> = () => {
     );
 };
 
-export default AdminLayout;
+export { adminLoader, AdminLayout };

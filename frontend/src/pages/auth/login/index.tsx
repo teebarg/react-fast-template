@@ -1,11 +1,22 @@
-import { Form, Link, useActionData, useLocation, useNavigation } from "react-router-dom";
+import { Form, Link, LoaderFunction, redirect, useActionData, useLocation, useNavigation } from "react-router-dom";
 
 import { ThemeSwitch } from "@/components/theme-switch";
 
 import { useForm } from "react-hook-form";
-import Alert from "@/components/core/alert";
 import { PasswordField } from "@/components/core/fields";
 import { Button, Divider, Input } from "@nextui-org/react";
+
+import useNotifications from "@/store/notifications";
+import useWatch from "@/hooks/use-watch";
+import { useAuth } from "@/hooks/use-auth";
+
+const loginLoader: LoaderFunction = () => async () => {
+    const { isAuthenticated } = useAuth();
+    if (isAuthenticated) {
+        return redirect("/");
+    }
+    return null;
+};
 
 type Inputs = {
     email: string;
@@ -20,10 +31,19 @@ const Login: React.FC<Props> = () => {
     const from = params.get("from") || "/";
 
     const navigation = useNavigation();
-    console.log("🚀 ~ navigation:", navigation);
     const isLoggingIn = navigation.formData?.get("email") != null;
 
     const actionData = useActionData() as { error: string } | undefined;
+    const [, notificationsActions] = useNotifications();
+
+    useWatch(actionData, (newData) => {
+        notificationsActions.push({
+            options: {
+                type: "danger",
+            },
+            message: newData?.error,
+        });
+    });
 
     const handleGoogleSignIn = async () => {
         // handle google sign in
@@ -89,11 +109,6 @@ const Login: React.FC<Props> = () => {
                             >
                                 Sign in with Google
                             </Button>
-                            {actionData && actionData.error && (
-                                <Alert type="alert" delay={5000}>
-                                    <p>{actionData.error}</p>
-                                </Alert>
-                            )}
                         </Form>
                     </div>
                 </div>
@@ -105,4 +120,4 @@ const Login: React.FC<Props> = () => {
     );
 };
 
-export default Login;
+export { Login, loginLoader };

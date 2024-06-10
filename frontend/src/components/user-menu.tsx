@@ -1,19 +1,20 @@
 "use client";
 
-import React from "react";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, User } from "@nextui-org/react";
+import { useFetcher } from "react-router-dom";
+import { useAuth } from "@/store/auth-provider";
+import type { AuthContextValue } from "@/store/auth-provider";
 
 interface User {
     name: string;
     email: string;
     image: string;
 }
-interface Session {
-    user?: User;
-}
 
 export default function UserDropDown() {
-    const session: Session = {};
+    const { currentUser } = useAuth() as AuthContextValue;
+    const fetcher = useFetcher();
+
     return (
         <Dropdown placement="bottom-start">
             <DropdownTrigger>
@@ -21,17 +22,17 @@ export default function UserDropDown() {
                     as="button"
                     avatarProps={{
                         isBordered: true,
-                        src: session?.user?.image || "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+                        src: currentUser?.image || "https://i.pravatar.cc/150?u=a042581f4e29026024d",
                     }}
                     className="transition-transform"
-                    description={session?.user?.email}
-                    name={session?.user?.name}
+                    description={currentUser?.email}
+                    name={currentUser?.name}
                 />
             </DropdownTrigger>
             <DropdownMenu aria-label="User Actions" variant="flat">
                 <DropdownItem key="user" className="h-14 gap-2">
                     <p className="font-bold">Signed in as</p>
-                    <p className="font-bold">@{session?.user?.email}</p>
+                    <p className="font-bold">@{currentUser?.email}</p>
                 </DropdownItem>
 
                 <DropdownItem key="admin">
@@ -45,7 +46,9 @@ export default function UserDropDown() {
                 </DropdownItem>
                 <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
                 <DropdownItem key="logout" color="danger">
-                    Log Out
+                    <fetcher.Form method="post" action="/logout">
+                        <button type="submit">Sign out</button>
+                    </fetcher.Form>
                 </DropdownItem>
             </DropdownMenu>
         </Dropdown>
