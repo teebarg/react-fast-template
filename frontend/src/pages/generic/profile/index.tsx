@@ -3,6 +3,7 @@ import { LoaderFunction, redirect, useFetcher, useLoaderData } from "react-route
 import { Button, Image } from "@nextui-org/react";
 import { useAuth } from "@/hooks/use-auth";
 import { useCookie } from "@/hooks/use-cookie";
+import NotFound from "@/pages/NotFound";
 
 interface Props {}
 
@@ -29,7 +30,7 @@ const profileLoader: LoaderFunction = async ({ request }) => {
             credentials: "include",
         });
         if (!res.ok) {
-            if ([401].includes(res.status)) {
+            if ([401, 422].includes(res.status)) {
                 removeCookie("user");
                 const params = new URLSearchParams();
                 params.set("from", new URL(request.url).pathname);
@@ -51,7 +52,7 @@ const Profile: React.FC<Props> = () => {
     const { user, error } = useLoaderData() as loaderData;
 
     if (error || !user) {
-        return <div>An error occurred</div>;
+        return <NotFound />;
     }
 
     const isLoggingOut = fetcher.formData != null;

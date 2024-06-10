@@ -7,6 +7,7 @@ import { Provider } from "./provider";
 
 import "@/styles/globals.css";
 import { AuthProvider } from "@/store/auth-provider";
+// import useAddToHomeScreenPrompt from "@/hooks/useAddToHomeScreenPrompt";
 
 const container = document.getElementById("root") as HTMLElement;
 const root = createRoot(container);

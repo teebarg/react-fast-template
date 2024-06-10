@@ -39,7 +39,7 @@ const AdminNavbar = () => {
                 <NavbarBrand as="li" className="gap-3 max-w-fit">
                     <Link className="flex justify-start items-center gap-1" to="/">
                         <Logo />
-                        <p className="font-bold text-inherit">ShpIT</p>
+                        <p className="font-bold text-inherit">RFT</p>
                     </Link>
                 </NavbarBrand>
             </NavbarContent>

@@ -1,4 +1,4 @@
-# Full Stack Nextjs, FastAPI and PostgreSQL - Base Project Generator
+# Full Stack React, FastAPI and PostgreSQL - Base Project Generator
 
 ## 🚨 Warning: in construction 😎 🏗️
 
@@ -13,9 +13,6 @@ Generate a backend and frontend stack using Python, including interactive API do
 
 [![API docs](img/login.jpg)](https://github.com/teebarg/react-fast-template)
 
-### Dashboard - Create User
-
-[![API docs](img/dashboard.png)](https://github.com/teebarg/react-fast-template)
 
 ## Features
 
@@ -36,18 +33,15 @@ Generate a backend and frontend stack using Python, including interactive API do
 * **Celery** worker that can import and use models and code from the rest of the backend selectively.
 * REST backend tests based on **Pytest**, integrated with Docker, so you can test the full API interaction, independent on the database. As it runs in Docker, it can build a new data store from scratch each time (so you can use ElasticSearch, MongoDB, CouchDB, or whatever you want, and just test that the API works).
 
-* **Nextjs** frontend:
+* **React** frontend:
     * **JWT Authentication** handling.
-    * Uses **NextAuth** for authentication.
     * Login view.
     * After login, main dashboard view.
-    * Main dashboard with user creation and edition.
-    * Self user edition.
+    <!-- * Main dashboard with user creation and edition. -->
     * **TypeScript**.
     * It's also easy to remove it if you have an API-only app, check the instructions in the generated `README.md`.
 * **PGAdmin** for PostgreSQL database, you can modify it to use PHPMyAdmin and MySQL easily.
 * Load balancing between frontend and backend with **Traefik**, so you can have both under the same domain, separated by path, but served by different containers.
-* Traefik integration, including Let's Encrypt **HTTPS** certificates automatic generation.
 
 ## How to use it
 
@@ -126,6 +120,9 @@ alembic downgrade -1
 alembic upgrade ae10+2
 ```
 
+### To start up docker dev
+* Goto root dir and run `make startTest`
+
 ### To start up local dev
 
 * create a virtual env
@@ -137,6 +134,11 @@ alembic upgrade ae10+2
 * Run below in not using docker
 ```bash
 make prep
+```
+
+* Run below in docker
+```bash
+make prep-docker
 ```
 
 ## License

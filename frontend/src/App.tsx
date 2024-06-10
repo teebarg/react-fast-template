@@ -12,8 +12,10 @@ import asyncComponentLoader from "@/utils/loader";
 import LoadingPage from "@/components/loading";
 import { useAuth } from "@/store/auth-provider";
 import type { AuthContextValue } from "@/store/auth-provider";
+import useAddToHomeScreenPrompt from "@/hooks/useAddToHomeScreenPrompt";
 
 function App() {
+    const [promptEvent, promptToInstall] = useAddToHomeScreenPrompt();
     const { logout, login } = useAuth() as AuthContextValue;
     const router = createBrowserRouter([
         {
@@ -90,6 +92,7 @@ function App() {
     }
     return (
         <Fragment>
+            {promptEvent && <button onClick={promptToInstall}>Add to Home Screen</button>}
             <Notifications />
             <HotKeys />
             <SW />

@@ -44,15 +44,15 @@ lint: ## Format project
 
 test-frontend: ## Run frontend tests
 	@echo "$(YELLOW)Running frontend tests...$(RESET)"
-	@cd frontend && npm run test
+	@cd frontend && npm run test:unit
 
 test-backend: ## Run backend tests
 	@echo "$(YELLOW)Running backend tests...$(RESET)"
 	@cd backend && POSTGRES_SERVER=null PROJECT_NAME=null FIRST_SUPERUSER_FIRSTNAME=null FIRST_SUPERUSER_LASTNAME=null FIRST_SUPERUSER=email@email.com FIRST_SUPERUSER_PASSWORD=null python -m pytest
 
 test: ## Run project tests
-	@$(MAKE) -s test-backend
 	@$(MAKE) -s test-frontend
+	@$(MAKE) -s test-backend
 
 
 # Using Terminal

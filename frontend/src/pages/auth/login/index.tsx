@@ -10,7 +10,7 @@ import useNotifications from "@/store/notifications";
 import useWatch from "@/hooks/use-watch";
 import { useAuth } from "@/hooks/use-auth";
 
-const loginLoader: LoaderFunction = () => async () => {
+const loginLoader: LoaderFunction = async () => {
     const { isAuthenticated } = useAuth();
     if (isAuthenticated) {
         return redirect("/");
@@ -63,7 +63,7 @@ const Login: React.FC<Props> = () => {
                 <div className="mx-auto w-full max-w-sm md:min-w-[30rem] bg-content1 px-8 py-12 rounded-md">
                     <div>
                         <Link to={"/"} className="text-3xl font-semibold">
-                            ShpIT
+                            RFT
                         </Link>
                         <h2 className="mt-6 text-xl font-semibold tracking-tight">Sign in to your account!</h2>
                         <p className="mt-2 text-sm leading-6 text-default-500">
