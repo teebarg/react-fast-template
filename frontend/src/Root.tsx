@@ -6,6 +6,7 @@ import { RecoilRoot } from "recoil";
 import { Provider } from "./provider";
 
 import "@/styles/globals.css";
+import { AuthProvider } from "@/store/auth-provider";
 
 const container = document.getElementById("root") as HTMLElement;
 const root = createRoot(container);
@@ -16,7 +17,9 @@ function render(App: ComponentType) {
             <RecoilRoot>
                 <HelmetProvider>
                     <Provider>
-                        <App />
+                        <AuthProvider>
+                            <App />
+                        </AuthProvider>
                     </Provider>
                 </HelmetProvider>
             </RecoilRoot>

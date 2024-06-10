@@ -10,7 +10,7 @@ export const siteConfig = {
         },
         {
             label: "Profile",
-            href: "protected",
+            href: "profile",
         },
         {
             label: "Admin",

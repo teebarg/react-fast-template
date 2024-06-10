@@ -7,7 +7,6 @@ import ContactForm from "./components/contact-form";
 import { Fade, Slide, Zoom } from "react-awesome-reveal";
 import { CategoryInterface, categories, openingHours } from "./data";
 import Footer from "./components/footer";
-import Header from "@/sections/Header";
 
 interface Props {}
 
@@ -16,7 +15,6 @@ const Landing: React.FC<Props> = () => {
         <React.Fragment>
             <Meta title="Children clothing" />
             <TBONavbar />
-            <Header />
             <div>
                 <div className="bg-fixed bg-center bg-cover h-[80vh]" style={{ backgroundImage: `url("/landing.jpeg")` }}>
                     <div className="flex items-center h-full bg-black bg-opacity-50">

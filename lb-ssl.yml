@@ -8,12 +8,6 @@ http:
         frontend:
             rule: PathPrefix(`/`)
             service: frontend
-        frontend-next:
-            rule: PathPrefix(`/api/auth`)
-            service: frontend
-        backend-auth:
-            rule: PathPrefix(`/auth`)
-            service: backend
         backend:
             rule: PathPrefix(`/api`)
             service: backend
@@ -33,10 +27,6 @@ http:
             loadBalancer:
                 servers:
                     - url: http://backend:4012
-        db:
-            loadBalancer:
-                servers:
-                    - url: http://db:4013
         adminer:
             loadBalancer:
                 servers:

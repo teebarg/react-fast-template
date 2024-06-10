@@ -12,10 +12,11 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import { TwitterIcon, GithubIcon, SearchIcon, Logo } from "@/components/icons";
 import UserDropDown from "@/components/user-menu";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "@/store/auth-provider";
+import type { AuthContextValue } from "@/store/auth-provider";
 
 const Navbar = () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const session: any = {};
+    const { isAuthenticated } = useAuth() as AuthContextValue;
     const searchInput = (
         <Input
             aria-label="Search"
@@ -41,7 +42,7 @@ const Navbar = () => {
                 <NavbarBrand as="li" className="gap-3 max-w-fit">
                     <NavLink className="flex justify-start items-center gap-1" to="/">
                         <Logo />
-                        <p className="font-bold text-inherit">ShpIT</p>
+                        <p className="font-bold text-inherit">RFT</p>
                     </NavLink>
                 </NavbarBrand>
                 <ul className="hidden lg:flex gap-4 justify-start ml-2">
@@ -88,7 +89,7 @@ const Navbar = () => {
                 </NavbarItem>
                 <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
                 <NavbarItem className="hidden lg:flex">
-                    {session ? (
+                    {isAuthenticated ? (
                         <UserDropDown />
                     ) : (
                         <NavLink to="/login" className="text-sm font-semibold leading-6">

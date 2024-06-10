@@ -1,14 +1,25 @@
-import { Form, Link, useActionData, useLocation, useNavigation } from "react-router-dom";
+import { Form, Link, LoaderFunction, redirect, useActionData, useLocation, useNavigation } from "react-router-dom";
 
 import { ThemeSwitch } from "@/components/theme-switch";
 
 import { useForm } from "react-hook-form";
-import Alert from "@/components/core/alert";
 import { PasswordField } from "@/components/core/fields";
 import { Button, Divider, Input } from "@nextui-org/react";
 
+import useNotifications from "@/store/notifications";
+import useWatch from "@/hooks/use-watch";
+import { useAuth } from "@/hooks/use-auth";
+
+const loginLoader: LoaderFunction = async () => {
+    const { isAuthenticated } = useAuth();
+    if (isAuthenticated) {
+        return redirect("/");
+    }
+    return null;
+};
+
 type Inputs = {
-    // email: string;
+    email: string;
     password: string;
 };
 
@@ -20,9 +31,19 @@ const Login: React.FC<Props> = () => {
     const from = params.get("from") || "/";
 
     const navigation = useNavigation();
-    const isLoggingIn = navigation.formData?.get("username") != null;
+    const isLoggingIn = navigation.formData?.get("email") != null;
 
     const actionData = useActionData() as { error: string } | undefined;
+    const [, notificationsActions] = useNotifications();
+
+    useWatch(actionData, (newData) => {
+        notificationsActions.push({
+            options: {
+                type: "danger",
+            },
+            message: newData?.error,
+        });
+    });
 
     const handleGoogleSignIn = async () => {
         // handle google sign in
@@ -42,7 +63,7 @@ const Login: React.FC<Props> = () => {
                 <div className="mx-auto w-full max-w-sm md:min-w-[30rem] bg-content1 px-8 py-12 rounded-md">
                     <div>
                         <Link to={"/"} className="text-3xl font-semibold">
-                            ShpIT
+                            RFT
                         </Link>
                         <h2 className="mt-6 text-xl font-semibold tracking-tight">Sign in to your account!</h2>
                         <p className="mt-2 text-sm leading-6 text-default-500">
@@ -57,7 +78,7 @@ const Login: React.FC<Props> = () => {
                         <Form className="space-y-8" method="post" replace>
                             <input type="hidden" name="redirectTo" value={from} />
                             <div>
-                                <Input name="username" isRequired type="text" label="Email" defaultValue="junior" className="" />
+                                <Input name="email" isRequired type="email" label="Email" defaultValue="admin@email.com" />
                             </div>
                             <div>
                                 <PasswordField
@@ -88,11 +109,6 @@ const Login: React.FC<Props> = () => {
                             >
                                 Sign in with Google
                             </Button>
-                            {actionData && actionData.error && (
-                                <Alert type="alert" delay={500000}>
-                                    <p>{actionData.error}</p>
-                                </Alert>
-                            )}
                         </Form>
                     </div>
                 </div>
@@ -104,4 +120,4 @@ const Login: React.FC<Props> = () => {
     );
 };
 
-export default Login;
+export { Login, loginLoader };

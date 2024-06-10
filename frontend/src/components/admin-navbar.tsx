@@ -9,10 +9,11 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import { SearchIcon, Logo } from "@/components/icons";
 import UserDropDown from "@/components/user-menu";
 import { Link, NavLink } from "react-router-dom";
+import { useAuth } from "@/store/auth-provider";
+import type { AuthContextValue } from "@/store/auth-provider";
 
 const AdminNavbar = () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const session: any = {};
+    const { isAuthenticated } = useAuth() as AuthContextValue;
     const searchInput = (
         <Input
             aria-label="Search"
@@ -38,7 +39,7 @@ const AdminNavbar = () => {
                 <NavbarBrand as="li" className="gap-3 max-w-fit">
                     <Link className="flex justify-start items-center gap-1" to="/">
                         <Logo />
-                        <p className="font-bold text-inherit">ShpIT</p>
+                        <p className="font-bold text-inherit">RFT</p>
                     </Link>
                 </NavbarBrand>
             </NavbarContent>
@@ -49,7 +50,7 @@ const AdminNavbar = () => {
                 </NavbarItem>
                 <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
                 <NavbarItem className="flex">
-                    {session ? (
+                    {isAuthenticated ? (
                         <UserDropDown />
                     ) : (
                         <NavLink to="/login" className="text-sm font-semibold leading-6">

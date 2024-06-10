@@ -6,7 +6,6 @@ import { useRegisterSW } from "virtual:pwa-register/react";
 import useNotifications from "@/store/notifications";
 import { Button } from "@nextui-org/react";
 
-// TODO (Suren): this should be a custom hook :)
 function SW() {
     const [, notificationsActions] = useNotifications();
     const notificationKey = useRef<SnackbarKey | null>(null);
@@ -14,7 +13,14 @@ function SW() {
         offlineReady: [offlineReady, setOfflineReady],
         needRefresh: [needRefresh, setNeedRefresh],
         updateServiceWorker,
-    } = useRegisterSW();
+    } = useRegisterSW({
+        onRegisteredSW(swUrl, r) {
+            console.log(`Service Worker at: ${swUrl}`, r);
+        },
+        onRegisterError(error) {
+            console.log("SW registration error!!!!", error);
+        },
+    });
 
     const close = useCallback(() => {
         setOfflineReady(false);

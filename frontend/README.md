@@ -1,7 +1,7 @@
 [![Analyses](https://github.com/teebarg/react-fast-template/actions/workflows/analyses.yml/badge.svg)](https://github.com/teebarg/react-fast-template/workflows/analyses.yml)
 [![E2E Tests](https://github.com/teebarg/react-fast-template/actions/workflows/tests:e2e.yml/badge.svg)](https://github.com/teebarg/react-fast-template/actions/workflows/tests:e2e.yml)
 
-<a href="http://react-pwa.surenatoyan.com/" target="_blank" rel="noreferrer">
+<a href="http://react-pwa.niyi.com.ng/" target="_blank" rel="noreferrer">
  <img src="./public/cover.png" title="Base App">
 </a>
 
@@ -93,7 +93,7 @@ function MyCoolComponent() {
   const [notifications, actions] = useNotification();
 
   function showNotification() {
-    actions.push({ message: 'Բարև, կարմի՛ր արև' });
+    actions.push({ message: 'This is a notification' });
   }
 
   return (
@@ -139,17 +139,6 @@ Special attention deserves `pages/`, `sections/` and `components/`. These are th
 - `pages` - pages represent the root routes, like `/profile` renders the `Profile` page, `/login` renders `Login` page. Pages are made of sections (no need to have [Page]/sections/ folder). If a section is used on multiple pages it should be moved to `/root/sections`.
   - in some project you may see `/features` instead of `/sections`
 
-Another important mention is any component's folder structure. It should look like this:
-
-```
-- [Component]
-  - index.ts
-  - [Component].tsx
-  - types.ts
-  - styled.ts
-  - utils.tsx
-  - etc.
-```
 
 It's a good practice to keep all related files in one folder. It makes it easier to find and maintain them. Only the first two files are required. You may or may not have component-related types, styles, utils, etc. But if you have them, keep them in the same folder and separate files. Let's see what each file is responsible for:
 
@@ -335,7 +324,7 @@ There are other scripts as well:
 - `https-preview` - is the same as `preview`, but with HTTPS. It's handy for testing your PWA capabilities in your local environment.
 - `prepare` - install `husky` and copy the default `env/.shared` file to `.env` file. This script is being run automatically after `npm install` or `yarn`.
 
-## [Live Demo](https://react-pwa.surenatoyan.com/)
+## [Live Demo](https://react-pwa.niyi.com.ng/)
 
 <div>
  <img src="./public/demo-dark.png" width="280" title="Dark demo"> <img src="./public/demo-light.png" width="280" title="Light demo">

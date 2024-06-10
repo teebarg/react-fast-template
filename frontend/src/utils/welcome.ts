@@ -25,6 +25,7 @@ function welcome() {
         "padding: 10px",
     ].join(";");
 
+    // eslint-disable-next-line no-console
     console.log(`%c=== ${title} ===`, styles);
 }
 

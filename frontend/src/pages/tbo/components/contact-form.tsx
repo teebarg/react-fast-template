@@ -42,7 +42,7 @@ export default function ContactForm() {
         const body = JSON.stringify(data);
         try {
             // Sign Up
-            const res = await fetch(`${process.env.API_DOMAIN}/message`, {
+            const res = await fetch(`${import.meta.env.VITE_API_DOMAIN}/message`, {
                 method: "POST",
                 headers: {
                     accept: "application/json",

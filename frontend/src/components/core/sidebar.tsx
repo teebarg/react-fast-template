@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { Sidebar as ProSidebar, Menu, MenuItem, SubMenu, sidebarClasses, MenuItemStyles, menuClasses } from "react-pro-sidebar";
 import { NavLink } from "react-router-dom";
-import { ChevronRightIcon, EyeIcon, HeartFilledIcon, NotificationIcon, PlusIcon } from "@/components/icons";
+import { AdminIcon, CalendarIcon, ChevronRightIcon, ComponentsIcon, DocumentIcon, EcommerceIcon, ProfileIcon } from "@/components/icons";
 import { Badge, Chip } from "@nextui-org/react";
 
 interface Props {}
@@ -55,7 +55,7 @@ const Sidebar: React.FC<Props> = () => {
     const navlink = [
         {
             subMenu: "Admin",
-            icon: <EyeIcon />,
+            icon: <AdminIcon />,
             suffix: (
                 <Badge content="5" color="danger" className="mr-4 -mt-0.5">
                     {""}
@@ -78,7 +78,7 @@ const Sidebar: React.FC<Props> = () => {
         },
         {
             subMenu: "Components",
-            icon: <PlusIcon />,
+            icon: <ComponentsIcon />,
             menuItems: [
                 {
                     label: "Grid",
@@ -118,7 +118,7 @@ const Sidebar: React.FC<Props> = () => {
         },
         {
             subMenu: "E-commerce",
-            icon: <EyeIcon />,
+            icon: <EcommerceIcon />,
             menuItems: [
                 {
                     label: "Product",
@@ -140,12 +140,12 @@ const Sidebar: React.FC<Props> = () => {
         {
             label: "Profile",
             href: "/profile",
-            icon: <NotificationIcon />,
+            icon: <ProfileIcon />,
         },
         {
             label: "Calendar",
             href: "/calendar",
-            icon: <HeartFilledIcon />,
+            icon: <CalendarIcon />,
             suffix: (
                 <Chip color="success" variant="flat" size="sm">
                     New
@@ -155,12 +155,7 @@ const Sidebar: React.FC<Props> = () => {
         {
             label: "Documentation",
             href: "/documentation",
-            icon: <HeartFilledIcon />,
-        },
-        {
-            label: "Examples",
-            href: "/examples",
-            icon: <HeartFilledIcon />,
+            icon: <DocumentIcon />,
             disabled: true,
         },
     ];
@@ -212,7 +207,7 @@ const Sidebar: React.FC<Props> = () => {
             {" "}
             <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
                 <div className="flex-1 mb-8 py-4">
-                    <h1 className="text-3xl pl-4 mb-8">ShtIT</h1>
+                    <h1 className="text-3xl pl-4 mb-8">RFT</h1>
                     <div className="px-6 mb-2">
                         <p className="font-semibold" style={{ opacity: 0.7, letterSpacing: "0.5px" }}>
                             General

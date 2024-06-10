@@ -8,7 +8,7 @@ export default function Footer() {
             <div className="py-2 flex justify-between max-w-7xl mx-auto">
                 <aside className="items-center grid-flow-col">
                     <p className="text-default-500">
-                        <span className="font-semibold text-xl">ShpIT</span> <br />
+                        <span className="font-semibold text-xl">RFT</span> <br />
                         Providing reliable tech since 1992
                     </p>
                 </aside>

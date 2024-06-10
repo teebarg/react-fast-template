@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from firebase_admin import auth as firebase_auth
@@ -18,9 +18,10 @@ router = APIRouter()
 
 @router.post("/login")
 async def login_for_access_token(
+    response: Response,
     credentials: schemas.SignIn,
     auth: Any = Depends(deps.get_auth),
-    db=Depends(deps.get_db)
+    db=Depends(deps.get_db),
 ) -> Any:
     """
     User login to get access token (JWT).
@@ -29,10 +30,12 @@ async def login_for_access_token(
     password = credentials.password
     try:
         user = auth.sign_in_with_email_and_password(email, password)
+        access_token = user.get("idToken")
+        refresh_token = user.get("refreshToken")
         content = {
             "message": "success",
-            "access_token": user["idToken"],
-            "refresh_token": user["refreshToken"],
+            "access_token": access_token,
+            "refresh_token": refresh_token,
             "expires": get_timestamp(),
         }
 
@@ -42,14 +45,33 @@ async def login_for_access_token(
             details["name"] = details["firstname"] + " " + details["lastname"]
             content |= details
 
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            max_age=timedelta(days=30),
+            secure=True,
+            httponly=True,
+        )
+        response.set_cookie(
+            key="refresh_token",
+            value=refresh_token,
+            max_age=timedelta(days=30),
+            secure=True,
+            httponly=True,
+        )
+
         return content
     except Exception as e:
         if "INVALID_LOGIN_CREDENTIALS" in str(e):
             raise HTTPException(
-                status_code=400, detail="Invalid login credentials"
+                status_code=401, detail="Invalid login credentials"
+            ) from e
+        elif "MISSING_PASSWORD" in str(e):
+            raise HTTPException(
+                status_code=400, detail="Password is required to Login"
             ) from e
         else:
-            raise HTTPException(status_code=400, detail="An error occurred") from e
+            raise HTTPException(status_code=400, detail=f"An error occurred. {e}") from e
 
 
 @router.post("/signup")
@@ -140,7 +162,8 @@ def logout(uid: str = Depends(deps.get_token_uid)) -> Any:
 
 @router.post("/refresh-token")
 def refresh_token(
-    refresh_token: str,
+    response: Response,
+    refresh_token: deps.TokenDep2,
     current_user: deps.CurrentUser,
     auth: Any = Depends(deps.get_auth),
 ) -> Any:
@@ -149,11 +172,29 @@ def refresh_token(
     """
     try:
         user = auth.refresh(refresh_token)
+        access_token = user.get("idToken")
+        ref_token = user.get("refreshToken")
+
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            max_age=timedelta(days=30),
+            secure=True,
+            httponly=True,
+        )
+        response.set_cookie(
+            key="refresh_token",
+            value=ref_token,
+            max_age=timedelta(days=30),
+            secure=True,
+            httponly=True,
+        )
+
         return JSONResponse(
             status_code=200,
             content={
-                "access_token": user["idToken"],
-                "refresh_token": user["refreshToken"],
+                "access_token": access_token,
+                "refresh_token": ref_token,
                 "expires": get_timestamp(),
                 "token_type": "bearer",
             },

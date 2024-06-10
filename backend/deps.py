@@ -1,9 +1,9 @@
-from typing import Annotated, Any, Generator
+from typing import Annotated, Any, Generator, Union
 
 import firebase_admin
 import pyrebase
 import requests
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Cookie
 from fastapi.security import APIKeyHeader, OAuth2PasswordBearer
 from firebase_admin import auth, credentials, storage
 from sqlmodel import Session
@@ -24,7 +24,8 @@ def get_db() -> Generator:
 
 SessionDep = Annotated[Session, Depends(get_db)]
 TokenDep = Annotated[str, Depends(reusable_oauth2)]
-TokenDep2 = Annotated[str, Depends(APIKeyHeader(name="X-Auth"))]
+# TokenDep2 = Annotated[str, Depends(APIKeyHeader(name="X-Auth"))]
+TokenDep2 = Annotated[Union[str, None], Cookie()]
 
 
 def get_auth() -> Generator:
@@ -62,15 +63,15 @@ def get_storage() -> Generator:
         logger.debug("storage closed")
 
 
-def get_token_uid(token: TokenDep2, auth2: Any = Depends(get_auth)) -> str:
+def get_token_uid(access_token: TokenDep2, auth2: Any = Depends(get_auth)) -> str:
     try:
-        if token is None:
+        if access_token is None:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Token cannot be none",
             )
 
-        data = auth.verify_id_token(token)
+        data = auth.verify_id_token(access_token)
         if "uid" in data:
             return data["uid"]
         else:
@@ -84,16 +85,16 @@ def get_token_uid(token: TokenDep2, auth2: Any = Depends(get_auth)) -> str:
 
 
 def get_current_user(
-    db: SessionDep, token: TokenDep2, auth2: Any = Depends(get_auth)
+    db: SessionDep, access_token: TokenDep2, auth2: Any = Depends(get_auth)
 ) -> User:
     try:
-        if token is None:
+        if access_token is None:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Token cannot be none",
             )
 
-        data = auth.verify_id_token(token, check_revoked=True)
+        data = auth.verify_id_token(access_token, check_revoked=True)
         if "email" in data:
             if user := crud.get_user_by_email(db=db, email=data["email"]):
                 return user
@@ -133,10 +134,12 @@ def get_current_active_user(
     current_user: Annotated[User, Depends(get_current_user)]
 ) -> User:
     if not current_user:
-        raise HTTPException(status_code=403, detail="Unauthenticated user")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthenticated user"
+        )
     if not current_user.is_active:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
 
-CurrentUser = Annotated[User, Depends(get_current_active_user)]
+CurrentUser = Annotated[User, Depends(get_current_user)]

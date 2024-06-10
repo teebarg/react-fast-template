@@ -30,7 +30,7 @@ function useNotifications(): [Notification[], Actions] {
                         ...notificationsDefaults.options,
                         ...notification.options,
                         key: id,
-                        type: "alert",
+                        type: notification.options?.type,
                     },
                 },
             ]);

@@ -1,7 +1,6 @@
-# Altara Python Service
+# RFT Python Service
 
 [![Python Version](https://img.shields.io/badge/python-3.11-blue.svg)](https://python.org)
-[![FastAPI Version](https://img.shields.io/badge/fastapi-0.68.0-blue.svg)](https://fastapi.tiangolo.com/)
 
 ## Introduction
 
@@ -62,7 +61,7 @@ The API will be available at <http://localhost:8000>.
 
 ## API Documentation
 
-Swagger UI: <http://localhost:7000/docs>
-ReDoc: <http://localhost:7000/redoc>
+Swagger UI: <http://localhost:4010/docs>
+ReDoc: <http://localhost:4010/redoc>
 
  sudo lsof -t -i tcp:8000 | xargs kill -9
