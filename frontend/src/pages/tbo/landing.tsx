@@ -7,6 +7,7 @@ import ContactForm from "./components/contact-form";
 import { Fade, Slide, Zoom } from "react-awesome-reveal";
 import { CategoryInterface, categories, openingHours } from "./data";
 import Footer from "./components/footer";
+import { Link } from "react-router-dom";
 
 interface Props {}
 
@@ -85,9 +86,9 @@ const Landing: React.FC<Props> = () => {
                                                 <p className="text-black text-tiny">Available soon.</p>
                                                 <p className="text-black text-tiny">Get notified.</p>
                                             </div>
-                                            <Button className="text-tiny" color="primary" radius="full" size="sm">
+                                            <Link to={"collections"} className="text-tiny rounded-lg bg-primary-100 text-white" color="primary">
                                                 Notify Me
-                                            </Button>
+                                            </Link>
                                         </CardFooter>
                                     </Card>
                                 </Zoom>

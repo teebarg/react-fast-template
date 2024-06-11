@@ -51,7 +51,24 @@ function App() {
                 },
                 {
                     path: "tbo",
-                    Component: asyncComponentLoader(() => import("@/pages/tbo/landing")),
+                    Component: asyncComponentLoader(() => import("@/pages/layout")),
+                    children: [
+                        {
+                            index: true,
+                            Component: asyncComponentLoader(() => import("@/pages/tbo/landing")),
+                        },
+                        {
+                            path: "collections",
+                            async lazy() {
+                                const { Collections } = await import("@/pages/tbo/collections");
+                                return {
+                                    Component: Collections,
+                                };
+                            },
+                            children: adminRoutes,
+                            handle: { scrollMode: "pathname" },
+                        },
+                    ],
                 },
                 {
                     path: "profile",
