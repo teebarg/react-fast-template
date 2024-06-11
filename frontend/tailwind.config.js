@@ -32,14 +32,21 @@ module.exports = {
                             foreground: "#000000",
                         },
                         background: {
-                            DEFAULT: "#121212",
+                            // DEFAULT: "#1212s12",
+                            DEFAULT: "#000000",
                             // paper: "#1F2937",
                         },
-                        content1: {
-                            DEFAULT: "#1E1E1E",
-                            // focus: "#000",
-                        },
+                        // content1: {
+                        //     DEFAULT: "#1E1E1E",
+                        //     // focus: "#000",
+                        // },
                     },
+                    cssVars: {
+                        "--nextui-background": "100% 100% 100%", // Set the background color to white
+                    },
+                    // cssVars: {
+                    //     "--nextui-background": "0 0% 0%", // Set the background color to black
+                    // },
                 },
                 light: {
                     colors: {

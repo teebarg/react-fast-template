@@ -13,6 +13,7 @@ import LoadingPage from "@/components/loading";
 import { useAuth } from "@/store/auth-provider";
 import type { AuthContextValue } from "@/store/auth-provider";
 import useAddToHomeScreenPrompt from "@/hooks/useAddToHomeScreenPrompt";
+import { PwaBanner } from "@/components/pwa-banner";
 
 function App() {
     const [promptEvent, promptToInstall] = useAddToHomeScreenPrompt();
@@ -92,7 +93,7 @@ function App() {
     }
     return (
         <Fragment>
-            {promptEvent && <button onClick={promptToInstall}>Add to Home Screen</button>}
+            {promptEvent && <PwaBanner onClick={promptToInstall} />}
             <Notifications />
             <HotKeys />
             <SW />
