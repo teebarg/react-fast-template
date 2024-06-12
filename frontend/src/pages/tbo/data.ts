@@ -3,6 +3,7 @@ interface CategoryInterface {
     description: string;
     image: string;
     link: string;
+    slug: string;
 }
 
 const categories: CategoryInterface[] = [
@@ -11,36 +12,42 @@ const categories: CategoryInterface[] = [
         description: "Find the best thrifts for your kids",
         image: "https://nextui-docs-v2.vercel.app/images/fruit-1.jpeg",
         link: "/children-clothing",
+        slug: "children-clothing",
     },
     {
         title: "Children's Shoes",
         description: "Discover a variety of shoes for your little ones",
         image: "https://nextui-docs-v2.vercel.app/images/fruit-2.jpeg",
         link: "/children-shoes",
+        slug: "children-shoes",
     },
     {
         title: "Children's Accessories",
         description: "Explore a wide range of accessories for your kids",
         image: "https://nextui-docs-v2.vercel.app/images/fruit-3.jpeg",
         link: "/children-accessories",
+        slug: "children-accessories",
     },
     {
         title: "Children's Toys",
         description: "Find the best toys for your kids",
         image: "https://nextui-docs-v2.vercel.app/images/fruit-4.jpeg",
         link: "/children-toys",
+        slug: "children-toys",
     },
     {
         title: "Children's Gadget",
         description: "Find the best toys for your kids",
         image: "https://nextui.org/images/card-example-6.jpeg",
-        link: "/children-toys",
+        link: "/children-gadget",
+        slug: "children-gadget",
     },
     {
         title: "Children's Toys",
         description: "Find the best toys for your kids",
         image: "https://nextui-docs-v2.vercel.app/images/fruit-5.jpeg",
-        link: "/children-toys",
+        link: "/children-roy",
+        slug: "children-roy",
     },
 ];
 
@@ -208,5 +215,100 @@ const indicators = [
 
 const sizes = [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46];
 
-export type { CategoryInterface };
-export { categories, openingHours, sizes, indicators };
+const genders = [
+    {
+        title: "Boys",
+        slug: "boys",
+    },
+    {
+        title: "Girls",
+        slug: "girls",
+    },
+    {
+        title: "Unisex",
+        slug: "unisex",
+    },
+];
+
+const brands = [
+    {
+        title: "Puma",
+        slug: "puma",
+    },
+    {
+        title: "Adidas",
+        slug: "adidas",
+    },
+    {
+        title: "Nike",
+        slug: "nike",
+    },
+    {
+        title: "Reebok",
+        slug: "reebok",
+    },
+    {
+        title: "Jordan",
+        slug: "jordan",
+    },
+];
+
+const filters = [
+    { key: "new", label: "Newest" },
+    { key: "low-price", label: "Price: Low to High" },
+    { key: "high-price", label: "Price: High to Low" },
+    { key: "top-rated", label: "Top Rated" },
+    { key: "most-popular", label: "Most Popular" },
+];
+
+interface Product {
+    title: string;
+    img: string;
+    price: string;
+}
+
+const products: Product[] = [
+    {
+        title: "Orange",
+        img: "https://nextui.org/images/fruit-1.jpeg",
+        price: "$5.50",
+    },
+    {
+        title: "Tangerine",
+        img: "https://nextui.org/images/fruit-2.jpeg",
+        price: "$3.00",
+    },
+    {
+        title: "Raspberry",
+        img: "https://nextui.org/images/fruit-3.jpeg",
+        price: "$10.00",
+    },
+    {
+        title: "Lemon",
+        img: "https://nextui.org/images/fruit-4.jpeg",
+        price: "$5.30",
+    },
+    {
+        title: "Avocado",
+        img: "https://nextui.org/images/fruit-5.jpeg",
+        price: "$15.70",
+    },
+    {
+        title: "Lemon 2",
+        img: "https://nextui.org/images/fruit-6.jpeg",
+        price: "$8.00",
+    },
+    {
+        title: "Banana",
+        img: "https://nextui.org/images/fruit-7.jpeg",
+        price: "$7.50",
+    },
+    {
+        title: "Watermelon",
+        img: "https://nextui.org/images/fruit-8.jpeg",
+        price: "$12.20",
+    },
+];
+
+export type { CategoryInterface, Product };
+export { categories, openingHours, sizes, indicators, genders, brands, filters, products };

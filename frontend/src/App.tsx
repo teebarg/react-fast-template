@@ -7,7 +7,7 @@ import SW from "@/sections/SW";
 import { RouterProvider, createBrowserRouter, redirect } from "react-router-dom";
 import NotFound from "@/pages/NotFound";
 import ErrorPage from "@/pages/ErrorPage";
-import { adminRoutes } from "@/routes/routes";
+import { adminRoutes, tboRoutes } from "@/routes/routes";
 import asyncComponentLoader from "@/utils/loader";
 import LoadingPage from "@/components/loading";
 import { useAuth } from "@/store/auth-provider";
@@ -52,23 +52,7 @@ function App() {
                 {
                     path: "tbo",
                     Component: asyncComponentLoader(() => import("@/pages/layout")),
-                    children: [
-                        {
-                            index: true,
-                            Component: asyncComponentLoader(() => import("@/pages/tbo/landing")),
-                        },
-                        {
-                            path: "collections",
-                            async lazy() {
-                                const { Collections } = await import("@/pages/tbo/collections");
-                                return {
-                                    Component: Collections,
-                                };
-                            },
-                            children: adminRoutes,
-                            handle: { scrollMode: "pathname" },
-                        },
-                    ],
+                    children: tboRoutes,
                 },
                 {
                     path: "profile",

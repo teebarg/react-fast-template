@@ -34,10 +34,10 @@ const TBONavbar = () => {
     );
 
     return (
-        <NextUINavbar maxWidth="xl" position="sticky" className="my-2">
+        <NextUINavbar maxWidth="full" position="sticky" className="my-2">
             <NavbarContent className="basis-1/5 sm:basis-full flex" justify="start">
                 <NavbarBrand as="li" className="gap-3 max-w-fit">
-                    <Link className="flex justify-start items-center gap-1" to="/">
+                    <Link className="flex justify-start items-center gap-1" to="/tbo">
                         <Logo />
                         <p className="font-bold text-inherit text-2xl">TBO</p>
                     </Link>
@@ -66,7 +66,7 @@ const TBONavbar = () => {
                     <ThemeSwitch />
                 </NavbarItem>
                 <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
-                <NavbarItem className="flex">
+                <NavbarItem className="hidden sm:flex">
                     {currentUser ? (
                         <UserDropDown />
                     ) : (

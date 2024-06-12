@@ -17,4 +17,31 @@ const adminRoutes = [
     },
 ];
 
-export { adminRoutes };
+const tboRoutes = [
+    {
+        index: true,
+        Component: asyncComponentLoader(() => import("@/pages/tbo/landing")),
+    },
+    {
+        path: "collections",
+        async lazy() {
+            const { Collections } = await import("@/pages/tbo/collections");
+            return {
+                Component: Collections,
+            };
+        },
+        handle: { scrollMode: "pathname" },
+    },
+    {
+        path: "product",
+        async lazy() {
+            const { Product } = await import("@/pages/tbo/product");
+            return {
+                Component: Product,
+            };
+        },
+        handle: { scrollMode: "pathname" },
+    },
+];
+
+export { adminRoutes, tboRoutes };

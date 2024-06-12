@@ -86,7 +86,11 @@ const Landing: React.FC<Props> = () => {
                                                 <p className="text-black text-tiny">Available soon.</p>
                                                 <p className="text-black text-tiny">Get notified.</p>
                                             </div>
-                                            <Link to={"collections"} className="text-tiny rounded-lg bg-primary-100 text-white" color="primary">
+                                            <Link
+                                                to={"collections"}
+                                                className="text-tiny rounded-lg bg-primary-100 text-white px-2 py-1"
+                                                color="primary"
+                                            >
                                                 Notify Me
                                             </Link>
                                         </CardFooter>

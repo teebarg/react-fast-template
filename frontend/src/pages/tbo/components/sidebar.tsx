@@ -1,14 +1,14 @@
 import { CustomCheckbox } from "@/components/core/checkbox";
-import { CheckboxGroup, Input, Slider } from "@nextui-org/react";
+import { Accordion, AccordionItem, Checkbox, CheckboxGroup, Input, Slider } from "@nextui-org/react";
 import React from "react";
-import { indicators, sizes } from "../data";
+import { brands, categories, genders, indicators, sizes } from "../data";
 
 interface ComponentProps {}
 
 const CollectionsSideBar: React.FC<ComponentProps> = () => {
     const [groupSelected, setGroupSelected] = React.useState<string[]>([]);
     return (
-        <div className="hidden h-full max-w-[20rem] overflow-x-hidden overflow-y-scroll sm:flex">
+        <div className="hidden h-full max-w-[25rem] overflow-x-hidden overflow-y-scroll sm:flex">
             <div className="h-full max-h-fit w-full max-w-sm rounded-medium p-6 bg-default-50">
                 <h2 className="text-large font-medium text-foreground">Filter by</h2>
                 <hr className="shrink-0 border-none w-full h-divider my-3 bg-default-100" role="separator" />
@@ -32,14 +32,13 @@ const CollectionsSideBar: React.FC<ComponentProps> = () => {
                                         ))}
                                     </div>
                                     <Slider
-                                        label="Price Range"
                                         showTooltip={false}
                                         step={50}
                                         minValue={0}
                                         maxValue={1000}
-                                        defaultValue={[100, 500]}
-                                        formatOptions={{ style: "currency", currency: "USD" }}
-                                        className="max-w-md"
+                                        hideValue={true}
+                                        size="sm"
+                                        defaultValue={[50, 500]}
                                     />
                                 </div>
                             </div>
@@ -85,6 +84,45 @@ const CollectionsSideBar: React.FC<ComponentProps> = () => {
                             ))}
                         </CheckboxGroup>
                     </div>
+                </div>
+                <div className="flex flex-col gap-3">
+                    <Accordion defaultExpandedKeys={["1"]}>
+                        <AccordionItem key="1" aria-label="Category" title="Category">
+                            <CheckboxGroup defaultValue={["children-toys"]}>
+                                {categories.map((item, index) => (
+                                    <Checkbox key={index} value={item.slug}>
+                                        {item.title}
+                                    </Checkbox>
+                                ))}
+                            </CheckboxGroup>
+                        </AccordionItem>
+                    </Accordion>
+                </div>
+                <div className="flex flex-col gap-3">
+                    <Accordion defaultExpandedKeys={["1"]}>
+                        <AccordionItem key="1" aria-label="Gender" title="Gender">
+                            <CheckboxGroup defaultValue={["boys"]}>
+                                {genders.map((item, index) => (
+                                    <Checkbox key={index} value={item.slug}>
+                                        {item.title}
+                                    </Checkbox>
+                                ))}
+                            </CheckboxGroup>
+                        </AccordionItem>
+                    </Accordion>
+                </div>
+                <div className="flex flex-col gap-3">
+                    <Accordion>
+                        <AccordionItem key="1" aria-label="Brand" title="Brand">
+                            <CheckboxGroup defaultValue={["Puma"]}>
+                                {brands.map((item, index) => (
+                                    <Checkbox key={index} value={item.slug}>
+                                        {item.title}
+                                    </Checkbox>
+                                ))}
+                            </CheckboxGroup>
+                        </AccordionItem>
+                    </Accordion>
                 </div>
             </div>
         </div>
