@@ -42,6 +42,16 @@ const tboRoutes = [
         },
         handle: { scrollMode: "pathname" },
     },
+    {
+        path: "checkout",
+        async lazy() {
+            const { Checkout } = await import("@/pages/tbo/checkout");
+            return {
+                Component: Checkout,
+            };
+        },
+        handle: { scrollMode: "pathname" },
+    },
 ];
 
 export { adminRoutes, tboRoutes };

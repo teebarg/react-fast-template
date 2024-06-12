@@ -55,7 +55,18 @@ type Rules = {
     validate?: (value: {}) => boolean | string;
 };
 
-export function TextField({ name, label, labelPlacement = "inside", type = "text", defaultValue, register, rules, error, ...props }: FieldProps) {
+export function TextField({
+    name,
+    label,
+    labelPlacement = "inside",
+    type = "text",
+    size = "md",
+    defaultValue,
+    register,
+    rules,
+    error,
+    ...props
+}: FieldProps) {
     const id = useId();
     const formRules: Rules = {};
     const { min, max, minLength, maxLength, email, required, pattern } = rules || {};
@@ -120,7 +131,7 @@ export function TextField({ name, label, labelPlacement = "inside", type = "text
             {...register(name, formRules)}
             isInvalid={error}
             errorMessage={error?.message}
-            size="lg"
+            size={size}
         />
     );
 }
