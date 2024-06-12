@@ -1,5 +1,6 @@
 import React from "react";
 import { RightArrowIcon } from "@/components/icons";
+import { Button } from "@nextui-org/react";
 
 export interface ThemeSwitchProps {
     onClick: () => void;
@@ -7,12 +8,7 @@ export interface ThemeSwitchProps {
 const PwaBanner: React.FC<ThemeSwitchProps> = ({ onClick }) => {
     return (
         <div className="flex w-full items-center justify-between md:justify-center gap-x-3 py-2 border-b">
-            <a
-                className="text-small flex items-end sm:text-[0.93rem] text-foreground hover:opacity-80 transition-opacity"
-                href="https://nextui.pro?utm_source=nextui.org&amp;utm_medium=top-banner"
-                rel="noopener noreferrer"
-                target="_blank"
-            >
+            <div className="text-small flex items-end sm:text-[0.93rem] text-foreground hover:opacity-80 transition-opacity">
                 <span aria-label="rocket" className="hidden md:block" role="img">
                     🚀
                 </span>
@@ -22,12 +18,8 @@ const PwaBanner: React.FC<ThemeSwitchProps> = ({ onClick }) => {
                 >
                     Add to Home Screen
                 </span>
-            </a>
-            <button
-                onClick={onClick}
-                className="flex group min-w-[100px] items-center font-semibold text-foreground shadow-sm gap-2 relative overflow-hidden rounded-full p-[1px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                rel="noopener noreferrer"
-            >
+            </div>
+            <Button onClick={onClick} className="min-w-[100px] gap-2 rounded-full p-[1px]">
                 <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#F54180_0%,#338EF7_50%,#F54180_100%)]"></span>
                 <div className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-background group-hover:bg-background/70 transition-background px-3 py-1 text-sm font-medium text-foreground backdrop-blur-3xl">
                     Install
@@ -38,7 +30,7 @@ const PwaBanner: React.FC<ThemeSwitchProps> = ({ onClick }) => {
                         size={16}
                     />
                 </div>
-            </button>
+            </Button>
         </div>
     );
 };

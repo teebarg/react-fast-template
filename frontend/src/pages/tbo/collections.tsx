@@ -1,4 +1,4 @@
-import { BreadcrumbItem, Breadcrumbs, Select, SelectItem } from "@nextui-org/react";
+import { BreadcrumbItem, Breadcrumbs, Button, Select, SelectItem } from "@nextui-org/react";
 import React from "react";
 import { CollectionsSideBar } from "./components/sidebar";
 import { filters, products } from "./data";
@@ -32,13 +32,10 @@ const Collections: React.FC<ComponentProps> = () => {
                             </div>
                             <div className="flex items-center justify-between gap-2 ">
                                 <div className="flex flex-row gap-2">
-                                    <button
-                                        className="z-0 group relative items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 border-medium px-4 min-w-20 h-10 text-small gap-2 rounded-medium [&amp;>svg]:max-w-[theme(spacing.8)] data-[pressed=true]:scale-[0.97] transition-transform-colors-opacity motion-reduce:transition-none bg-transparent text-foreground data-[hover=true]:opacity-hover flex border-default-200 sm:hidden"
-                                        type="button"
-                                    >
+                                    <Button type="button">
                                         <FunnelIcon size={16} role="img" className="text-default-500 iconify iconify--solar" focusable="false" />
                                         Filters
-                                    </button>
+                                    </Button>
                                     <div className="hidden items-center gap-1 md:flex">
                                         <h2 className="text-medium font-medium">Shoes</h2>
                                         <span className="text-small text-default-400">(1240)</span>
