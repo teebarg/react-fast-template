@@ -150,6 +150,7 @@ export function SelectField({
     description = "",
     size = "md",
     color = "",
+    className = "",
 }: any) {
     const id = useId();
     const { required } = rules || {};
@@ -171,6 +172,7 @@ export function SelectField({
                     description={description}
                     selectionMode={selectionMode}
                     labelPlacement={labelPlacement}
+                    className={className}
                     size={size}
                     errorMessage={error?.message}
                     isInvalid={error}
@@ -182,7 +184,7 @@ export function SelectField({
     );
 }
 
-export function TextAreaField({ name, register, rules, error, handleClick, loading, ...props }: FieldProps) {
+export function PromptField({ name, register, rules, error, handleClick, loading, ...props }: FieldProps) {
     const id = useId();
     // eslint-disable-next-line no-undef
     const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -332,7 +334,7 @@ export function CheckBoxField({ name, label, className, control }: FieldProps) {
     );
 }
 
-export function TextAreaField2({ name, label, labelPlacement = "inside", register, rules, error, disabled, variant, ...props }: FieldProps) {
+export function TextAreaField({ name, label, labelPlacement = "inside", register, rules, error, disabled, variant, ...props }: FieldProps) {
     const id = useId();
     const formRules: Rules = {};
     const { minLength, maxLength, required } = rules || {};
