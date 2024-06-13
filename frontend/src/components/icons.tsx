@@ -519,6 +519,66 @@ export const VisaCardIcon = ({ height = "30", width = "30", ...props }: IconSvgP
     );
 };
 
+export const EllipsisIcon = ({ size = 24, height = "24", width = "24", ...props }: IconSvgProps) => {
+    return (
+        <svg width={size || width} height={size || height} {...props} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M7 12a2 2 0 1 1-4 0a2 2 0 0 1 4 0m7 0a2 2 0 1 1-4 0a2 2 0 0 1 4 0m7 0a2 2 0 1 1-4 0a2 2 0 0 1 4 0" />
+        </svg>
+    );
+};
+
+export const CopyIcon = ({ height = "1em", width = "1em", ...props }: IconSvgProps) => {
+    return (
+        <svg width={width} height={height} {...props} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 16 16">
+            <path
+                fill="currentColor"
+                fillRule="evenodd"
+                d="M12 2.5H8A1.5 1.5 0 0 0 6.5 4v1H8a3 3 0 0 1 3 3v1.5h1A1.5 1.5 0 0 0 13.5 8V4A1.5 1.5 0 0 0 12 2.5M11 11h1a3 3 0 0 0 3-3V4a3 3 0 0 0-3-3H8a3 3 0 0 0-3 3v1H4a3 3 0 0 0-3 3v4a3 3 0 0 0 3 3h4a3 3 0 0 0 3-3zM4 6.5h4A1.5 1.5 0 0 1 9.5 8v4A1.5 1.5 0 0 1 8 13.5H4A1.5 1.5 0 0 1 2.5 12V8A1.5 1.5 0 0 1 4 6.5"
+                clipRule="evenodd"
+            />
+        </svg>
+    );
+};
+
+export const ThumbsUpIcon = ({ height = "1em", width = "1em", ...props }: IconSvgProps) => {
+    return (
+        <svg width={width} height={height} {...props} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 16 16">
+            <path
+                fill="currentColor"
+                fillRule="evenodd"
+                d="m4 7l2.94-5.041a1.932 1.932 0 0 1 3.56 1.378L10.25 4.5L9.93 6h2.94a2 2 0 0 1 1.927 2.535l-.879 3.162A4 4 0 0 1 9.596 14.6L4.5 14zm5.771 6.11l-3.863-.455l-.379-5.3l2.708-4.64a.432.432 0 0 1 .796.308l-.571 2.663L8.073 7.5h4.796a.5.5 0 0 1 .482.634l-.879 3.162a2.5 2.5 0 0 1-2.7 1.814ZM2.748 7.447a.75.75 0 1 0-1.496.106l.5 7a.75.75 0 0 0 1.496-.106z"
+                clipRule="evenodd"
+            />
+        </svg>
+    );
+};
+
+export const ThumbsDownIcon = ({ height = "1em", width = "1em", ...props }: IconSvgProps) => {
+    return (
+        <svg width={width} height={height} {...props} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 16 16">
+            <path
+                fill="currentColor"
+                fillRule="evenodd"
+                d="m12 9l-2.94 5.041a1.932 1.932 0 0 1-3.56-1.378l.25-1.163l.321-1.5h-2.94a2 2 0 0 1-1.927-2.535l.879-3.162A4 4 0 0 1 6.404 1.4L11.5 2zM6.229 2.89l3.863.455l.379 5.3l-2.708 4.64a.432.432 0 0 1-.796-.308l.571-2.663l.389-1.814H3.13a.5.5 0 0 1-.482-.634l.879-3.162a2.5 2.5 0 0 1 2.7-1.814Zm7.023 5.663a.75.75 0 1 0 1.496-.106l-.5-7a.75.75 0 0 0-1.496.106z"
+                clipRule="evenodd"
+            />
+        </svg>
+    );
+};
+
+export const EmojiIcon = ({ height = "1em", width = "1em", ...props }: IconSvgProps) => {
+    return (
+        <svg width={width} height={height} {...props} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 16 16">
+            <path
+                fill="currentColor"
+                fillRule="evenodd"
+                d="M13.5 8a5.5 5.5 0 1 1-11 0a5.5 5.5 0 0 1 11 0M15 8A7 7 0 1 1 1 8a7 7 0 0 1 14 0m-5.67 2.835a.75.75 0 1 0 1.34-.67C10.268 9.356 9.219 8.75 8 8.75s-2.267.606-2.67 1.415a.75.75 0 1 0 1.34.67c.097-.191.548-.585 1.33-.585s1.233.394 1.33.585M10 8a.75.75 0 0 1-.75-.75v-1a.75.75 0 0 1 1.5 0v1A.75.75 0 0 1 10 8m-4.75-.75a.75.75 0 0 0 1.5 0v-1a.75.75 0 0 0-1.5 0z"
+                clipRule="evenodd"
+            />
+        </svg>
+    );
+};
+
 export const LightThemeIcon = ({ height = "117", width = "240", ...props }: IconSvgProps) => {
     return (
         <svg fill="none" viewBox="0 0 240 117" xmlns="http://www.w3.org/2000/svg" width={width} height={height} {...props}>
