@@ -58,6 +58,22 @@ const TBONavbar = () => {
                             Services
                         </NavLink>
                     </NavbarMenuItem>
+                    <NavbarMenuItem>
+                        <NavLink
+                            className={({ isActive, isPending }) => (isPending ? "pending" : isActive ? "text-danger" : "")}
+                            to={"/tbo/collections"}
+                        >
+                            Collections
+                        </NavLink>
+                    </NavbarMenuItem>
+                    <NavbarMenuItem>
+                        <NavLink
+                            className={({ isActive, isPending }) => (isPending ? "pending" : isActive ? "text-danger" : "")}
+                            to={"/tbo/checkout"}
+                        >
+                            Checkout
+                        </NavLink>
+                    </NavbarMenuItem>
                 </div>
             </NavbarContent>
 

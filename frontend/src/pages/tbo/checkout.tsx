@@ -1,52 +1,14 @@
 import { SelectField, TextField } from "@/components/core/fields";
-import { CancelIcon, DocumentIcon, TwitterIcon } from "@/components/icons";
+import { CancelIcon, DocumentIcon, MasterCardIcon, PayPalIcon, VisaCardIcon } from "@/components/icons";
 import { BreadcrumbItem, Breadcrumbs, Button, Checkbox, Input, Radio, RadioGroup, cn, Image } from "@nextui-org/react";
-import React, { ReactNode } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { cart } from "./data";
+import type { Cart } from "./data";
 
-interface Cart {
-    name: string;
-    color: string;
-    size: string;
-    amount: string;
-    quantity: number;
-    image: string;
-}
-
-const cart: Cart[] = [
-    {
-        name: "Boot",
-        color: "Blue",
-        size: "41",
-        amount: "$49.99",
-        quantity: 3,
-        image: "https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/shoes/1.png",
-    },
-    {
-        name: "Sneakers",
-        color: "Ted",
-        size: "45",
-        amount: "$69.99",
-        quantity: 1,
-        image: "https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/shoes/2.png",
-    },
-    {
-        name: "Training shoes",
-        color: "Black",
-        size: "42",
-        amount: "$49.99",
-        quantity: 5,
-        image: "https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/shoes/3.png",
-    },
-];
-
-interface ComponentProps {
-    children: ReactNode;
-    [key: string]: string | number | ReactNode;
-}
-
-export const CustomRadio: React.FC<ComponentProps> = (props) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const CustomRadio: React.FC<any> = (props) => {
     const { children, ...otherProps } = props;
 
     return (
@@ -90,8 +52,12 @@ const Checkout: React.FC<ComponentProps> = () => {
                                 <div className="flex flex-col gap-1">
                                     <h1 className="text-2xl font-medium">Shopping Cart</h1>
                                     <Breadcrumbs>
-                                        <BreadcrumbItem>Home</BreadcrumbItem>
-                                        <BreadcrumbItem>Shoes Category</BreadcrumbItem>
+                                        <BreadcrumbItem>
+                                            <NavLink to={"/tbo"}>Home</NavLink>
+                                        </BreadcrumbItem>
+                                        <BreadcrumbItem>
+                                            <NavLink to={"/tbo/collections"}>Collections</NavLink>
+                                        </BreadcrumbItem>
                                         <BreadcrumbItem>My Shopping Cart</BreadcrumbItem>
                                     </Breadcrumbs>
                                 </div>
@@ -140,13 +106,14 @@ const Checkout: React.FC<ComponentProps> = () => {
                                                 rules={{ required: true }}
                                             />
                                             <SelectField
-                                                name="lastname"
+                                                name="country"
                                                 label="Country"
                                                 register={register}
                                                 error={errors?.lastname}
                                                 rules={{ required: true }}
                                                 options={[]}
                                                 control={control}
+                                                placeholder="Select a country"
                                             />
                                         </div>
                                         <div className="flex flex-wrap items-center gap-4 sm:flex-nowrap">
@@ -168,11 +135,18 @@ const Checkout: React.FC<ComponentProps> = () => {
                                             />
                                         </div>
                                     </div>
-                                    <RadioGroup label="Address type" color="warning" orientation="horizontal" className="mt-4">
-                                        <Radio value="buenos-aires" description="All Day Delivery">
+                                    <RadioGroup
+                                        label="Address type"
+                                        color="warning"
+                                        orientation="horizontal"
+                                        className="mt-4"
+                                        classNames={{ wrapper: "gap-8" }}
+                                        defaultValue="home"
+                                    >
+                                        <Radio value="home" description="All Day Delivery">
                                             Home
                                         </Radio>
-                                        <Radio value="canberra" description="Delivery Between 9AM - 6PM">
+                                        <Radio value="office" description="Delivery Between 9AM - 6PM">
                                             Office
                                         </Radio>
                                     </RadioGroup>
@@ -181,12 +155,12 @@ const Checkout: React.FC<ComponentProps> = () => {
                                         description="Selected plan can be changed at any time."
                                         orientation="horizontal"
                                         className="mt-4"
+                                        classNames={{ wrapper: "gap-4" }}
+                                        defaultValue="master"
                                     >
-                                        <CustomRadio value="free">
+                                        <CustomRadio value="visa">
                                             <div className="flex w-full items-center gap-3">
-                                                <div className="item-center flex rounded-small p-2">
-                                                    <TwitterIcon />
-                                                </div>
+                                                <VisaCardIcon />
                                                 <div className="flex w-full flex-col gap-1">
                                                     <div className="flex items-center gap-3">
                                                         <p className="text-small">1234 ****</p>
@@ -195,11 +169,9 @@ const Checkout: React.FC<ComponentProps> = () => {
                                                 </div>
                                             </div>
                                         </CustomRadio>
-                                        <CustomRadio value="pro">
+                                        <CustomRadio value="master">
                                             <div className="flex w-full items-center gap-2">
-                                                <div className="item-center flex rounded-small p-2">
-                                                    <TwitterIcon />
-                                                </div>
+                                                <MasterCardIcon />
                                                 <div className="flex w-full flex-col gap-1">
                                                     <div className="flex items-center gap-3">
                                                         <p className="text-small">8888 ****</p>
@@ -208,11 +180,9 @@ const Checkout: React.FC<ComponentProps> = () => {
                                                 </div>
                                             </div>
                                         </CustomRadio>
-                                        <CustomRadio value="enterprise">
+                                        <CustomRadio value="paypal">
                                             <div className="flex w-full items-center gap-3">
-                                                <div className="item-center flex rounded-small p-2">
-                                                    <TwitterIcon />
-                                                </div>
+                                                <PayPalIcon />
                                                 <div className="flex w-full flex-col gap-1">
                                                     <div className="flex items-center gap-3">
                                                         <p className="text-small">PayPal</p>
@@ -292,7 +262,7 @@ const Checkout: React.FC<ComponentProps> = () => {
                                                     isIconOnly
                                                     className="z-0 relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 text-small gap-2 rounded-full px-0 !gap-0 data-[pressed=true]:scale-[0.97] transition-transform-colors-opacity motion-reduce:transition-none bg-default/40 text-default-foreground h-7 w-7 min-w-[1.5rem]"
                                                 >
-                                                    <CancelIcon role="img" className="" />
+                                                    <CancelIcon size={14} role="img" className="" />
                                                 </Button>
                                             </li>
                                         ))}

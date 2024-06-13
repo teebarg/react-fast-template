@@ -146,38 +146,39 @@ export function SelectField({
     variant = "flat",
     selectionMode = "single",
     labelPlacement = "inside",
+    placeholder = "",
     description = "",
+    size = "md",
+    color = "",
 }: any) {
     const id = useId();
     const { required } = rules || {};
 
     return (
-        <div key={id} className="w-full">
-            <Controller
-                control={control}
-                name={name}
-                render={({ field: { onChange, value } }) => (
-                    <Select
-                        color="secondary"
-                        variant={variant}
-                        isRequired={required}
-                        label={label}
-                        onChange={onChange}
-                        selectedKeys={value}
-                        placeholder="Select an animal"
-                        description={description}
-                        selectionMode={selectionMode}
-                        className="max-w-xs"
-                        labelPlacement={labelPlacement}
-                        size="md"
-                        errorMessage={error?.message}
-                        isInvalid={error}
-                    >
-                        {options?.map((item: { value: string; label: string }) => <SelectItem key={item.value}>{item.label}</SelectItem>)}
-                    </Select>
-                )}
-            />
-        </div>
+        <Controller
+            key={id}
+            control={control}
+            name={name}
+            render={({ field: { onChange, value } }) => (
+                <Select
+                    color={color}
+                    variant={variant}
+                    isRequired={required}
+                    label={label}
+                    onChange={onChange}
+                    selectedKeys={value}
+                    placeholder={placeholder}
+                    description={description}
+                    selectionMode={selectionMode}
+                    labelPlacement={labelPlacement}
+                    size={size}
+                    errorMessage={error?.message}
+                    isInvalid={error}
+                >
+                    {options?.map((item: { value: string; label: string }) => <SelectItem key={item.value}>{item.label}</SelectItem>)}
+                </Select>
+            )}
+        />
     );
 }
 
