@@ -35,10 +35,6 @@ module.exports = {
                             DEFAULT: "#121212",
                             // paper: "#1F2937",
                         },
-                        content1: {
-                            DEFAULT: "#1E1E1E",
-                            // focus: "#000",
-                        },
                     },
                 },
                 light: {

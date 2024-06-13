@@ -7,6 +7,7 @@ import ContactForm from "./components/contact-form";
 import { Fade, Slide, Zoom } from "react-awesome-reveal";
 import { CategoryInterface, categories, openingHours } from "./data";
 import Footer from "./components/footer";
+import { Link } from "react-router-dom";
 
 interface Props {}
 
@@ -85,9 +86,13 @@ const Landing: React.FC<Props> = () => {
                                                 <p className="text-black text-tiny">Available soon.</p>
                                                 <p className="text-black text-tiny">Get notified.</p>
                                             </div>
-                                            <Button className="text-tiny" color="primary" radius="full" size="sm">
+                                            <Link
+                                                to={"collections"}
+                                                className="text-tiny rounded-lg bg-primary-100 text-white px-2 py-1"
+                                                color="primary"
+                                            >
                                                 Notify Me
-                                            </Button>
+                                            </Link>
                                         </CardFooter>
                                     </Card>
                                 </Zoom>
@@ -97,8 +102,7 @@ const Landing: React.FC<Props> = () => {
                 </div>
                 <div className="bg-fixed bg-center bg-cover" style={{ backgroundImage: `url("/hero2.webp")` }}>
                     <div className="flex items-center h-full backdrop-blur-sm backdrop-saturate-150p bg-white/10p">
-                        {/* <div className="flex items-center h-full bg-black bg-opacity-50 backdrop-blur backdrop-saturate-150p bg-white/20"> */}
-                        <div className="max-w-5xl mx-auto flex gap-16 py-16 px-2">
+                        <div className="max-w-5xl mx-auto flex gap-8 py-16 px-2">
                             <div className="w-1/2 pr-10 backdrop-blur bg-white/60 p-8 rounded-lg shadow-lg shadow-gray-400">
                                 <p className="text-lg font-medium text-primary">GET IN TOUCH</p>
                                 <p className="text-2xl font-semibold text-gray-900">Reach out to us for more information</p>
@@ -135,6 +139,18 @@ const Landing: React.FC<Props> = () => {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div className="bg-gray-200">
+                    <div className="max-w-5xl mx-auto py-2">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d990.7044697975375!2d3.3243740696178534!3d6.66947613161211!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b96bc12c94145%3A0xce8a5a69dcdc4350!2s8%20Agbado%20Oke%20Aro%20Road%2C%20Ifako-Ijaiye%2C%20Lagos%20101232%2C%20Lagos!5e0!3m2!1sen!2sng!4v1718193637813!5m2!1sen!2sng"
+                            height="450"
+                            style={{ border: 0, width: "100%" }}
+                            allowFullScreen={true}
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                        ></iframe>
                     </div>
                 </div>
                 <div>

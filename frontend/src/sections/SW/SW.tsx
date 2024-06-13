@@ -13,14 +13,7 @@ function SW() {
         offlineReady: [offlineReady, setOfflineReady],
         needRefresh: [needRefresh, setNeedRefresh],
         updateServiceWorker,
-    } = useRegisterSW({
-        onRegisteredSW(swUrl, r) {
-            console.log(`Service Worker at: ${swUrl}`, r);
-        },
-        onRegisterError(error) {
-            console.log("SW registration error!!!!", error);
-        },
-    });
+    } = useRegisterSW();
 
     const close = useCallback(() => {
         setOfflineReady(false);

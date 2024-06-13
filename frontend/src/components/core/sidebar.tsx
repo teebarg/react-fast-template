@@ -31,18 +31,14 @@ const Sidebar: React.FC<Props> = () => {
             },
             "&:hover": {
                 backgroundColor: `hsl(var(--nextui-content3))`,
-                color: `hsl(var(--nextui-default-900))`,
-                fontWeight: 600,
+                color: `hsl(var(--nextui-default-foreground))`,
+                fontWeight: 500,
             },
             [`&.active`]: {
-                backgroundColor: `hsl(var(--nextui-danger-200))`,
-                borderRadius: "20px 20px",
+                backgroundColor: `hsl(var(--nextui-content4))`,
                 color: `hsl(var(--nextui-default-900))`,
                 fontWeight: 600,
-                marginRight: "1rem",
-                marginLeft: "1rem",
                 paddingRight: "1rem",
-                paddingLeft: "1.5rem",
             },
             [`&.active svg`]: {
                 display: "block",
@@ -194,10 +190,10 @@ const Sidebar: React.FC<Props> = () => {
 
     return (
         <ProSidebar
-            image="https://user-images.githubusercontent.com/25878302/144499035-2911184c-76d3-4611-86e7-bc4e8ff84ff5.jpg"
+            className="bg-gradient-to-b from-default-100 via-danger-100 to-secondary-100"
             rootStyles={{
                 [`.${sidebarClasses.container}`]: {
-                    backgroundColor: `hsl(var(--nextui-content1))`,
+                    background: "inherit",
                     height: "100vh",
                     minWidth: "20rem",
                     overflowY: "auto",

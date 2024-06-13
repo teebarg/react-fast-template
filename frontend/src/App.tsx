@@ -7,12 +7,13 @@ import SW from "@/sections/SW";
 import { RouterProvider, createBrowserRouter, redirect } from "react-router-dom";
 import NotFound from "@/pages/NotFound";
 import ErrorPage from "@/pages/ErrorPage";
-import { adminRoutes } from "@/routes/routes";
+import { adminRoutes, tboRoutes } from "@/routes/routes";
 import asyncComponentLoader from "@/utils/loader";
 import LoadingPage from "@/components/loading";
 import { useAuth } from "@/store/auth-provider";
 import type { AuthContextValue } from "@/store/auth-provider";
 import useAddToHomeScreenPrompt from "@/hooks/useAddToHomeScreenPrompt";
+import { PwaBanner } from "@/components/pwa-banner";
 
 function App() {
     const [promptEvent, promptToInstall] = useAddToHomeScreenPrompt();
@@ -50,7 +51,8 @@ function App() {
                 },
                 {
                     path: "tbo",
-                    Component: asyncComponentLoader(() => import("@/pages/tbo/landing")),
+                    Component: asyncComponentLoader(() => import("@/pages/layout")),
+                    children: tboRoutes,
                 },
                 {
                     path: "profile",
@@ -92,7 +94,7 @@ function App() {
     }
     return (
         <Fragment>
-            {promptEvent && <button onClick={promptToInstall}>Add to Home Screen</button>}
+            {promptEvent && <PwaBanner onClick={promptToInstall} />}
             <Notifications />
             <HotKeys />
             <SW />
