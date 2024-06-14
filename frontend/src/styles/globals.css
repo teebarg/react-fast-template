@@ -8,6 +8,8 @@
     --font-primary: var(--font-outfit);
     --font-weight-normal: 400;
     --font-weight-bold: 700;
+    --duration: 40s;
+    --gap: "40px";
 }
 
 body {
@@ -35,6 +37,18 @@ h6 {
 /* Example of using Lexend in a specific element */
 .lexend {
     font-family: var(--font-lexend);
+}
+
+.mask {
+    mask-image: linear-gradient(
+        to right,
+        #000,
+        #000,
+        transparent 0,
+        #000 var(--scroll-shadow-size),
+        #000 calc(100% - var(--scroll-shadow-size)),
+        transparent
+    ) !important;
 }
 
 @keyframes drip-expand {
