@@ -1,7 +1,9 @@
 import React from "react";
 import Meta from "@/components/Meta";
-import { Avatar, Button, Select, SelectItem, Textarea, Slider, Tabs, Tab, ScrollShadow } from "@nextui-org/react";
-import { CopyIcon, ThumbsUpIcon, ThumbsDownIcon, EmojiIcon } from "@/components/icons";
+import { Button, Select, SelectItem, Textarea, Slider, Tabs, Tab, ScrollShadow } from "@nextui-org/react";
+import { RightArrowIcon, AttachmentIcon, VoiceIcon, TemplateIcon } from "@/components/icons";
+import { AiMessage } from "./components/ai-message";
+import { UserMessage } from "./components/user-message";
 
 interface Props {}
 
@@ -9,7 +11,7 @@ const PlaygroundPage: React.FC<Props> = () => {
     return (
         <React.Fragment>
             <Meta title="Admin Playground" />
-            <div className="max-w-6xl mx-auto mt-6">
+            <div className="max-w-7xl mx-auto">
                 <div className="flex items-center justify-center p-4">
                     <section className="h-full w-full">
                         <header className="flex w-full flex-col items-center gap-4 lg:flex-row lg:justify-between">
@@ -109,164 +111,69 @@ const PlaygroundPage: React.FC<Props> = () => {
                                     </div>
                                     <ScrollShadow className="flex flex-col h-[40vh] lg:h-[50vh]">
                                         <div className="flex flex-col gap-4 px-1 mt-2">
-                                            <div className="flex gap-3">
-                                                <div className="relative flex-none">
-                                                    <Avatar
-                                                        isBordered
-                                                        color="primary"
-                                                        src="https://d2u8k2ocievbld.cloudfront.net/memojis/male/6.png"
-                                                    />
-                                                </div>
-                                                <div className="flex w-full flex-col gap-4">
-                                                    <div className="relative w-full rounded-medium px-4 py-3 bg-content3 text-content3-foreground">
-                                                        <div className="pr-20 text-small">
-                                                            {`What are 5 creative things I could do with my kids' art? I don't want to throw them away,
+                                            <UserMessage>
+                                                {`What are 5 creative things I could do with my kids' art? I don't want to throw them away,
                                                             but it's also so much clutter.`}
-                                                        </div>
-                                                    </div>
+                                            </UserMessage>
+                                            <AiMessage>
+                                                <div>
+                                                    <p className="mb-3">
+                                                        {`Certainly! Here's a summary of five creative ways to use your kids' art:`}
+                                                    </p>
+                                                    <ol className="space-y-2">
+                                                        <li>
+                                                            <strong>Create Art Books:</strong> Turn scanned artwork into custom photo books.
+                                                        </li>
+                                                        <li>
+                                                            <strong>Set Up a Gallery Wall:</strong> Use a dedicated wall with interchangeable frames
+                                                            for displaying art.
+                                                        </li>
+                                                        <li>
+                                                            <strong>Make Functional Items:</strong> Print designs on items like pillows, bags, or
+                                                            mugs.
+                                                        </li>
+                                                        <li>
+                                                            <strong>Implement an Art Rotation System:</strong> Regularly change the displayed art,
+                                                            archiving the older pieces.
+                                                        </li>
+                                                        <li>
+                                                            <strong>Use as Gift Wrap:</strong> Repurpose art as unique wrapping paper for presents.
+                                                        </li>
+                                                    </ol>
                                                 </div>
-                                            </div>
-                                            <div className="flex gap-3">
-                                                <div className="relative flex-none">
-                                                    <Avatar
-                                                        isBordered
-                                                        color="secondary"
-                                                        src="https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/avatar_ai.png"
-                                                    />
-                                                </div>
-                                                <div className="flex w-full flex-col gap-4">
-                                                    <div className="relative w-full rounded-medium bg-content2 px-4 py-3 text-default-600">
-                                                        <div className="pr-20 text-small">
-                                                            <div>
-                                                                <p className="mb-3">
-                                                                    {`Certainly! Here's a summary of five creative ways to use your kids' art:`}
-                                                                </p>
-                                                                <ol className="space-y-2">
-                                                                    <li>
-                                                                        <strong>Create Art Books:</strong> Turn scanned artwork into custom photo
-                                                                        books.
-                                                                    </li>
-                                                                    <li>
-                                                                        <strong>Set Up a Gallery Wall:</strong> Use a dedicated wall with
-                                                                        interchangeable frames for displaying art.
-                                                                    </li>
-                                                                    <li>
-                                                                        <strong>Make Functional Items:</strong> Print designs on items like pillows,
-                                                                        bags, or mugs.
-                                                                    </li>
-                                                                    <li>
-                                                                        <strong>Implement an Art Rotation System:</strong> Regularly change the
-                                                                        displayed art, archiving the older pieces.
-                                                                    </li>
-                                                                    <li>
-                                                                        <strong>Use as Gift Wrap:</strong> Repurpose art as unique wrapping paper for
-                                                                        presents.
-                                                                    </li>
-                                                                </ol>
-                                                            </div>
-                                                        </div>
-                                                        <div className="absolute right-2 top-2 flex rounded-full bg-content2 shadow-small">
-                                                            <Button className="text-tiny rounded-full px-0 !gap-0 bg-transparent data-[hover=true]:bg-default/40 min-w-8 w-8 h-8">
-                                                                <CopyIcon role="img" className="text-lg text-default-600" />
-                                                            </Button>
-                                                            <Button className="text-tiny rounded-full px-0 !gap-0 bg-transparent data-[hover=true]:bg-default/40 min-w-8 w-8 h-8">
-                                                                <ThumbsUpIcon role="img" className="text-lg text-default-600" />
-                                                            </Button>
-                                                            <Button className="text-tiny rounded-full px-0 !gap-0 bg-transparent data-[hover=true]:bg-default/40 min-w-8 w-8 h-8">
-                                                                <ThumbsDownIcon role="img" className="text-lg text-default-600" />
-                                                            </Button>
-                                                        </div>
-                                                    </div>
-                                                    <div className="flex items-center justify-between rounded-medium border-small border-default-100 px-4 py-3 shadow-small">
-                                                        <p className="text-small text-default-600">Was this response better or worse?</p>
-                                                        <div className="flex gap-1">
-                                                            <Button className="text-tiny rounded-full px-0 !gap-0 bg-transparent data-[hover=true]:bg-default/40 min-w-8 w-8 h-8">
-                                                                <ThumbsUpIcon role="img" className="text-lg text-default-600" />
-                                                            </Button>
-                                                            <Button className="text-tiny rounded-full px-0 !gap-0 bg-transparent data-[hover=true]:bg-default/40 min-w-8 w-8 h-8">
-                                                                <ThumbsDownIcon role="img" className="text-lg text-default-600" />
-                                                            </Button>
-                                                            <Button className="text-tiny rounded-full px-0 !gap-0 bg-transparent data-[hover=true]:bg-default/40 min-w-8 w-8 h-8">
-                                                                <EmojiIcon role="img" className="text-lg text-default-600" />
-                                                            </Button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="flex gap-3">
-                                                <div className="relative flex-none">
-                                                    <div className="relative inline-flex shrink-0">
-                                                        <Avatar
-                                                            isBordered
-                                                            color="primary"
-                                                            src="https://d2u8k2ocievbld.cloudfront.net/memojis/male/6.png"
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="flex w-full flex-col gap-4">
-                                                    <div className="relative w-full rounded-medium px-4 py-3 bg-content3 text-content3-foreground">
-                                                        <div className="pr-20 text-small">
-                                                            {`I didn't like the suggestions. Can you give me some more?`}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="flex gap-3">
-                                                <div className="relative flex-none">
-                                                    <Avatar
-                                                        isBordered
-                                                        color="secondary"
-                                                        src="https://nextuipro.nyc3.cdn.digitaloceanspaces.com/components-images/avatar_ai.png"
-                                                    />
-                                                </div>
-                                                <div className="flex w-full flex-col gap-4">
-                                                    <div className="relative w-full rounded-medium bg-content2 px-4 py-3 text-default-600">
-                                                        <div className="pr-20 text-small">
-                                                            <div>
-                                                                <p className="mb-3">
-                                                                    {`Of course! Here are five more creative suggestions for what to do with your
+                                            </AiMessage>
+                                            <UserMessage>{`I didn't like the suggestions. Can you give me some more?`}</UserMessage>
+                                            <AiMessage>
+                                                <div>
+                                                    <p className="mb-3">
+                                                        {`Of course! Here are five more creative suggestions for what to do with your
                                                                     children's art:`}
-                                                                </p>
-                                                                <ol className="space-y-2">
-                                                                    <li>
-                                                                        <strong>Create a Digital Archive:</strong> Scan or take photos of the artwork
-                                                                        and save it in a digital cloud storage service for easy access and
-                                                                        space-saving.
-                                                                    </li>
-                                                                    <li>
-                                                                        <strong>Custom Calendar:</strong>{" "}
-                                                                        {`Design a custom calendar with each month
+                                                    </p>
+                                                    <ol className="space-y-2">
+                                                        <li>
+                                                            <strong>Create a Digital Archive:</strong> Scan or take photos of the artwork and save it
+                                                            in a digital cloud storage service for easy access and space-saving.
+                                                        </li>
+                                                        <li>
+                                                            <strong>Custom Calendar:</strong>{" "}
+                                                            {`Design a custom calendar with each month
                                                                         showcasing a different piece of your child's art.`}
-                                                                    </li>
-                                                                    <li>
-                                                                        <strong>Storybook Creation:</strong> Compile the artwork into a storybook,
-                                                                        possibly with a narrative created by your child, to make a personalized book.
-                                                                    </li>
-                                                                    <li>
-                                                                        <strong>Puzzle Making:</strong> Convert their artwork into a jigsaw puzzle for
-                                                                        a fun and unique pastime activity.
-                                                                    </li>
-                                                                    <li>
-                                                                        <strong>Home Decor Items:</strong> Use the artwork to create home decor items
-                                                                        like coasters, magnets, or lampshades to decorate your house.
-                                                                    </li>
-                                                                </ol>
-                                                            </div>
-                                                        </div>
-                                                        <div className="absolute right-2 top-2 flex rounded-full bg-content2 shadow-small">
-                                                            <Button className="text-tiny rounded-full px-0 !gap-0 bg-transparent data-[hover=true]:bg-default/40 min-w-8 w-8 h-8">
-                                                                <CopyIcon role="img" className="text-lg text-default-600" />
-                                                            </Button>
-                                                            <Button className="text-tiny rounded-full px-0 !gap-0 bg-transparent data-[hover=true]:bg-default/40 min-w-8 w-8 h-8">
-                                                                <ThumbsUpIcon role="img" className="text-lg text-default-600" />
-                                                            </Button>
-                                                            <Button className="text-tiny rounded-full px-0 !gap-0 bg-transparent data-[hover=true]:bg-default/40 min-w-8 w-8 h-8">
-                                                                <ThumbsDownIcon role="img" className="text-lg text-default-600" />
-                                                            </Button>
-                                                        </div>
-                                                    </div>
+                                                        </li>
+                                                        <li>
+                                                            <strong>Storybook Creation:</strong> Compile the artwork into a storybook, possibly with a
+                                                            narrative created by your child, to make a personalized book.
+                                                        </li>
+                                                        <li>
+                                                            <strong>Puzzle Making:</strong> Convert their artwork into a jigsaw puzzle for a fun and
+                                                            unique pastime activity.
+                                                        </li>
+                                                        <li>
+                                                            <strong>Home Decor Items:</strong> Use the artwork to create home decor items like
+                                                            coasters, magnets, or lampshades to decorate your house.
+                                                        </li>
+                                                    </ol>
                                                 </div>
-                                            </div>
+                                            </AiMessage>
                                         </div>
                                     </ScrollShadow>
                                     <div className="flex flex-col gap-2">
@@ -304,132 +211,43 @@ const PlaygroundPage: React.FC<Props> = () => {
                                                 </div>
                                             </ScrollShadow>
                                             <form className="flex w-full flex-col items-start rounded-medium bg-default-100 transition-colors hover:bg-default-200/70">
-                                                <div className="group flex flex-col w-full min-h-[40px]" data-slot="base">
-                                                    <div
-                                                        data-slot="input-wrapper"
-                                                        className="relative w-full inline-flex tap-highlight-transparent flex-row items-center px-3 gap-3 bg-default-100 data-[hover=true]:bg-default-200 group-data-[focus=true]:bg-default-100 h-10 min-h-10 rounded-large !h-auto transition-background motion-reduce:transition-none !duration-150 outline-none group-data-[focus-visible=true]:z-10 group-data-[focus-visible=true]:ring-2 group-data-[focus-visible=true]:ring-focus group-data-[focus-visible=true]:ring-offset-2 group-data-[focus-visible=true]:ring-offset-background py-2 !bg-transparent shadow-none"
-                                                        style={{ cursor: "text" }}
-                                                    >
-                                                        <div
-                                                            data-slot="inner-wrapper"
-                                                            className="inline-flex w-full h-full box-border items-start group-data-[has-label=true]:items-start relative"
-                                                        >
-                                                            <textarea
-                                                                data-slot="input"
-                                                                className="w-full font-normal bg-transparent !outline-none placeholder:text-foreground-500 focus-visible:outline-none data-[has-start-content=true]:ps-1.5 data-[has-end-content=true]:pe-1.5 resize-none data-[hide-scroll=true]:scrollbar-hide group-data-[has-value=true]:text-default-foreground h-full transition-height !duration-100 motion-reduce:transition-none py-0 pt-1 pl-2 pb-6 !pr-10 text-medium"
-                                                                aria-label="Prompt"
-                                                                placeholder="Enter a prompt here"
-                                                                id="react-aria320976807-:r1v:"
-                                                                title=""
-                                                                style={{ height: "100px !important" }}
-                                                            />
-                                                            <div className="flex items-end gap-2">
-                                                                <button
-                                                                    className="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 text-tiny gap-2 rounded-large opacity-disabled pointer-events-none px-0 !gap-0 data-[pressed=true]:scale-[0.97] transition-transform-colors-opacity motion-reduce:transition-none bg-default text-default-foreground min-w-8 w-8 h-8 data-[hover=true]:opacity-hover"
-                                                                    type="button"
-                                                                >
-                                                                    <svg
-                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                        aria-hidden="true"
-                                                                        role="img"
-                                                                        className="[&>path]:stroke-[2px] text-default-600 iconify iconify--solar"
-                                                                        width="20"
-                                                                        height="20"
-                                                                        viewBox="0 0 24 24"
-                                                                    >
-                                                                        <path
-                                                                            fill="none"
-                                                                            stroke="currentColor"
-                                                                            strokeLinecap="round"
-                                                                            strokeLinejoin="round"
-                                                                            strokeWidth="1.5"
-                                                                            d="M12 20V4m0 0l6 6m-6-6l-6 6"
-                                                                        />
-                                                                    </svg>
-                                                                </button>
-                                                            </div>
+                                                <Textarea
+                                                    placeholder="Enter a prompt"
+                                                    classNames={{
+                                                        base: "min-h-[40px]",
+                                                        inputWrapper: "!bg-transparent shadow-none",
+                                                        innerWrapper: "relative",
+                                                        input: "py-0 pt-1 pl-2 pb-6 !pr-10 text-medium",
+                                                    }}
+                                                    endContent={
+                                                        <div className="flex items-end gap-2">
+                                                            <Button className="bg-default text-default-foreground min-w-8 w-8 h-8 px-0 !gap-0 rounded-large text-tiny">
+                                                                <RightArrowIcon size={20} className="-rotate-90" />
+                                                            </Button>
                                                         </div>
-                                                    </div>
-                                                </div>
+                                                    }
+                                                />
                                                 <div className="flex w-full items-center justify-between gap-2 overflow-scroll px-4 pb-4">
                                                     <div className="flex w-full gap-1 md:gap-3">
-                                                        <button
-                                                            className="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 px-3 min-w-16 h-8 text-tiny gap-2 rounded-small [&>svg]:max-w-[theme(spacing.8)] data-[pressed=true]:scale-[0.97] transition-transform-colors-opacity motion-reduce:transition-none bg-default/40 text-default-foreground data-[hover=true]:opacity-hover"
-                                                            type="button"
-                                                        >
-                                                            <svg
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                aria-hidden="true"
-                                                                role="img"
-                                                                className="text-default-500 iconify iconify--solar"
-                                                                focusable="false"
-                                                                width="18"
-                                                                height="18"
-                                                                viewBox="0 0 24 24"
-                                                            >
-                                                                <path
-                                                                    fill="none"
-                                                                    stroke="currentColor"
-                                                                    strokeLinecap="round"
-                                                                    strokeWidth="1.5"
-                                                                    d="m7.918 17.807l7.89-7.553a2.253 2.253 0 0 0 0-3.284a2.503 2.503 0 0 0-3.43 0l-7.834 7.498a4.28 4.28 0 0 0 0 6.24c1.8 1.723 4.718 1.723 6.518 0l7.949-7.608c2.652-2.54 2.652-6.656 0-9.196c-2.653-2.539-6.954-2.539-9.607 0L3 10.034"
-                                                                />
-                                                            </svg>
+                                                        <Button className="px-3 min-w-16 h-8 text-tiny bg-default/40 text-default-foreground rounded-small">
+                                                            <AttachmentIcon role="img" className="text-default-500" />
                                                             Attach
-                                                        </button>
-                                                        <button
-                                                            className="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 px-3 min-w-16 h-8 text-tiny gap-2 rounded-small [&>svg]:max-w-[theme(spacing.8)] data-[pressed=true]:scale-[0.97] transition-transform-colors-opacity motion-reduce:transition-none bg-default/40 text-default-foreground data-[hover=true]:opacity-hover"
-                                                            type="button"
-                                                        >
-                                                            <svg
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                aria-hidden="true"
-                                                                role="img"
-                                                                className="text-default-500 iconify iconify--solar"
-                                                                focusable="false"
-                                                                width="18"
-                                                                height="18"
-                                                                viewBox="0 0 24 24"
-                                                            >
-                                                                <path
-                                                                    fill="none"
-                                                                    stroke="currentColor"
-                                                                    strokeLinecap="round"
-                                                                    strokeWidth="1.5"
-                                                                    d="M12 4v16m4-13v10M8 7v10m12-6v2M4 11v2"
-                                                                />
-                                                            </svg>
+                                                        </Button>
+                                                        <Button className="px-3 min-w-16 h-8 text-tiny bg-default/40 text-default-foreground rounded-small">
+                                                            <VoiceIcon size={18} role="img" className="text-default-500" />
                                                             Voice Commands
-                                                        </button>
-                                                        <button
-                                                            className="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 px-3 min-w-16 h-8 text-tiny gap-2 rounded-small [&>svg]:max-w-[theme(spacing.8)] data-[pressed=true]:scale-[0.97] transition-transform-colors-opacity motion-reduce:transition-none bg-default/40 text-default-foreground data-[hover=true]:opacity-hover"
-                                                            type="button"
-                                                        >
-                                                            <svg
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                                aria-hidden="true"
-                                                                role="img"
-                                                                className="text-default-500 iconify iconify--solar"
-                                                                focusable="false"
-                                                                width="18"
-                                                                height="18"
-                                                                viewBox="0 0 24 24"
-                                                            >
-                                                                <g fill="none" stroke="currentColor" strokeWidth="1.5">
-                                                                    <path d="m20.312 12.647l.517-1.932c.604-2.255.907-3.382.68-4.358a4 4 0 0 0-1.162-2.011c-.731-.685-1.859-.987-4.114-1.591c-2.255-.605-3.383-.907-4.358-.68a4 4 0 0 0-2.011 1.162c-.587.626-.893 1.543-1.348 3.209l-.244.905l-.517 1.932c-.605 2.255-.907 3.382-.68 4.358a4 4 0 0 0 1.162 2.011c.731.685 1.859.987 4.114 1.592c2.032.544 3.149.843 4.064.73c.1-.012.198-.03.294-.052a4 4 0 0 0 2.011-1.16c.685-.732.987-1.86 1.592-4.115Z" />
-                                                                    <path d="M16.415 17.974a4 4 0 0 1-1.068 1.678c-.731.685-1.859.987-4.114 1.591s-3.383.907-4.358.679a4 4 0 0 1-2.011-1.161c-.685-.731-.988-1.859-1.592-4.114l-.517-1.932c-.605-2.255-.907-3.383-.68-4.358a4 4 0 0 1 1.162-2.011c.731-.685 1.859-.987 4.114-1.592c.426-.114.813-.218 1.165-.309" />
-                                                                    <path strokeLinecap="round" d="m11.777 10l4.83 1.294M11 12.898l2.898.776" />
-                                                                </g>
-                                                            </svg>
+                                                        </Button>
+                                                        <Button className="px-3 min-w-16 h-8 text-tiny bg-default/40 text-default-foreground rounded-small">
+                                                            <TemplateIcon role="img" className="text-default-500" />
                                                             Templates
-                                                        </button>
+                                                        </Button>
                                                     </div>
                                                     <p className="py-1 text-tiny text-default-400">0/2000</p>
                                                 </div>
                                             </form>
                                         </div>
                                         <p className="px-2 text-tiny text-default-400">
-                                            Acme AI can make mistakes. Consider checking important information.
+                                            AI can make mistakes. Consider checking important information.
                                         </p>
                                     </div>
                                 </div>

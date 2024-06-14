@@ -433,6 +433,48 @@ export const RightArrowIcon = ({ strokeWidth = 1.5, size, height, width, ...prop
     );
 };
 
+export const AttachmentIcon = ({ strokeWidth = 1.5, size, height = "16", width = "16", ...props }: IconSvgProps) => {
+    return (
+        <svg
+            width={size || width}
+            height={size || height}
+            {...props}
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            focusable="false"
+            viewBox="0 0 24 24"
+        >
+            <path
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeWidth={strokeWidth}
+                d="m7.918 17.807l7.89-7.553a2.253 2.253 0 0 0 0-3.284a2.503 2.503 0 0 0-3.43 0l-7.834 7.498a4.28 4.28 0 0 0 0 6.24c1.8 1.723 4.718 1.723 6.518 0l7.949-7.608c2.652-2.54 2.652-6.656 0-9.196c-2.653-2.539-6.954-2.539-9.607 0L3 10.034"
+            />
+        </svg>
+    );
+};
+
+export const VoiceIcon = ({ strokeWidth = 1.5, size, height = "16", width = "16", ...props }: IconSvgProps) => {
+    return (
+        <svg width={size || width} height={size || height} {...props} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 24 24">
+            <path fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth={strokeWidth} d="M12 4v16m4-13v10M8 7v10m12-6v2M4 11v2" />
+        </svg>
+    );
+};
+
+export const TemplateIcon = ({ strokeWidth = 1.5, size, height = "18", width = "18", ...props }: IconSvgProps) => {
+    return (
+        <svg width={size || width} height={size || height} {...props} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" strokeWidth={strokeWidth}>
+                <path d="m20.312 12.647l.517-1.932c.604-2.255.907-3.382.68-4.358a4 4 0 0 0-1.162-2.011c-.731-.685-1.859-.987-4.114-1.591c-2.255-.605-3.383-.907-4.358-.68a4 4 0 0 0-2.011 1.162c-.587.626-.893 1.543-1.348 3.209l-.244.905l-.517 1.932c-.605 2.255-.907 3.382-.68 4.358a4 4 0 0 0 1.162 2.011c.731.685 1.859.987 4.114 1.592c2.032.544 3.149.843 4.064.73c.1-.012.198-.03.294-.052a4 4 0 0 0 2.011-1.16c.685-.732.987-1.86 1.592-4.115Z" />
+                <path d="M16.415 17.974a4 4 0 0 1-1.068 1.678c-.731.685-1.859.987-4.114 1.591s-3.383.907-4.358.679a4 4 0 0 1-2.011-1.161c-.685-.731-.988-1.859-1.592-4.114l-.517-1.932c-.605-2.255-.907-3.383-.68-4.358a4 4 0 0 1 1.162-2.011c.731-.685 1.859-.987 4.114-1.592c.426-.114.813-.218 1.165-.309" />
+                <path strokeLinecap="round" d="m11.777 10l4.83 1.294M11 12.898l2.898.776" />
+            </g>
+        </svg>
+    );
+};
+
 export const StarIcon = ({ size, height, width, ...props }: IconSvgProps) => {
     return (
         <svg width={size || width} height={size || height} {...props} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 24 24">
