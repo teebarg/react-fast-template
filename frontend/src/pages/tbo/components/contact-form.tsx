@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Alert from "@/components/core/alert";
-import { TextField, TextAreaField2, CheckBoxField } from "@/components/core/fields";
+import { TextField, TextAreaField, CheckBoxField } from "@/components/core/fields";
 import { Button } from "@nextui-org/react";
 
 type Inputs = {
@@ -105,7 +105,7 @@ export default function ContactForm() {
                     classNames={inputClass}
                 />
 
-                <TextAreaField2
+                <TextAreaField
                     name="message"
                     label="Message"
                     placeholder="Ex. I want to make an enquiry about..."

@@ -8,6 +8,7 @@
     --font-primary: var(--font-outfit);
     --font-weight-normal: 400;
     --font-weight-bold: 700;
+    --duration: 40s;
 }
 
 body {
@@ -35,4 +36,44 @@ h6 {
 /* Example of using Lexend in a specific element */
 .lexend {
     font-family: var(--font-lexend);
+}
+
+.mask {
+    mask-image: linear-gradient(
+        to right,
+        #000,
+        #000,
+        transparent 0,
+        #000 var(--scroll-shadow-size),
+        #000 calc(100% - var(--scroll-shadow-size)),
+        transparent
+    ) !important;
+}
+
+@keyframes scrolling-banner {
+    0% {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(calc(-50% - 40px / 2));
+    }
+}
+
+.animate-scrolling-banner {
+    animation: scrolling-banner var(--duration) linear infinite;
+}
+
+@keyframes scrolling-banner-vertical {
+    0% {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(calc(-50% - var(--gap) / 2));
+    }
+}
+
+.animate-scrolling-banner-vertical {
+    animation: scrolling-banner-vertical var(--duration) linear infinite;
 }

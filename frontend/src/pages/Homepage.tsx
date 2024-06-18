@@ -1,9 +1,11 @@
 import React from "react";
 import { GithubIcon } from "@/components/icons";
 import Meta from "@/components/Meta";
-import { Image } from "@nextui-org/react";
+import { Image, ScrollShadow } from "@nextui-org/react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { sponsors } from "./data";
+import { Cookie } from "@/components/cookie";
 
 interface Props {}
 
@@ -73,7 +75,20 @@ const Homepage: React.FC<Props> = () => {
                             </dl>
                         </div>
                     </div>
-                    <div className="bg-content1 py-10 px-6">
+                    <div className="bg-content1 py-8 px-6">
+                        <div className="mx-auto w-full max-w-5xl px-6 py-20">
+                            <ScrollShadow className="mask" orientation="horizontal" size={400}>
+                                <div className="flex w-max items-stretch gap-[40px] animate-scrolling-banner hover:[animation-play-state:paused]">
+                                    {sponsors.map((item, index) => (
+                                        <div key={index} className="flex items-center justify-center text-foreground">
+                                            {item.icon}
+                                        </div>
+                                    ))}
+                                </div>
+                            </ScrollShadow>
+                        </div>
+                    </div>
+                    <div className="bg-content2 py-16 px-6">
                         <div className="max-w-xl mx-auto text-center">
                             <h1 className="text-3xl font-semibold tracking-tight text-default-700 font-display">Get Started</h1>
                             <p className="text-default-500 mt-2">
@@ -81,13 +96,19 @@ const Homepage: React.FC<Props> = () => {
                                 voluptas inventore. Architecto necessitatibus voluptatibus facilis itaque, sint sed optio aliquid laboriosam ad.
                             </p>
                             <div className="mt-4">
-                                <a href="https://blog.niyi.com.ng/" target="_blank" className="whitespace-nowrap font-semibold text-primary" rel="noreferrer">
+                                <a
+                                    href="https://blog.niyi.com.ng/"
+                                    target="_blank"
+                                    className="whitespace-nowrap font-semibold text-primary"
+                                    rel="noreferrer"
+                                >
                                     Learn more <span aria-hidden="true">&rarr;</span>
                                 </a>
                             </div>
                         </div>
                     </div>
                 </main>
+                <Cookie />
                 <Footer />
             </div>
         </React.Fragment>

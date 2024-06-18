@@ -76,6 +76,15 @@ function App() {
                         };
                     },
                 },
+                {
+                    path: "playground",
+                    async lazy() {
+                        const { PlaygroundPage } = await import("@/pages/playground");
+                        return {
+                            Component: PlaygroundPage,
+                        };
+                    },
+                },
             ],
         },
         {

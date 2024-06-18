@@ -37,7 +37,7 @@ const AdminNavbar = () => {
         <NextUINavbar maxWidth="xl" position="sticky">
             <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
                 <NavbarBrand as="li" className="gap-3 max-w-fit">
-                    <Link className="flex justify-start items-center gap-1" to="/">
+                    <Link className="flex justify-start items-center gap-1" to="/tbo">
                         <Logo />
                         <p className="font-bold text-inherit">RFT</p>
                     </Link>
