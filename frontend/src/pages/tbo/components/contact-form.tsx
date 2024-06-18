@@ -18,7 +18,7 @@ const inputClass = {
     inputWrapper: "!bg-white/70 hover:!bg-white/50 focus:!bg-white/50 !text-blue-700",
     label: "!text-black/60 font-semibold text-lg",
     description: "text-black/30 font-medium",
-    input: "focus:!bg-white/50",
+    input: "focus:!bg-transparent !text-gray-600 !bg-transparent",
     innerWrapper: "focus:!bg-white/50",
     base: "focus:!bg-red-500",
 };
@@ -109,7 +109,7 @@ export default function ContactForm() {
                     name="message"
                     label="Message"
                     placeholder="Ex. I want to make an enquiry about..."
-                    description="Testing description"
+                    description="Your message to us"
                     register={register}
                     error={errors?.name}
                     rules={{ required: true }}
@@ -118,7 +118,7 @@ export default function ContactForm() {
 
                 <div className="flex gap-4">
                     <CheckBoxField name="agreement" register={register} control={control} rules={{ required: true }} />
-                    <p>I allow this website to store my submission so they can respond to my inquiry.</p>
+                    <p className="text-gray-700">I allow this website to store my submission so they can respond to my inquiry.</p>
                 </div>
 
                 <div className="">

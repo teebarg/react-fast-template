@@ -263,8 +263,11 @@ const filters = [
 
 interface Product {
     title: string;
+    desc?: string;
     img: string;
     price: string;
+    oldPrice?: string;
+    rating?: number;
 }
 
 const products: Product[] = [
@@ -272,11 +275,14 @@ const products: Product[] = [
         title: "Orange",
         img: "https://nextui.org/images/fruit-1.jpeg",
         price: "$5.50",
+        oldPrice: "$2.50",
+        rating: 4.25,
     },
     {
         title: "Tangerine",
         img: "https://nextui.org/images/fruit-2.jpeg",
         price: "$3.00",
+        rating: 4.65,
     },
     {
         title: "Raspberry",

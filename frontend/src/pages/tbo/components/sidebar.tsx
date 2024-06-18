@@ -8,7 +8,7 @@ interface ComponentProps {}
 const CollectionsSideBar: React.FC<ComponentProps> = () => {
     const [groupSelected, setGroupSelected] = React.useState<string[]>([]);
     return (
-        <div className="hidden h-full max-w-[25rem] overflow-x-hidden overflow-y-scroll sm:flex">
+        <div className="hidden h-full max-w-[20rem] overflow-x-hidden overflow-y-scroll sm:flex">
             <div className="h-full max-h-fit w-full max-w-sm rounded-medium p-6 bg-default-50">
                 <h2 className="text-large font-medium text-foreground">Filter by</h2>
                 <hr className="shrink-0 border-none w-full h-divider my-3 bg-default-100" role="separator" />
