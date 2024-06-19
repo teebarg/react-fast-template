@@ -4,13 +4,13 @@ import Meta from "@/components/Meta";
 import { Button, Image } from "@nextui-org/react";
 import { LocationIcon, MailIcon } from "@/components/icons";
 import ContactForm from "./components/contact-form";
-import { Fade, Slide } from "react-awesome-reveal";
+import { Fade } from "react-awesome-reveal";
 import { openingHours, products } from "./data";
 import Footer from "./components/footer";
 import { Link } from "react-router-dom";
 import { ProductItem } from "./components/product-item";
 import { Banner } from "./components/banner";
-import Carousel from "./components/carousel";
+import { imgSrc } from "@/utils/util";
 
 interface Props {}
 
@@ -23,21 +23,20 @@ const Landing: React.FC<Props> = () => {
                 <div className="flex w-full items-center gap-x-3 border-b-1 border-divider bg-gradient-to-r from-default-100 via-danger-100 to-secondary-100 px-6 py-2 sm:px-3.5 sm:before:flex-1">
                     <p className="text-small text-foreground">
                         <Link className="text-medium no-underline text-inherit" to={"/tbo"} role="link">
-                            The Winter 2024 Release is here: new editor, analytics API, and so much more.&nbsp;
+                            GET FREE SHIPPING ON ₦20,000+ View Details
                         </Link>
                     </p>
                     <div className="flex flex-1 justify-end"></div>
                 </div>
             </div>
             <TBONavbar />
-            <Carousel />
             <div>
                 <div>
-                    <div className="max-w-7xl mx-auto relative sm:flex sm:flex-row-reverse bg-[#fee3f1] rounded-xl my-4 sm:my-8">
+                    <div className="max-w-7xl mx-auto relative sm:flex sm:flex-row-reverse bg-[#fee3f1] rounded-xl my-4 sm:my-8 min-h-72">
                         <div className="sm:w-1/2">
-                            <Image src="/hero4.webp" className="w-full" radius="none" />
+                            <Image src={imgSrc(`banners%2Fhero4.webp`)} className="w-full" radius="none" />
                         </div>
-                        <div className="sm:w-1/2 sm:flex flex-col items-center justify-center text-gray-800 py-8 sm:py-0 px-2 sm:px-0">
+                        <div className="sm:w-1/2 sm:flex flex-col items-center justify-center text-gray-600 py-8 sm:py-0 px-2 sm:px-0">
                             <Fade cascade damping={0.5}>
                                 <h1 className="text-5xl font-semibold">Explore thrifts for kids</h1>
                                 <Fade cascade damping={0.1}>
@@ -45,7 +44,7 @@ const Landing: React.FC<Props> = () => {
                                 </Fade>
                                 <p className="text-2xl font-medium mt-1">{`Discover affordable children's thrifts in Lagos`}</p>
                                 <div className="gap-4 mt-6">
-                                    <Button size="lg" className="px-4 py-2 min-w-36 bg-slate-50">
+                                    <Button size="lg" className="px-4 py-2 min-w-36 bg-slate-50 text-inherit">
                                         Shop Now
                                     </Button>
                                 </div>
@@ -54,8 +53,8 @@ const Landing: React.FC<Props> = () => {
                     </div>
                 </div>
                 <div className="bg-default-100">
-                    <div className="max-w-7xl mx-auto relative py-8">
-                        <Image src="/banner1.avif" className="h-auto w-full" />
+                    <div className="max-w-7xl mx-auto relative py-8 min-h-48">
+                        <Image src={imgSrc(`banners%2Fbanner1.avif`)} className="h-auto w-full" />
                         <div className="flex flex-wrap mt-2 sm:mt-0 mx-auto sm:absolute bottom-16 right-4 gap-2 ml-auto z-10">
                             <Button size="lg" variant="flat" className="min-w-36">
                                 Boy
@@ -88,7 +87,7 @@ const Landing: React.FC<Props> = () => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-default-100">
+                <div className="bg-default-50">
                     <div className="max-w-7xl mx-auto relative py-8 px-4 md:px-0">
                         <p className="text-lg uppercase text-primary mb-2 font-medium">Trending</p>
                         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
@@ -98,15 +97,15 @@ const Landing: React.FC<Props> = () => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-default-50 flex items-center">
+                {/* <div className="bg-default-50 flex items-center">
                     <div className="sm:flex flex-row-reverse max-w-5xl mx-auto py-4 sm:py-16 gap-4">
                         <div className="sm:w-1/2 sm:pl-16 sm:pr-8">
                             <Fade cascade damping={0.1}>
                                 <Image
                                     isZoomed
-                                    alt="NextUI Fruit Image with Zoom"
-                                    className="rounded-none"
-                                    src="https://nextui-docs-v2.vercel.app/images/fruit-1.jpeg"
+                                    alt="Sidebanner image"
+                                    className="rounded-none max-h-80"
+                                    src={imgSrc(`banners%2Fsidebanner.jpeg`)}
                                 />
                             </Fade>
                         </div>
@@ -122,10 +121,10 @@ const Landing: React.FC<Props> = () => {
                             </Slide>
                         </div>
                     </div>
-                </div>
+                </div> */}
                 <div className="bg-default-100">
-                    <div className="max-w-7xl mx-auto relative py-8">
-                        <Image src="/banner2.avif" className="h-auto w-full" />
+                    <div className="max-w-7xl mx-auto relative py-8 min-h-48">
+                        <Image src={imgSrc(`banners%2Fbanner2.avif`)} className="h-auto w-full" />
                         <div className="flex flex-wrap sm:absolute bottom-16 left-4 gap-2 ml-auto z-10 mt-4 sm:mt-0 px-4 sm:px-0">
                             <Button size="lg" variant="flat" className="min-w-36">
                                 Shorts
@@ -155,7 +154,7 @@ const Landing: React.FC<Props> = () => {
                     </div>
                 </div>
                 <div className="bg-fixed bg-center" style={{ backgroundImage: `url("/hero3.jpeg")` }}>
-                    <div className="flex items-center h-full backdrop-blur-sm backdrop-saturate-150p bg-white/10p">
+                    <div className="flex items-center h-full backdrop-blur-smp backdrop-saturate-150p bg-white/10p">
                         <div className="max-w-5xl mx-auto sm:flex gap-8 py-16 sm:px-2">
                             <div className="sm:w-1/2 sm:pr-10 backdrop-blur bg-white/60 p-4 sm:p-8 rounded-lg shadow-lg shadow-gray-400">
                                 <p className="text-lg font-medium text-primary">GET IN TOUCH</p>

@@ -69,6 +69,19 @@ export const YoutubeIcon: React.FC<IconSvgProps> = ({ size = 24, width, height, 
     );
 };
 
+export const WhatsAppIcon: React.FC<IconSvgProps> = ({ size = 24, width, height, ...props }) => {
+    return (
+        <svg viewBox="0 0 24 24" height={size || height} width={size || width} {...props}>
+            <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M11.996 0.002C5.372 0.002 0 5.374 0 11.996c0 2.116.555 4.184 1.618 6.012L.053 24l6.188-1.603a11.925 11.925 0 0 0 5.755 1.456c6.622 0 11.996-5.372 11.996-11.996 0-6.622-5.374-11.996-11.996-11.996zm5.668 17.583c-.211.596-1.234 1.157-1.696 1.215-.455.057-1.03.08-1.666-.098a18.145 18.145 0 0 1-2.629-.99c-4.628-2.087-7.634-7.194-7.875-7.529-.24-.334-1.871-2.493-1.871-4.756 0-2.263 1.197-3.39 1.623-3.854.423-.459 1.116-.566 1.484-.566.371 0 .743.014 1.063.033.346.021.805-.13 1.262.95.455 1.084 1.568 3.771 1.706 4.038.139.267.226.58.048.938-.177.358-.266.579-.533.88-.272.305-.571.684-.822.916-.253.234-.516.492-.222 1.017.291.524 1.296 2.141 2.783 3.462 1.916 1.707 3.527 2.246 4.054 2.504.524.258.831.229 1.144-.139.311-.364 1.284-1.494 1.629-2.007.347-.51.695-.422 1.185-.243.489.178 3.086 1.455 3.622 1.725.536.272.892.404 1.023.629.13.226.13 1.303-.081 1.899z"
+                fill="currentColor"
+            />
+        </svg>
+    );
+};
+
 export const MoonFilledIcon = ({ size = 24, width, height, ...props }: IconSvgProps) => (
     <svg aria-hidden="true" focusable="false" height={size || height} role="presentation" viewBox="0 0 24 24" width={size || width} {...props}>
         <path
@@ -116,7 +129,7 @@ export const NextUILogo: React.FC<IconSvgProps> = (props) => {
     const { width, height = 40 } = props;
 
     return (
-        <svg fill="none" height={height} viewBox="0 0 161 32" width={width} xmlns="http://www.w3.org/2000/svg" {...props}>
+        <svg fill="none" height={height} viewBox="0 0 161 32" width={width} {...props}>
             <path
                 className="fill-black dark:fill-white"
                 d="M55.6827 5V26.6275H53.7794L41.1235 8.51665H40.9563V26.6275H39V5H40.89L53.5911 23.1323H53.7555V5H55.6827ZM67.4831 26.9663C66.1109 27.0019 64.7581 26.6329 63.5903 25.9044C62.4852 25.185 61.6054 24.1633 61.0537 22.9582C60.4354 21.5961 60.1298 20.1106 60.1598 18.6126C60.132 17.1113 60.4375 15.6228 61.0537 14.2563C61.5954 13.0511 62.4525 12.0179 63.5326 11.268C64.6166 10.5379 65.8958 10.16 67.1986 10.1852C68.0611 10.1837 68.9162 10.3468 69.7187 10.666C70.5398 10.9946 71.2829 11.4948 71.8992 12.1337C72.5764 12.8435 73.0985 13.6889 73.4318 14.6152C73.8311 15.7483 74.0226 16.9455 73.9968 18.1479V19.0773H63.2262V17.4194H72.0935C72.1083 16.4456 71.8952 15.4821 71.4714 14.6072C71.083 13.803 70.4874 13.1191 69.7472 12.6272C68.9887 12.1348 68.1022 11.8812 67.2006 11.8987C66.2411 11.8807 65.3005 12.1689 64.5128 12.7223C63.7332 13.2783 63.1083 14.0275 62.6984 14.8978C62.2582 15.8199 62.0314 16.831 62.0352 17.8546V18.8476C62.009 20.0078 62.2354 21.1595 62.6984 22.2217C63.1005 23.1349 63.7564 23.9108 64.5864 24.4554C65.4554 24.9973 66.4621 25.2717 67.4831 25.2448C68.1676 25.2588 68.848 25.1368 69.4859 24.8859C70.0301 24.6666 70.5242 24.3376 70.9382 23.919C71.3183 23.5345 71.6217 23.0799 71.8322 22.5799L73.5995 23.1604C73.3388 23.8697 72.9304 24.5143 72.4019 25.0506C71.8132 25.6529 71.1086 26.1269 70.3314 26.4434C69.4258 26.8068 68.4575 26.9846 67.4831 26.9663V26.9663ZM78.8233 10.4075L82.9655 17.325L87.1076 10.4075H89.2683L84.1008 18.5175L89.2683 26.6275H87.103L82.9608 19.9317L78.8193 26.6275H76.6647L81.7711 18.5169L76.6647 10.4062L78.8233 10.4075ZM99.5142 10.4075V12.0447H91.8413V10.4075H99.5142ZM94.2427 6.52397H96.1148V22.3931C96.086 22.9446 96.2051 23.4938 96.4597 23.9827C96.6652 24.344 96.9805 24.629 97.3589 24.7955C97.7328 24.9548 98.1349 25.0357 98.5407 25.0332C98.7508 25.0359 98.9607 25.02 99.168 24.9857C99.3422 24.954 99.4956 24.9205 99.6283 24.8853L100.026 26.5853C99.8062 26.6672 99.5805 26.7327 99.3511 26.7815C99.0274 26.847 98.6977 26.8771 98.3676 26.8712C97.6854 26.871 97.0119 26.7156 96.3973 26.4166C95.7683 26.1156 95.2317 25.6485 94.8442 25.0647C94.4214 24.4018 94.2097 23.6242 94.2374 22.8363L94.2427 6.52397ZM118.398 5H120.354V19.3204C120.376 20.7052 120.022 22.0697 119.328 23.2649C118.644 24.4235 117.658 25.3698 116.477 26.0001C115.168 26.6879 113.708 27.0311 112.232 26.9978C110.759 27.029 109.302 26.6835 107.996 25.9934C106.815 25.362 105.827 24.4161 105.141 23.2582C104.447 22.0651 104.092 20.7022 104.115 19.319V5H106.08V19.1831C106.061 20.2559 106.324 21.3147 106.843 22.2511C107.349 23.1459 108.094 23.8795 108.992 24.3683C109.993 24.9011 111.111 25.1664 112.242 25.139C113.373 25.1656 114.493 24.9003 115.495 24.3683C116.395 23.8815 117.14 23.1475 117.644 22.2511C118.16 21.3136 118.421 20.2553 118.402 19.1831L118.398 5ZM128 5V26.6275H126.041V5H128Z"
@@ -221,14 +234,14 @@ export const ChevronDownIcon = ({ strokeWidth = 1.5, width = "1em", height = "1e
 );
 
 export const ChevronRightIcon = ({ strokeWidth = 1.5, width = "1em", height = "1em", ...otherProps }) => (
-    <svg width={width} height={height} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...otherProps}>
+    <svg width={width} height={height} viewBox="0 0 24 24" fill="none" {...otherProps}>
         <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" />
     </svg>
 );
 
 export const NotificationIcon = ({ size, height, width, ...props }: IconSvgProps) => {
     return (
-        <svg fill="none" height={size || height || 24} viewBox="0 0 24 24" width={size || width || 24} xmlns="http://www.w3.org/2000/svg" {...props}>
+        <svg fill="none" height={size || height || 24} viewBox="0 0 24 24" width={size || width || 24} {...props}>
             <path
                 clipRule="evenodd"
                 d="M18.707 8.796c0 1.256.332 1.997 1.063 2.85.553.628.73 1.435.73 2.31 0 .874-.287 1.704-.863 2.378a4.537 4.537 0 01-2.9 1.413c-1.571.134-3.143.247-4.736.247-1.595 0-3.166-.068-4.737-.247a4.532 4.532 0 01-2.9-1.413 3.616 3.616 0 01-.864-2.378c0-.875.178-1.682.73-2.31.754-.854 1.064-1.594 1.064-2.85V8.37c0-1.682.42-2.781 1.283-3.858C7.861 2.942 9.919 2 11.956 2h.09c2.08 0 4.204.987 5.466 2.625.82 1.054 1.195 2.108 1.195 3.745v.426zM9.074 20.061c0-.504.462-.734.89-.833.5-.106 3.545-.106 4.045 0 .428.099.89.33.89.833-.025.48-.306.904-.695 1.174a3.635 3.635 0 01-1.713.731 3.795 3.795 0 01-1.008 0 3.618 3.618 0 01-1.714-.732c-.39-.269-.67-.694-.695-1.173z"
@@ -241,7 +254,7 @@ export const NotificationIcon = ({ size, height, width, ...props }: IconSvgProps
 
 export const CheckIcon = ({ strokeWidth = 1.5, size, height, width, ...props }: IconSvgProps) => {
     return (
-        <svg width={size || width || 18} height={size || height || 18} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+        <svg width={size || width || 18} height={size || height || 18} viewBox="0 0 24 24" fill="none" {...props}>
             <path
                 d="M7.75 11.9999L10.58 14.8299L16.25 9.16992"
                 stroke="currentColor"
@@ -323,7 +336,7 @@ export const DeleteIcon = ({ height = "1em", width = "1em", ...props }: IconSvgP
 );
 
 export const MailIcon = ({ height = "24", width = "24", ...props }: IconSvgProps) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={width} height={height} {...props}>
+    <svg viewBox="0 0 24 24" width={width} height={height} {...props}>
         <path
             fill="currentColor"
             d="M12 13.5l-11.2-7.2c-.3-.2-.3-.6-.1-.8.2-.2.6-.2.8 0l11 7.1 11-7.1c.3-.2.6-.2.8 0 .2.2.2.6 0 .8l-11.2 7.2-11.2-7.2z"
@@ -336,14 +349,14 @@ export const MailIcon = ({ height = "24", width = "24", ...props }: IconSvgProps
 );
 
 export const LocationIcon = ({ height = "24", width = "24", ...props }: IconSvgProps) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={width} height={height} {...props}>
+    <svg viewBox="0 0 24 24" width={width} height={height} {...props}>
         <path d="M12 2C8.1 2 5 5.1 5 9c0 4.9 7 13 7 13s7-8.1 7-13c0-3.9-3.1-7-7-7zm0 17.2c-1.5-1.8-6-7.5-6-11.2 0-3.3 2.7-6 6-6s6 2.7 6 6c0 3.7-4.5 9.4-6 11.2z" />
         <circle cx="12" cy="9" r="2.5" />
     </svg>
 );
 
 export const CancelIcon = ({ strokeWidth = 1.5, size = 24, height = "24", width = "24", ...props }: IconSvgProps) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size || width} height={size || height} {...props}>
+    <svg viewBox="0 0 24 24" width={size || width} height={size || height} {...props}>
         <path
             fill="currentColor"
             d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7a1 1 0 1 0-1.41 1.41L10.59 12l-4.89 4.89a1 1 0 1 0 1.41 1.41L12 13.41l4.89 4.89a1 1 0 0 0 1.41-1.41L13.41 12l4.89-4.89a1 1 0 0 0 0-1.41z"
@@ -353,7 +366,7 @@ export const CancelIcon = ({ strokeWidth = 1.5, size = 24, height = "24", width 
 );
 
 export const AdminIcon = ({ size = 24, height = "24", width = "24", ...props }: IconSvgProps) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size || width} height={size || height} {...props}>
+    <svg viewBox="0 0 24 24" width={size || width} height={size || height} {...props}>
         <path
             fill="currentColor"
             d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zM12 14c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm-6 4c.22-.72 3.31-2 6-2s5.78 1.28 6 2H6zm16-12h-2v6h-2v-6h-2V6h6v2z"
@@ -362,7 +375,7 @@ export const AdminIcon = ({ size = 24, height = "24", width = "24", ...props }: 
 );
 
 export const ComponentsIcon = ({ strokeWidth = 2, size = 24, height = "24", width = "24", ...props }: IconSvgProps) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size || width} height={size || height} {...props}>
+    <svg viewBox="0 0 24 24" width={size || width} height={size || height} {...props}>
         <rect x="3" y="5" width="18" height="2" fill="currentColor" />
         <circle cx="6" cy="6" r="3" fill="currentColor" />
 
@@ -377,7 +390,7 @@ export const ComponentsIcon = ({ strokeWidth = 2, size = 24, height = "24", widt
 );
 
 export const EcommerceIcon = ({ size = 24, height = "24", width = "24", ...props }: IconSvgProps) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size || width} height={size || height} {...props} fill="currentColor">
+    <svg viewBox="0 0 24 24" width={size || width} height={size || height} {...props} fill="currentColor">
         <path d="M7 4h-2V2H2v2H1v2h1v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6h1V4h-1V2h-3v2h-2V2h-2v2h-6V2H7v2zm0 2h10v12H7V6zm2 2v2h6V8H9z" />
 
         <path d="M19 8.5c-1.1 0-2-.9-2-2 0-.2.2-.5.4-.7.4-.6.6-1.3.6-2 0-1.7-1.3-3-3-3s-3 1.3-3 3c0 .7.2 1.4.6 2 .2.2.4.5.4.7 0 1.1-.9 2-2 2-.3 0-.6 0-.9.1.2.3.3.6.3.9 0 1.1-.9 2-2 2s-2-.9-2-2c0-.3.1-.6.3-.9-.3-.1-.6-.1-.9-.1-1.1 0-2 .9-2 2 0 1.6 1.3 3 3 3h8c1.7 0 3-1.4 3-3 0-1.1-.9-2-2-2z" />
@@ -385,7 +398,7 @@ export const EcommerceIcon = ({ size = 24, height = "24", width = "24", ...props
 );
 
 export const ProfileIcon = ({ size = 24, height = "24", width = "24", ...props }: IconSvgProps) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size || width} height={size || height} {...props} fill="currentColor">
+    <svg viewBox="0 0 24 24" width={size || width} height={size || height} {...props} fill="currentColor">
         <circle cx="12" cy="8" r="4" />
 
         <path d="M12 14c-5 0-8 2.5-8 6v2h16v-2c0-3.5-3-6-8-6z" />
@@ -393,7 +406,7 @@ export const ProfileIcon = ({ size = 24, height = "24", width = "24", ...props }
 );
 
 export const CalendarIcon = ({ strokeWidth = 2, size = 24, height = "24", width = "24", ...props }: IconSvgProps) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size || width} height={size || height} {...props} fill="currentColor">
+    <svg viewBox="0 0 24 24" width={size || width} height={size || height} {...props} fill="currentColor">
         <rect x="3" y="4" width="18" height="18" rx="2" ry="2" fill="none" stroke="currentColor" strokeWidth={strokeWidth} />
 
         <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth={strokeWidth} />
@@ -410,7 +423,7 @@ export const CalendarIcon = ({ strokeWidth = 2, size = 24, height = "24", width 
 );
 
 export const DocumentIcon = ({ strokeWidth = 2, size = 24, height = "24", width = "24", ...props }: IconSvgProps) => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={size || width} height={size || height} {...props} fill="currentColor">
+    <svg viewBox="0 0 24 24" width={size || width} height={size || height} {...props} fill="currentColor">
         <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zM13 9V3.5L18.5 9H13z" />
 
         <line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" strokeWidth={strokeWidth} />
@@ -420,7 +433,7 @@ export const DocumentIcon = ({ strokeWidth = 2, size = 24, height = "24", width 
 
 export const RightArrowIcon = ({ strokeWidth = 1.5, size, height, width, ...props }: IconSvgProps) => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width={size || width} height={size || height} {...props} fill="currentColor" viewBox="0 0 24 24">
+        <svg width={size || width} height={size || height} {...props} fill="currentColor" viewBox="0 0 24 24">
             <path
                 fill="none"
                 stroke="currentColor"
@@ -435,15 +448,7 @@ export const RightArrowIcon = ({ strokeWidth = 1.5, size, height, width, ...prop
 
 export const AttachmentIcon = ({ strokeWidth = 1.5, size, height = "16", width = "16", ...props }: IconSvgProps) => {
     return (
-        <svg
-            width={size || width}
-            height={size || height}
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-            focusable="false"
-            viewBox="0 0 24 24"
-        >
+        <svg width={size || width} height={size || height} {...props} aria-hidden="true" focusable="false" viewBox="0 0 24 24">
             <path
                 fill="none"
                 stroke="currentColor"
@@ -457,7 +462,7 @@ export const AttachmentIcon = ({ strokeWidth = 1.5, size, height = "16", width =
 
 export const VoiceIcon = ({ strokeWidth = 1.5, size, height = "16", width = "16", ...props }: IconSvgProps) => {
     return (
-        <svg width={size || width} height={size || height} {...props} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 24 24">
+        <svg width={size || width} height={size || height} {...props} aria-hidden="true" viewBox="0 0 24 24">
             <path fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth={strokeWidth} d="M12 4v16m4-13v10M8 7v10m12-6v2M4 11v2" />
         </svg>
     );
@@ -465,7 +470,7 @@ export const VoiceIcon = ({ strokeWidth = 1.5, size, height = "16", width = "16"
 
 export const TemplateIcon = ({ strokeWidth = 1.5, size, height = "18", width = "18", ...props }: IconSvgProps) => {
     return (
-        <svg width={size || width} height={size || height} {...props} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 24 24">
+        <svg width={size || width} height={size || height} {...props} aria-hidden="true" viewBox="0 0 24 24">
             <g fill="none" stroke="currentColor" strokeWidth={strokeWidth}>
                 <path d="m20.312 12.647l.517-1.932c.604-2.255.907-3.382.68-4.358a4 4 0 0 0-1.162-2.011c-.731-.685-1.859-.987-4.114-1.591c-2.255-.605-3.383-.907-4.358-.68a4 4 0 0 0-2.011 1.162c-.587.626-.893 1.543-1.348 3.209l-.244.905l-.517 1.932c-.605 2.255-.907 3.382-.68 4.358a4 4 0 0 0 1.162 2.011c.731.685 1.859.987 4.114 1.592c2.032.544 3.149.843 4.064.73c.1-.012.198-.03.294-.052a4 4 0 0 0 2.011-1.16c.685-.732.987-1.86 1.592-4.115Z" />
                 <path d="M16.415 17.974a4 4 0 0 1-1.068 1.678c-.731.685-1.859.987-4.114 1.591s-3.383.907-4.358.679a4 4 0 0 1-2.011-1.161c-.685-.731-.988-1.859-1.592-4.114l-.517-1.932c-.605-2.255-.907-3.383-.68-4.358a4 4 0 0 1 1.162-2.011c.731-.685 1.859-.987 4.114-1.592c.426-.114.813-.218 1.165-.309" />
@@ -477,7 +482,7 @@ export const TemplateIcon = ({ strokeWidth = 1.5, size, height = "18", width = "
 
 export const StarIcon = ({ size, height, width, ...props }: IconSvgProps) => {
     return (
-        <svg width={size || width} height={size || height} {...props} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 24 24">
+        <svg width={size || width} height={size || height} {...props} aria-hidden="true" viewBox="0 0 24 24">
             <path
                 fill="currentColor"
                 d="M9.153 5.408C10.42 3.136 11.053 2 12 2c.947 0 1.58 1.136 2.847 3.408l.328.588c.36.646.54.969.82 1.182c.28.213.63.292 1.33.45l.636.144c2.46.557 3.689.835 3.982 1.776c.292.94-.546 1.921-2.223 3.882l-.434.507c-.476.557-.715.836-.822 1.18c-.107.345-.071.717.001 1.46l.066.677c.253 2.617.38 3.925-.386 4.506c-.766.582-1.918.051-4.22-1.009l-.597-.274c-.654-.302-.981-.452-1.328-.452c-.347 0-.674.15-1.328.452l-.596.274c-2.303 1.06-3.455 1.59-4.22 1.01c-.767-.582-.64-1.89-.387-4.507l.066-.676c.072-.744.108-1.116 0-1.46c-.106-.345-.345-.624-.821-1.18l-.434-.508c-1.677-1.96-2.515-2.941-2.223-3.882c.293-.941 1.523-1.22 3.983-1.776l.636-.144c.699-.158 1.048-.237 1.329-.45c.28-.213.46-.536.82-1.182z"
@@ -488,7 +493,7 @@ export const StarIcon = ({ size, height, width, ...props }: IconSvgProps) => {
 
 export const FunnelIcon = ({ size, height, width, ...props }: IconSvgProps) => {
     return (
-        <svg width={size || width} height={size || height} {...props} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 24 24">
+        <svg width={size || width} height={size || height} {...props} aria-hidden="true" viewBox="0 0 24 24">
             <path
                 fill="none"
                 stroke="currentColor"
@@ -563,7 +568,7 @@ export const VisaCardIcon = ({ height = "30", width = "30", ...props }: IconSvgP
 
 export const EllipsisIcon = ({ size = 24, height = "24", width = "24", ...props }: IconSvgProps) => {
     return (
-        <svg width={size || width} height={size || height} {...props} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 24 24">
+        <svg width={size || width} height={size || height} {...props} aria-hidden="true" viewBox="0 0 24 24">
             <path fill="currentColor" d="M7 12a2 2 0 1 1-4 0a2 2 0 0 1 4 0m7 0a2 2 0 1 1-4 0a2 2 0 0 1 4 0m7 0a2 2 0 1 1-4 0a2 2 0 0 1 4 0" />
         </svg>
     );
@@ -571,7 +576,7 @@ export const EllipsisIcon = ({ size = 24, height = "24", width = "24", ...props 
 
 export const CopyIcon = ({ height = "1em", width = "1em", ...props }: IconSvgProps) => {
     return (
-        <svg width={width} height={height} {...props} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 16 16">
+        <svg width={width} height={height} {...props} aria-hidden="true" viewBox="0 0 16 16">
             <path
                 fill="currentColor"
                 fillRule="evenodd"
@@ -584,7 +589,7 @@ export const CopyIcon = ({ height = "1em", width = "1em", ...props }: IconSvgPro
 
 export const ThumbsUpIcon = ({ height = "1em", width = "1em", ...props }: IconSvgProps) => {
     return (
-        <svg width={width} height={height} {...props} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 16 16">
+        <svg width={width} height={height} {...props} aria-hidden="true" viewBox="0 0 16 16">
             <path
                 fill="currentColor"
                 fillRule="evenodd"
@@ -597,7 +602,7 @@ export const ThumbsUpIcon = ({ height = "1em", width = "1em", ...props }: IconSv
 
 export const ThumbsDownIcon = ({ height = "1em", width = "1em", ...props }: IconSvgProps) => {
     return (
-        <svg width={width} height={height} {...props} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 16 16">
+        <svg width={width} height={height} {...props} aria-hidden="true" viewBox="0 0 16 16">
             <path
                 fill="currentColor"
                 fillRule="evenodd"
@@ -610,7 +615,7 @@ export const ThumbsDownIcon = ({ height = "1em", width = "1em", ...props }: Icon
 
 export const EmojiIcon = ({ height = "1em", width = "1em", ...props }: IconSvgProps) => {
     return (
-        <svg width={width} height={height} {...props} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 16 16">
+        <svg width={width} height={height} {...props} aria-hidden="true" viewBox="0 0 16 16">
             <path
                 fill="currentColor"
                 fillRule="evenodd"
@@ -623,7 +628,7 @@ export const EmojiIcon = ({ height = "1em", width = "1em", ...props }: IconSvgPr
 
 export const LightThemeIcon = ({ height = "117", width = "240", ...props }: IconSvgProps) => {
     return (
-        <svg fill="none" viewBox="0 0 240 117" xmlns="http://www.w3.org/2000/svg" width={width} height={height} {...props}>
+        <svg fill="none" viewBox="0 0 240 117" width={width} height={height} {...props}>
             <path d="M12 0.5H228C234.351 0.5 239.5 5.64873 239.5 12V116.5H0.5V12C0.5 5.64873 5.64873 0.5 12 0.5Z" fill="black" />
             <path d="M12 0.5H228C234.351 0.5 239.5 5.64873 239.5 12V116.5H0.5V12C0.5 5.64873 5.64873 0.5 12 0.5Z" stroke="#3F3F46" />
             <path
@@ -677,7 +682,7 @@ export const LightThemeIcon = ({ height = "117", width = "240", ...props }: Icon
 
 export const DarkThemeIcon = ({ height = "117", width = "240", ...props }: IconSvgProps) => {
     return (
-        <svg fill="none" viewBox="0 0 240 117" xmlns="http://www.w3.org/2000/svg" width={width} height={height} {...props}>
+        <svg fill="none" viewBox="0 0 240 117" width={width} height={height} {...props}>
             <path d="M12 0.5H228C234.351 0.5 239.5 5.64873 239.5 12V116.5H0.5V12C0.5 5.64873 5.64873 0.5 12 0.5Z" fill="white" />
             <path d="M12 0.5H228C234.351 0.5 239.5 5.64873 239.5 12V116.5H0.5V12C0.5 5.64873 5.64873 0.5 12 0.5Z" stroke="#E4E4E7" />
             <path
