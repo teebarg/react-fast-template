@@ -263,50 +263,66 @@ const filters = [
 
 interface Product {
     title: string;
+    desc?: string;
     img: string;
-    price: string;
+    price: number;
+    oldPrice?: number;
+    rating?: number;
 }
 
 const products: Product[] = [
     {
         title: "Orange",
-        img: "https://nextui.org/images/fruit-1.jpeg",
-        price: "$5.50",
+        img: "1.avif",
+        desc: "Lorem ipsum lorem sentif",
+        price: 1500,
+        oldPrice: 2500,
+        rating: 4.25,
     },
     {
         title: "Tangerine",
-        img: "https://nextui.org/images/fruit-2.jpeg",
-        price: "$3.00",
+        img: "2.avif",
+        price: 4500,
+        rating: 4.65,
     },
     {
         title: "Raspberry",
-        img: "https://nextui.org/images/fruit-3.jpeg",
-        price: "$10.00",
+        img: "3.avif",
+        desc: "Lorem ipsum lorem sentif",
+        price: 5000.5,
+        oldPrice: 80000,
+        rating: 4.75,
     },
     {
         title: "Lemon",
-        img: "https://nextui.org/images/fruit-4.jpeg",
-        price: "$5.30",
+        img: "4.avif",
+        price: 41500,
+        rating: 2.65,
     },
     {
         title: "Avocado",
-        img: "https://nextui.org/images/fruit-5.jpeg",
-        price: "$15.70",
+        img: "5.avif",
+        price: 42500,
+        rating: 4.15,
     },
     {
         title: "Lemon 2",
-        img: "https://nextui.org/images/fruit-6.jpeg",
-        price: "$8.00",
+        img: "6.avif",
+        price: 450000,
+        rating: 4.65,
     },
     {
         title: "Banana",
-        img: "https://nextui.org/images/fruit-7.jpeg",
-        price: "$7.50",
+        img: "7.png",
+        desc: "Lorem ipsum lorem sentif",
+        price: 500,
+        rating: 3.24,
     },
     {
         title: "Watermelon",
-        img: "https://nextui.org/images/fruit-8.jpeg",
-        price: "$12.20",
+        img: "8.avif",
+        price: 40,
+        rating: 4.65,
     },
 ];
 

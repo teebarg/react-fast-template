@@ -61,5 +61,6 @@ export const siteConfig = {
         twitter: "https://twitter.com",
         docs: "https://nextui.org",
         youtube: "https://youtube.com",
+        whatsapp: "https://youtube.com",
     },
 };

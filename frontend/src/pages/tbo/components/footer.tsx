@@ -1,4 +1,4 @@
-import { GithubIcon, TwitterIcon, YoutubeIcon } from "@/components/icons";
+import { GithubIcon, TwitterIcon, WhatsAppIcon, YoutubeIcon } from "@/components/icons";
 import { siteConfig } from "@/config/site";
 import { Link } from "@nextui-org/react";
 import { NavLink } from "react-router-dom";
@@ -68,6 +68,9 @@ const Footer = () => {
 
                             <Link isExternal aria-label="Twitter" href={siteConfig.links.youtube}>
                                 <YoutubeIcon className="text-default-500" size={34} />
+                            </Link>
+                            <Link isExternal aria-label="Twitter" href={siteConfig.links.whatsapp}>
+                                <WhatsAppIcon className="text-default-500" size={34} />
                             </Link>
                         </div>
                     </div>

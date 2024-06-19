@@ -42,7 +42,7 @@ const TBONavbar = () => {
                         <p className="font-bold text-inherit text-2xl">TBO</p>
                     </Link>
                 </NavbarBrand>
-                <div className="flex gap-2 text-sm">
+                <div className="hidden sm:flex gap-2 text-sm">
                     <NavbarMenuItem>
                         <NavLink className={({ isActive, isPending }) => (isPending ? "pending" : isActive ? "text-danger" : "")} to={"/"}>
                             Home
