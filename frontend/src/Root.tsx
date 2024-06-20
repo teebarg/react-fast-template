@@ -7,6 +7,7 @@ import { Provider } from "./provider";
 
 import "@/styles/globals.css";
 import { AuthProvider } from "@/store/auth-provider";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const container = document.getElementById("root") as HTMLElement;
 const root = createRoot(container);
@@ -18,7 +19,9 @@ function render(App: ComponentType) {
                 <HelmetProvider>
                     <Provider>
                         <AuthProvider>
-                            <App />
+                            <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+                                <App />
+                            </GoogleOAuthProvider>
                         </AuthProvider>
                     </Provider>
                 </HelmetProvider>

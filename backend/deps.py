@@ -103,21 +103,25 @@ def get_current_user(
         else:
             raise HTTPException(status_code=404, detail="User not found")
     except auth.RevokedIdTokenError:
+        logger.error("You have been signout")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="You have been signout",
         )
     except auth.UserDisabledError:
+        logger.error("The user is currently disabled")
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="The user is currently disabled",
         )
     except auth.InvalidIdTokenError:
+        logger.error("The provided token is invalid")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="The provided token is invalid",
         )
     except requests.exceptions.HTTPError:
+        logger.error("Could not validate credentials")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",

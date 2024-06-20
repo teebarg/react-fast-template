@@ -9,6 +9,10 @@ import { Button, Divider, Input } from "@nextui-org/react";
 import useNotifications from "@/store/notifications";
 import useWatch from "@/hooks/use-watch";
 import { useAuth } from "@/hooks/use-auth";
+import { useGoogleLogin } from "@react-oauth/google";
+import { useCookie } from "@/hooks/use-cookie";
+import { AuthContextValue } from "@/store/auth-provider";
+import { useAuth as useAuthCtx } from "@/store/auth-provider";
 
 const loginLoader: LoaderFunction = async () => {
     const { isAuthenticated } = useAuth();
@@ -35,6 +39,8 @@ const Login: React.FC<Props> = () => {
 
     const actionData = useActionData() as { error: string } | undefined;
     const [, notificationsActions] = useNotifications();
+    const { setCookie } = useCookie();
+    const { login } = useAuthCtx() as AuthContextValue;
 
     useWatch(actionData, (newData) => {
         notificationsActions.push({
@@ -45,9 +51,42 @@ const Login: React.FC<Props> = () => {
         });
     });
 
-    const handleGoogleSignIn = async () => {
-        // handle google sign in
-    };
+    const handleGoogleSignIn = useGoogleLogin({
+        onSuccess: async (codeResponse) => {
+            const userInfo = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+                method: "GET",
+                headers: { Authorization: `Bearer ${codeResponse.access_token}` },
+            }).then((res) => res.json());
+
+            const res = await fetch(`${import.meta.env.VITE_API_DOMAIN}/auth/social`, {
+                method: "POST",
+                body: JSON.stringify({
+                    firstname: userInfo.given_name,
+                    lastname: userInfo.family_name,
+                    email: userInfo.email,
+                }),
+                headers: { "Content-Type": "application/json" },
+            });
+            if (!res.ok) {
+                const errorText = await res.text();
+                notificationsActions.push({
+                    options: {
+                        type: "danger",
+                    },
+                    message: `Login request failed: ${res.status} - ${errorText}`,
+                });
+            }
+            const user = await res.json();
+            if (res.ok && user) {
+                setCookie("user", { name: userInfo.given_name, email: userInfo.email }, { maxAge: 3600 });
+                setCookie("accessTokenExpires", user.expires, { maxAge: 3600 });
+                login();
+
+                return redirect(from ?? "/");
+            }
+        },
+        // onError: (errorResponse) => console.log(errorResponse),
+    });
 
     const {
         register,
@@ -105,7 +144,7 @@ const Login: React.FC<Props> = () => {
                                 size="lg"
                                 variant="flat"
                                 startContent={<img src="/google.svg" alt="Google" className="w-6" />}
-                                onPress={handleGoogleSignIn}
+                                onPress={() => handleGoogleSignIn()}
                             >
                                 Sign in with Google
                             </Button>
