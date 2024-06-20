@@ -1,5 +1,5 @@
 import { SelectField, TextField } from "@/components/core/fields";
-import { CancelIcon, DocumentIcon, MasterCardIcon, PayPalIcon, VisaCardIcon } from "@/components/icons";
+import { CancelIcon, DocumentIcon, MasterCardIcon, PayPalIcon, VisaCardIcon } from "react-icons";
 import { BreadcrumbItem, Breadcrumbs, Button, Checkbox, Input, Radio, RadioGroup, cn, Image } from "@nextui-org/react";
 import React from "react";
 import { useForm } from "react-hook-form";

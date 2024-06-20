@@ -1,6 +1,6 @@
 import { Button, Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import type { Product } from "../data";
-import { StarIcon } from "@/components/icons";
+import { StarIcon } from "react-icons";
 import { useNavigate } from "react-router-dom";
 import { currency, imgSrc } from "@/utils/util";
 

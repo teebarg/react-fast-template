@@ -1,6 +1,6 @@
 import { ReactNode, useState, useEffect } from "react";
 import cn from "classnames";
-import { CheckIcon } from "@/components/icons";
+import { CheckIcon } from "react-icons";
 
 type Types = "alert" | "error" | "info" | "success";
 type Directions = "topRight" | "bottomRight" | "topLeft" | "bottomLeft";

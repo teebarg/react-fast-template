@@ -5,10 +5,4 @@ type IconSvgProps = SVGProps<SVGSVGElement> & {
     size?: number;
 };
 
-// TODO: needs a better typing for Recoil
-type AtomEffectParams = {
-    // eslint-disable-next-line
-    [key: string]: any;
-};
-
-export type { AtomEffectParams, IconSvgProps };
+export type { IconSvgProps };

@@ -4,7 +4,7 @@ import { SwitchProps, useSwitch } from "@nextui-org/switch";
 import cn from "classnames";
 
 import { useTheme } from "@/hooks/use-theme";
-import { SunFilledIcon, MoonFilledIcon } from "@/components/icons";
+import { SunFilledIcon, MoonFilledIcon } from "react-icons";
 
 export interface ThemeSwitchProps {
     className?: string;

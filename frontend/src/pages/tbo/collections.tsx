@@ -5,7 +5,7 @@ import { filters, products } from "./data";
 import { ProductItem } from "./components/product-item";
 import TBONavbar from "./components/navbar";
 import Meta from "@/components/Meta";
-import { FunnelIcon } from "@/components/icons";
+import { FunnelIcon } from "react-icons";
 
 interface ComponentProps {}
 

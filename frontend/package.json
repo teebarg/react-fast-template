@@ -44,6 +44,7 @@
         "react-helmet-async": "^2.0.3",
         "react-hook-form": "^7.51.5",
         "react-hotkeys-hook": "^4.4.1",
+        "react-icons": "github:teebarg/react-icons",
         "react-pro-sidebar": "^1.1.0",
         "react-router-dom": "^6.21.0",
         "recoil": "^0.7.7",

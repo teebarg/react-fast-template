@@ -18,7 +18,7 @@ import {
     Selection,
     SortDescriptor,
 } from "@nextui-org/react";
-import { PlusIcon, SearchIcon, ChevronDownIcon } from "@/components/icons";
+import { PlusIcon, SearchIcon, ChevronDownIcon } from "react-icons";
 import { Column, TableProps } from "@/config/types";
 import { useNavigate, useLocation } from "react-router-dom";
 
