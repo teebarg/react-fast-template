@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { Sidebar as ProSidebar, Menu, MenuItem, SubMenu, sidebarClasses, MenuItemStyles, menuClasses } from "react-pro-sidebar";
 import { NavLink } from "react-router-dom";
-import { AdminIcon, CalendarIcon, ChevronRightIcon, ComponentsIcon, DocumentIcon, EcommerceIcon, ProfileIcon } from "@/components/icons";
+import { AdminIcon, CalendarIcon, ChevronRightIcon, ComponentsIcon, DocumentIcon, EcommerceIcon, ProfileIcon } from "react-icons";
 import { Badge, Chip } from "@nextui-org/react";
 
 interface Props {}

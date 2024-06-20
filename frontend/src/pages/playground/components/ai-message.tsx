@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { Avatar, Button } from "@nextui-org/react";
-import { CopyIcon, ThumbsUpIcon, ThumbsDownIcon, EmojiIcon } from "@/components/icons";
+import { CopyIcon, ThumbsUpIcon, ThumbsDownIcon, EmojiIcon } from "react-icons";
 
 interface Props {
     children: string | ReactNode;

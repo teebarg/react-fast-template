@@ -2,7 +2,7 @@
 import React, { useId } from "react";
 import { Controller, UseFormRegister } from "react-hook-form";
 import { Input } from "@nextui-org/input";
-import { EyeSlashFilledIcon, EyeFilledIcon } from "@/components/icons";
+import { EyeSlashFilledIcon, EyeFilledIcon } from "react-icons";
 import { Checkbox, Switch, Select, SelectItem, Textarea } from "@nextui-org/react";
 
 const formClasses = "input input-bordered w-full form-fix";

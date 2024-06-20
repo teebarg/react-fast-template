@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Radio, RadioGroup, cn } from "@nextui-org/react";
 import { SelectField, TextField } from "@/components/core/fields";
 import { useForm } from "react-hook-form";
-import { MailIcon } from "@/components/icons";
+import { MailIcon } from "react-icons";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const CustomRadio = (props: any) => {

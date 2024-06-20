@@ -9,7 +9,9 @@ import cn from "classnames";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { TwitterIcon, GithubIcon, SearchIcon, Logo } from "@/components/icons";
+import { TwitterIcon, GithubIcon } from "react-icons";
+import { Logo } from "@/components/icons";
+import { SearchIcon } from "react-icons";
 import UserDropDown from "@/components/user-menu";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "@/store/auth-provider";
