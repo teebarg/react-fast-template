@@ -2,6 +2,7 @@
 import { redirect, LoaderFunctionArgs } from "react-router-dom";
 // import { useMutation } from "@tanstack/react-query";
 import { useCookie } from "@/hooks/use-cookie";
+import authService from "@/services/auth.service";
 
 const loginAction =
     ({ login }: { login: any }) =>
@@ -31,34 +32,11 @@ const loginAction =
             //     },
             // });
             // mutation.mutate()
-            const res = await fetch(`${import.meta.env.VITE_API_DOMAIN}/auth/login`, {
-                method: "POST",
-                body: JSON.stringify({ email, password }),
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-            });
-            if (!res.ok) {
-                const errorText = await res.text();
-                throw new Error(errorText);
-            }
-
-            const user = await res.json();
-
-            if (res.ok && user) {
+            const user = await authService.login({ email, password: password ?? "" });
+            if (user) {
                 setCookie("user", { name: user.name, email: user.email }, { maxAge: 3600 });
                 setCookie("accessTokenExpires", user.expires, { maxAge: 3600 });
                 login();
-
-                // await signin(user.name);
-
-                // return {
-                //     id: user.id,
-                //     name: user.name,
-                //     email: user.email,
-                //     accessToken: user.access_token,
-                //     refreshToken: user.refresh_token,
-                //     accessTokenExpires: user.expires,
-                // };
             }
         } catch (error) {
             // Unused as of now but this is how you would handle invalid

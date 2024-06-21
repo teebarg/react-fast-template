@@ -6,17 +6,16 @@ import { useCookie } from "@/hooks/use-cookie";
 import NotFound from "@/pages/NotFound";
 import Navbar from "@/components/navbar";
 import Meta from "@/components/Meta";
+import userService from "@/services/user.service";
 
 interface Props {}
 
 interface loaderData {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     user: Record<string, any>;
     error: boolean;
 }
 
 const profileLoader: LoaderFunction = async ({ request }) => {
-    const meUri = `${import.meta.env.VITE_API_DOMAIN}/users/me`;
     const { isAuthenticated } = useAuth();
     const { removeCookie } = useCookie();
     if (!isAuthenticated) {
@@ -26,24 +25,16 @@ const profileLoader: LoaderFunction = async ({ request }) => {
         return redirect("/login?" + params.toString());
     }
     try {
-        const res = await fetch(meUri, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-        });
-        if (!res.ok) {
-            if ([401, 422].includes(res.status)) {
-                removeCookie("user");
-                const params = new URLSearchParams();
-                params.set("from", new URL(request.url).pathname);
-                return redirect("/login?" + params.toString());
-            }
-            const errorText = await res.text();
-            throw new Error(errorText);
+        const user = await userService.getProfile();
+        return { user, error: false };
+    } catch (error: any) {
+        if ([401, 422].includes(error.status)) {
+            removeCookie("user");
+            const params = new URLSearchParams();
+            params.set("from", new URL(request.url).pathname);
+            return redirect("/login?" + params.toString());
         }
-        return { user: await res.json(), error: false };
-    } catch (error) {
-        return { user: null, error: true };
+        return { user: null, error: true, errorMessage: error.message };
     }
 };
 

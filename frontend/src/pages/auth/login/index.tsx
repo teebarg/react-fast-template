@@ -13,6 +13,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { useCookie } from "@/hooks/use-cookie";
 import { AuthContextValue } from "@/store/auth-provider";
 import { useAuth as useAuthCtx } from "@/store/auth-provider";
+import authService from "@/services/auth.service";
 
 const loginLoader: LoaderFunction = async () => {
     const { isAuthenticated } = useAuth();
@@ -59,30 +60,25 @@ const Login: React.FC<Props> = () => {
                 headers: { Authorization: `Bearer ${codeResponse.access_token}` },
             }).then((res) => res.json());
 
-            const res = await fetch(`${import.meta.env.VITE_API_DOMAIN}/auth/social`, {
-                method: "POST",
-                body: JSON.stringify({
+            try {
+                const user = await authService.socialLogin({
                     firstname: userInfo.given_name,
                     lastname: userInfo.family_name,
                     email: userInfo.email,
-                }),
-                headers: { "Content-Type": "application/json" },
-            });
-            if (!res.ok) {
-                const errorText = await res.text();
+                });
+                if (user) {
+                    setCookie("user", { name: userInfo.given_name, email: userInfo.email }, { maxAge: 3600 });
+                    setCookie("accessTokenExpires", user.expires, { maxAge: 3600 });
+                    login();
+                    navigate(from ?? "/");
+                }
+            } catch (error) {
                 notificationsActions.push({
                     options: {
                         type: "danger",
                     },
-                    message: `Login request failed: ${res.status} - ${errorText}`,
+                    message: `Login request failed: ${error}`,
                 });
-            }
-            const user = await res.json();
-            if (res.ok && user) {
-                setCookie("user", { name: userInfo.given_name, email: userInfo.email }, { maxAge: 3600 });
-                setCookie("accessTokenExpires", user.expires, { maxAge: 3600 });
-                login();
-                navigate(from ?? "/");
             }
         },
         onError: (errorResponse) => {
