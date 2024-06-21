@@ -1,4 +1,4 @@
-import { Form, Link, LoaderFunction, redirect, useActionData, useLocation, useNavigation, useSubmit } from "react-router-dom";
+import { Form, Link, LoaderFunction, redirect, useActionData, useLocation, useNavigate, useNavigation, useSubmit } from "react-router-dom";
 
 import { ThemeSwitch } from "@/components/theme-switch";
 
@@ -9,6 +9,11 @@ import useNotifications from "@/store/notifications";
 import useWatch from "@/hooks/use-watch";
 import { useAuth } from "@/hooks/use-auth";
 import { Password, Email } from "nextui-hook-form";
+import { useGoogleLogin } from "@react-oauth/google";
+import { useCookie } from "@/hooks/use-cookie";
+import { AuthContextValue } from "@/store/auth-provider";
+import { useAuth as useAuthCtx } from "@/store/auth-provider";
+import authService from "@/services/auth.service";
 
 const loginLoader: LoaderFunction = async () => {
     const { isAuthenticated } = useAuth();
@@ -32,10 +37,13 @@ const Login: React.FC<Props> = () => {
 
     const navigation = useNavigation();
     const isLoggingIn = navigation.formData?.get("email") != null;
+    const navigate = useNavigate();
 
     const actionData = useActionData() as { error: string } | undefined;
     const [, notificationsActions] = useNotifications();
     const submit = useSubmit();
+    const { setCookie } = useCookie();
+    const { login } = useAuthCtx() as AuthContextValue;
 
     useWatch(actionData, (newData) => {
         notificationsActions.push({
@@ -46,9 +54,43 @@ const Login: React.FC<Props> = () => {
         });
     });
 
-    const handleGoogleSignIn = async () => {
-        // handle google sign in
-    };
+    const handleGoogleSignIn = useGoogleLogin({
+        onSuccess: async (codeResponse: any) => {
+            const userInfo = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+                method: "GET",
+                headers: { Authorization: `Bearer ${codeResponse.access_token}` },
+            }).then((res) => res.json());
+
+            try {
+                const user = await authService.socialLogin({
+                    firstname: userInfo.given_name,
+                    lastname: userInfo.family_name,
+                    email: userInfo.email,
+                });
+                if (user) {
+                    setCookie("user", { name: userInfo.given_name, email: userInfo.email }, { maxAge: 3600 });
+                    setCookie("accessTokenExpires", user.expires, { maxAge: 3600 });
+                    login();
+                    navigate(from ?? "/");
+                }
+            } catch (error) {
+                notificationsActions.push({
+                    options: {
+                        type: "danger",
+                    },
+                    message: `Login request failed: ${error}`,
+                });
+            }
+        },
+        onError: (errorResponse: any) => {
+            notificationsActions.push({
+                options: {
+                    type: "danger",
+                },
+                message: `Google Login request failed: ${errorResponse}`,
+            });
+        },
+    });
 
     const {
         register,
@@ -119,12 +161,11 @@ const Login: React.FC<Props> = () => {
                             )}
                             <Divider className="my-4" />
                             <Button
-                                className="w-full"
-                                color="secondary"
+                                fullWidth
                                 size="lg"
                                 variant="flat"
                                 startContent={<img src="/google.svg" alt="Google" className="w-6" />}
-                                onPress={handleGoogleSignIn}
+                                onPress={() => handleGoogleSignIn()}
                             >
                                 Sign in with Google
                             </Button>

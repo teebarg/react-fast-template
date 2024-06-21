@@ -13,7 +13,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./lb.yml:/config.yml:ro
     networks:
-      - traefik-public
+      - ${TRAEFIK_PUBLIC_NETWORK?Variable not set}
       - default
 
   db:
@@ -21,7 +21,7 @@ services:
     ports:
       - 4014:5432
     networks:
-      - traefik-public
+      - ${TRAEFIK_PUBLIC_NETWORK?Variable not set}
       - default
     volumes:
       - volume-data:/var/lib/postgresql/data/pgdata
@@ -38,7 +38,7 @@ services:
     ports:
       - 4015:8080
     networks:
-      - traefik-public
+      - ${TRAEFIK_PUBLIC_NETWORK?Variable not set}
       - default
     depends_on:
       - db
@@ -48,7 +48,7 @@ services:
     ports:
       - 4012:8000
     networks:
-      - traefik-public
+      - ${TRAEFIK_PUBLIC_NETWORK?Variable not set}
       - default
     depends_on:
       - db
@@ -68,7 +68,7 @@ services:
     ports:
       - 4013:5173
     networks:
-      - traefik-public
+      - ${TRAEFIK_PUBLIC_NETWORK?Variable not set}
       - default
     depends_on:
       - backend
