@@ -1,8 +1,8 @@
 import React from "react";
-import { Radio, RadioGroup, Switch, cn } from "@nextui-org/react";
-import { SelectField } from "@/components/core/fields";
+import { Radio, RadioGroup, cn } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { DarkThemeIcon, LightThemeIcon } from "@/components/icons";
+import { Select, Switch } from "nextui-hook-form";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const CustomRadio = (props: any) => {
@@ -57,10 +57,10 @@ const AdminAppearance: React.FC<Props> = () => {
                         <p className="text-base font-medium text-default-700">Font size</p>
                         <p className="mt-1 text-sm font-normal text-default-400">Adjust the web font size.</p>
                     </div>
-                    <SelectField
+                    <Select
                         name="fontSize"
                         register={register}
-                        rules={{ required: true }}
+                        required
                         options={[]}
                         control={control}
                         placeholder="Large"

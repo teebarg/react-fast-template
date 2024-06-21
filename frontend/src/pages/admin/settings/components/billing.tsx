@@ -1,8 +1,8 @@
 import React from "react";
 import { Button, Radio, RadioGroup, cn } from "@nextui-org/react";
-import { SelectField, TextField } from "@/components/core/fields";
 import { useForm } from "react-hook-form";
 import { MailIcon } from "react-icons";
+import { Input, Select } from "nextui-hook-form";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const CustomRadio = (props: any) => {
@@ -28,8 +28,8 @@ export const CustomRadio = (props: any) => {
 interface Props {}
 
 type Inputs = {
-    title: string;
-    location: string;
+    address1: string;
+    address2: string;
 };
 
 const AdminBilling: React.FC<Props> = () => {
@@ -116,30 +116,14 @@ const AdminBilling: React.FC<Props> = () => {
                     </div>
                 </div>
                 <div className="mt-2 space-y-2">
-                    <TextField name="address1" register={register} error={errors?.title} placeholder="Address Line 1" />
-                    <TextField name="address2" register={register} error={errors?.title} placeholder="Address Line 2" />
-                    <TextField name="city" register={register} error={errors?.title} placeholder="City" />
+                    <Input name="address1" register={register} error={errors.address1} placeholder="Address Line 1" />
+                    <Input name="address2" register={register} placeholder="Address Line 2" />
+                    <Input name="city" register={register} placeholder="City" />
                     <div className="flex items-center gap-2">
-                        <SelectField
-                            name="area"
-                            register={register}
-                            rules={{ required: true }}
-                            options={[]}
-                            control={control}
-                            placeholder="Buenos Aires"
-                            className=""
-                        />
-                        <TextField name="postal" register={register} error={errors?.title} placeholder="Postal Code" />
+                        <Select name="area" register={register} required options={[]} control={control} placeholder="Buenos Aires" />
+                        <Input name="postal" register={register} placeholder="Postal Code" />
                     </div>
-                    <SelectField
-                        name="country"
-                        register={register}
-                        rules={{ required: true }}
-                        options={[]}
-                        control={control}
-                        placeholder="Argentina"
-                        className=""
-                    />
+                    <Select name="country" register={register} required options={[]} control={control} placeholder="Argentina" />
                 </div>
                 <Button className="mt-5 bg-default-foreground text-background h-8">Save</Button>
             </div>

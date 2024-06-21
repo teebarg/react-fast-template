@@ -1,7 +1,7 @@
 import React from "react";
 import { Avatar, Button } from "@nextui-org/react";
-import { TextAreaField, TextField } from "@/components/core/fields";
 import { useForm } from "react-hook-form";
+import { Input, TextArea } from "nextui-hook-form";
 
 interface Props {}
 
@@ -40,25 +40,25 @@ const AdminProfile: React.FC<Props> = () => {
                 <div>
                     <p className="text-base font-medium text-default-700">Title</p>
                     <p className="mt-1 text-sm font-normal text-default-400">Set your current role.</p>
-                    <TextField name="title" label="" register={register} error={errors?.title} placeholder="e.g Customer Support" />
+                    <Input name="title" label="" register={register} error={errors?.title} placeholder="e.g Customer Support" />
                 </div>
                 <span aria-hidden="true" className="w-px h-2 block" style={{ marginLeft: "0.25rem", marginTop: "0.5rem" }} />
                 <div>
                     <p className="text-base font-medium text-default-700">Location</p>
                     <p className="mt-1 text-sm font-normal text-default-400">Set your current location.</p>
-                    <TextField name="location" register={register} error={errors?.location} placeholder="e.g Buenos Aires, Argentina" />
+                    <Input name="location" register={register} error={errors?.location} placeholder="e.g Buenos Aires, Argentina" />
                 </div>
                 <span aria-hidden="true" className="w-px h-2 block" style={{ marginLeft: "0.25rem", marginTop: "1rem" }} />
                 <div>
                     <p className="text-base font-medium text-default-700">Biography</p>
                     <p className="mt-1 text-sm font-normal text-default-400">Specify your present whereabouts.</p>
-                    <TextAreaField
+                    <TextArea
                         name="biography"
                         register={register}
                         placeholder="e.g., 'Kate Moore - Acme.com Support Specialist. Passionate about solving tech issues, loves hiking and volunteering."
                     />
                 </div>
-                <Button className="px-3 min-w-16 h-8 text-tiny gap-2 rounded-small mt-4 bg-default-foreground text-background">Update Profile</Button>
+                <Button className="px-3 min-w-16 h-8 text-tiny rounded-small mt-4 bg-default-foreground text-background">Update Profile</Button>
             </div>
         </React.Fragment>
     );
