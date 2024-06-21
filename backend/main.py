@@ -5,7 +5,7 @@ from api.auth import router as auth_router
 from api.users import router as users_router
 from core.config import settings
 
-app = FastAPI(title=settings.PROJECT_NAME)
+app = FastAPI(title=settings.PROJECT_NAME, openapi_url="/api/openapi.json")
 
 # Mount the routers under their respective paths
 app.include_router(
@@ -15,21 +15,16 @@ app.include_router(
     auth_router, prefix="/api/auth", tags=["auth"]
 )  # Include the user router
 
-# List of allowed origins
-origins = [
-    "http://localhost",
-    "http://localhost:3000",
-    "http://localhost:4000",
-    "http://localhost:4010",
-    "https://react-pwa.niyi.com.ng"
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # Allows specific origins
-    allow_credentials=True,  # Allows cookies to be included in requests
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
+    allow_origins=[
+        # See https://github.com/pydantic/pydantic/issues/7186 for reason of using rstrip
+        str(origin).rstrip("/")
+        for origin in settings.BACKEND_CORS_ORIGINS
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 

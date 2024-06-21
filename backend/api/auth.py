@@ -205,6 +205,7 @@ def refresh_token(
 
 @router.post("/social")
 def social(
+    response: Response,
     credentials: schemas.Social,
     db: deps.SessionDep,
     auth: Any = Depends(deps.get_auth),
@@ -231,7 +232,22 @@ def social(
             return JSONResponse(status_code=200, content=get_token(str(user.id)))
 
         user: User = crud.user.create(db=db, obj_in=credentials)
-        return JSONResponse(status_code=200, content=get_token(str(user.id)))
+        content = get_token(str(user.id))
+        response.set_cookie(
+            key="access_token",
+            value=content.get("access_token"),
+            max_age=timedelta(days=30),
+            secure=True,
+            httponly=True,
+        )
+        response.set_cookie(
+            key="refresh_token",
+            value=content.get("refresh_token"),
+            max_age=timedelta(days=30),
+            secure=True,
+            httponly=True,
+        )
+        return JSONResponse(status_code=200, content=content)
 
     except Exception as e:
         return JSONResponse(

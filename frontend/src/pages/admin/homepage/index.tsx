@@ -1,8 +1,8 @@
 import React from "react";
-import Meta from "@/components/Meta";
 import { Card, CardHeader, CardBody, CardFooter, Avatar, Button } from "@nextui-org/react";
 import TableData from "./components/TableData";
 import { users, pagination } from "../homepage/data";
+import Meta from "@/components/Meta";
 
 interface Props {}
 

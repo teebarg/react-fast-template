@@ -11,7 +11,7 @@ interface LoginUser {
 interface AuthContextValue {
     isAuthenticated: boolean;
     currentUser: LoginUser;
-    login: (username: string, password: string) => void;
+    login: () => void;
     logout: () => void;
 }
 
