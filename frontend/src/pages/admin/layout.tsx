@@ -5,7 +5,7 @@ import Sidebar from "@/components/core/sidebar";
 import AdminNavbar from "@/components/admin-navbar";
 import { useAuth } from "@/hooks/use-auth";
 
-const adminLoader: LoaderFunction = ({ request }) => {
+const adminLoader: LoaderFunction = async ({ request }) => {
     const { isAuthenticated } = useAuth();
     // function profileLoader({ request }: LoaderFunctionArgs) {
     // If the user is not logged in and tries to access `/protected`, we redirect

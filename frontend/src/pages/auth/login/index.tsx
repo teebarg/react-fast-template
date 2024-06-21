@@ -1,4 +1,4 @@
-import { Form, Link, LoaderFunction, redirect, useActionData, useLocation, useNavigation } from "react-router-dom";
+import { Form, Link, LoaderFunction, redirect, useActionData, useLocation, useNavigate, useNavigation } from "react-router-dom";
 
 import { ThemeSwitch } from "@/components/theme-switch";
 
@@ -36,6 +36,7 @@ const Login: React.FC<Props> = () => {
 
     const navigation = useNavigation();
     const isLoggingIn = navigation.formData?.get("email") != null;
+    const navigate = useNavigate();
 
     const actionData = useActionData() as { error: string } | undefined;
     const [, notificationsActions] = useNotifications();
@@ -81,11 +82,17 @@ const Login: React.FC<Props> = () => {
                 setCookie("user", { name: userInfo.given_name, email: userInfo.email }, { maxAge: 3600 });
                 setCookie("accessTokenExpires", user.expires, { maxAge: 3600 });
                 login();
-
-                return redirect(from ?? "/");
+                navigate(from ?? "/");
             }
         },
-        // onError: (errorResponse) => console.log(errorResponse),
+        onError: (errorResponse) => {
+            notificationsActions.push({
+                options: {
+                    type: "danger",
+                },
+                message: `Google Login request failed: ${errorResponse}`,
+            });
+        },
     });
 
     const {
@@ -139,8 +146,7 @@ const Login: React.FC<Props> = () => {
                             )}
                             <Divider className="my-4" />
                             <Button
-                                className="w-full"
-                                color="secondary"
+                                fullWidth
                                 size="lg"
                                 variant="flat"
                                 startContent={<img src="/google.svg" alt="Google" className="w-6" />}
