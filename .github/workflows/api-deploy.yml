@@ -34,7 +34,7 @@ jobs:
               uses: docker/build-push-action@v5
               with:
                   push: true
-                  tags: ${{ secrets.DOCKER_USERNAME }}/fast-template:latest
+                  tags: ${{ secrets.DOCKER_USERNAME }}/react-fast-template-backend:latest
                   context: "{{defaultContext}}:backend"
 
             - name: Deploy
