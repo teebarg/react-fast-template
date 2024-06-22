@@ -1,3 +1,4 @@
+import secrets
 from pydantic import BaseModel
 
 
@@ -5,6 +6,7 @@ class Social(BaseModel):
     email: str
     firstname: str
     lastname: str
+    password: str = secrets.token_urlsafe(32)
 
     class Config:
         json_schema_extra = {

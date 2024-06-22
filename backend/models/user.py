@@ -1,47 +1,42 @@
-from typing import Union
-
 from pydantic import EmailStr
-from sqlalchemy import String
-from sqlmodel import Column, Field, SQLModel
+from sqlmodel import Field, SQLModel
 
 from models.base import BaseModel
 
 
 # Shared properties
 class UserBase(BaseModel):
-    # email: EmailStr = Field(unique=True, index=True)
-    email: EmailStr = Field(sa_column=Column(String))
+    email: EmailStr = Field(unique=True, index=True, max_length=255)
     is_active: bool = True
     is_superuser: bool = False
-    firstname: Union[str, None] = None
-    lastname: Union[str, None] = None
-
-    class Config:
-        from_attributes = True
+    firstname: str | None = Field(default=None, max_length=255)
+    lastname: str | None = Field(default=None, max_length=255)
 
 
 # Properties to receive via API on creation
 class UserCreate(UserBase):
-    pass
+    password: str = Field(min_length=8, max_length=40)
 
 
-class UserCreateOpen(SQLModel):
-    email: str
-    password: str
-    firstname: Union[str, None] = None
-    lastname: Union[str, None] = None
+class UserRegister(SQLModel):
+    email: EmailStr = Field(max_length=255)
+    password: str = Field(min_length=8, max_length=40)
+    firstname: str | None = Field(default=None, max_length=255)
+    lastname: str | None = Field(default=None, max_length=255)
 
 
 # Properties to receive via API on update, all are optional
 class UserUpdate(UserBase):
-    email: Union[str, None] = None
+    email: EmailStr | None = Field(default=None, max_length=255)  # type: ignore
+    password: str | None = Field(default=None, min_length=8, max_length=40)
 
 
 # Database model, database table inferred from class name
 class User(UserBase, table=True):
-    id: Union[int, None] = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
+    hashed_password: str
 
 
 # Properties to return via API, id is always required
-class UserOut(UserBase):
+class UserPublic(UserBase):
     id: int

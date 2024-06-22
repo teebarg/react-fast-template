@@ -6,7 +6,7 @@ from fastapi import APIRouter, HTTPException, Query
 from sqlalchemy.exc import IntegrityError
 
 import crud
-import deps
+from core import deps
 import schemas
 from models.product import Tag
 

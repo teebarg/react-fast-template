@@ -1,3 +1,4 @@
+import secrets
 from typing import Any, List, Optional
 
 from pydantic import AnyHttpUrl, EmailStr, PostgresDsn, ValidationInfo, field_validator
@@ -5,9 +6,13 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    ACCESS_TOKEN_EXPIRE_SECONDS: int = 3000  # 50 minutes
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = (
+        60 * 24 * 8
+    )  # 60 minutes * 24 hours * 8 days = 8 days
+    API_V1_STR: str = "/api"
+    SECRET_KEY: str = secrets.token_urlsafe(32)
+
     PROJECT_NAME: str
-    FIREBASE_CONFIG: dict = {}
     FIREBASE_CRED: dict = {}
 
     POSTGRES_SERVER: str

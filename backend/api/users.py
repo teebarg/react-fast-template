@@ -3,7 +3,7 @@ from typing import Any
 from fastapi import APIRouter, Query
 
 import crud
-import deps
+from core import deps
 from models.user import User
 
 # Create a router for users

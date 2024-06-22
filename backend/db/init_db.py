@@ -10,7 +10,7 @@ from models.user import User, UserCreate
 # for more details: https://github.com/tiangolo/full-stack-fastapi-postgresql/issues/28
 
 
-def init_db(session: Session, auth) -> None:
+def init_db(session: Session) -> None:
     # Tables should be created with Alembic migrations
     # But if you don't want to use migrations, create
     # the tables un-commenting the next line
@@ -24,12 +24,9 @@ def init_db(session: Session, auth) -> None:
                 firstname=settings.FIRST_SUPERUSER_FIRSTNAME,
                 lastname=settings.FIRST_SUPERUSER_LASTNAME,
                 email=settings.FIRST_SUPERUSER,
+                password=settings.FIRST_SUPERUSER_PASSWORD,
                 is_superuser=True,
             )
-            user = crud.user.create(db=session, obj_in=user_in)
-            auth.create_user(
-                email=settings.FIRST_SUPERUSER,
-                password=settings.FIRST_SUPERUSER_PASSWORD,
-            )
+            user = crud.user.create(session=session, user_create=user_in)
         except Exception as e:
             logger.error(e)
