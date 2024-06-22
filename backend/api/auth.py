@@ -1,6 +1,11 @@
 from datetime import datetime, timedelta
 from typing import Any
 
+from core.utils import (
+    generate_password_reset_token,
+    generate_reset_password_email,
+    send_email,
+)
 from core import security
 from fastapi import APIRouter, Depends, HTTPException, Response
 from fastapi.responses import JSONResponse
@@ -40,6 +45,17 @@ def login_access_token(
         max_age=timedelta(days=30),
         secure=True,
         httponly=True,
+    )
+
+    email = ""
+    password_reset_token = generate_password_reset_token(email=email)
+    email_data = generate_reset_password_email(
+        email_to=user.email, email=email, token=password_reset_token
+    )
+    send_email(
+        email_to=user.email,
+        subject=email_data.subject,
+        html_content=email_data.html_content,
     )
 
     return Token(access_token=access_token)
