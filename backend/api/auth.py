@@ -71,7 +71,9 @@ async def login_for_access_token(
                 status_code=400, detail="Password is required to Login"
             ) from e
         else:
-            raise HTTPException(status_code=400, detail=f"An error occurred. {e}") from e
+            raise HTTPException(
+                status_code=400, detail=f"An error occurred. {e}"
+            ) from e
 
 
 @router.post("/signup")
