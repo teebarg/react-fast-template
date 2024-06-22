@@ -1,4 +1,4 @@
-import logging
+from core.logging import logger
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -20,7 +20,7 @@ class EmailData:
 
 def render_email_template(*, template_name: str, context: dict[str, Any]) -> str:
     template_str = (
-        Path(__file__).parent / "email-templates" / "build" / template_name
+        Path(__file__).parent.parent / "email-templates" / "build" / template_name
     ).read_text()
     html_content = Template(template_str).render(context)
     return html_content
@@ -32,7 +32,8 @@ def send_email(
     subject: str = "",
     html_content: str = "",
 ) -> None:
-    assert settings.emails_enabled, "no provided configuration for email variables"
+    if not settings.EMAILS_ENABLED:
+        return
     message = emails.Message(
         subject=subject,
         html=html_content,
@@ -48,7 +49,7 @@ def send_email(
     if settings.SMTP_PASSWORD:
         smtp_options["password"] = settings.SMTP_PASSWORD
     response = message.send(to=email_to, smtp=smtp_options)
-    logging.info(f"send email result: {response}")
+    logger.info(f"send email result: {response}")
 
 
 def generate_test_email(email_to: str) -> EmailData:
