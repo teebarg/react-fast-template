@@ -1,11 +1,11 @@
-import { SelectField, TextField } from "@/components/core/fields";
 import { CancelIcon, DocumentIcon, MasterCardIcon, PayPalIcon, VisaCardIcon } from "react-icons";
-import { BreadcrumbItem, Breadcrumbs, Button, Checkbox, Input, Radio, RadioGroup, cn, Image } from "@nextui-org/react";
+import { BreadcrumbItem, Breadcrumbs, Button, Checkbox, Radio, RadioGroup, cn, Image } from "@nextui-org/react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, NavLink } from "react-router-dom";
 import { cart } from "./data";
 import type { Cart } from "./data";
+import { Email, Input, Select, Number } from "nextui-hook-form";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const CustomRadio: React.FC<any> = (props) => {
@@ -64,75 +64,30 @@ const Checkout: React.FC<ComponentProps> = () => {
                                 <form className="flex flex-col gap-4 py-8">
                                     <div className="flex flex-col gap-4">
                                         <span className="relative text-foreground-500">Shipping Information</span>
-                                        <TextField
-                                            name="email"
-                                            label="Email address"
-                                            register={register}
-                                            error={errors?.email}
-                                            rules={{ required: true }}
-                                        />
+                                        <Email name="email" label="Email address" register={register} error={errors?.email} required />
                                         <div className="flex flex-wrap items-center gap-4 sm:flex-nowrap">
-                                            <TextField
-                                                name="firstname"
-                                                label="First name"
-                                                register={register}
-                                                error={errors?.firstname}
-                                                rules={{ required: true }}
-                                            />
-                                            <TextField
-                                                name="lastname"
-                                                label="Last name"
-                                                register={register}
-                                                error={errors?.lastname}
-                                                rules={{ required: true }}
-                                            />
+                                            <Input name="firstname" label="First name" register={register} error={errors?.firstname} required />
+                                            <Input name="lastname" label="Last name" register={register} error={errors?.lastname} required />
                                         </div>
                                         <div className="flex flex-wrap items-center gap-4 sm:flex-nowrap">
-                                            <TextField
-                                                name="firstname"
-                                                label="Address"
-                                                register={register}
-                                                error={errors?.firstname}
-                                                rules={{ required: true }}
-                                            />
-                                            <TextField name="lastname" label="Apt, suite, etc." register={register} error={errors?.lastname} />
+                                            <Input name="address" label="Address" register={register} />
+                                            <Input name="address2" label="Apt, suite, etc." register={register} />
                                         </div>
                                         <div className="flex flex-wrap items-center gap-4 sm:flex-nowrap">
-                                            <TextField
-                                                name="firstname"
-                                                label="City"
-                                                register={register}
-                                                error={errors?.firstname}
-                                                rules={{ required: true }}
-                                            />
-                                            <SelectField
+                                            <Input name="city" label="City" register={register} required />
+                                            <Select
                                                 name="country"
                                                 label="Country"
                                                 register={register}
-                                                error={errors?.lastname}
-                                                rules={{ required: true }}
+                                                required
                                                 options={[]}
                                                 control={control}
                                                 placeholder="Select a country"
                                             />
                                         </div>
                                         <div className="flex flex-wrap items-center gap-4 sm:flex-nowrap">
-                                            <TextField
-                                                name="firstname"
-                                                label="Postal code"
-                                                type="number"
-                                                register={register}
-                                                error={errors?.firstname}
-                                                rules={{ required: true }}
-                                            />
-                                            <TextField
-                                                name="lastname"
-                                                label="Phone number"
-                                                type="number"
-                                                register={register}
-                                                error={errors?.lastname}
-                                                rules={{ required: true }}
-                                            />
+                                            <Number name="postal" label="Postal code" register={register} />
+                                            <Number name="phone" label="Phone number" register={register} />
                                         </div>
                                     </div>
                                     <RadioGroup
@@ -193,27 +148,14 @@ const Checkout: React.FC<ComponentProps> = () => {
                                         </CustomRadio>
                                     </RadioGroup>
                                     <div className="flex flex-col gap-4">
-                                        <TextField
-                                            labelPlacement="outside"
-                                            name="email"
-                                            label="Email address"
-                                            register={register}
-                                            error={errors?.email}
-                                        />
-                                        <Input
-                                            type="number"
+                                        <Email labelPlacement="outside" name="email" label="Email address" register={register} />
+                                        <Number
                                             label="Card number"
                                             placeholder="you@example.com"
                                             labelPlacement="outside"
                                             startContent={<DocumentIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />}
                                         />
-                                        <TextField
-                                            labelPlacement="outside"
-                                            name="card_name"
-                                            label="Cardholder name"
-                                            register={register}
-                                            error={errors?.email}
-                                        />
+                                        <Input labelPlacement="outside" name="card_name" label="Cardholder name" register={register} />
                                     </div>
                                     <fieldset className="mt-4">
                                         <legend className="pb-2 text-foreground-500">Billing address</legend>
@@ -258,10 +200,7 @@ const Checkout: React.FC<ComponentProps> = () => {
                                                         <span className="text-small text-default-500">x {item.quantity}</span>
                                                     </div>
                                                 </div>
-                                                <Button
-                                                    isIconOnly
-                                                    className="z-0 relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 text-small gap-2 rounded-full px-0 !gap-0 data-[pressed=true]:scale-[0.97] transition-transform-colors-opacity motion-reduce:transition-none bg-default/40 text-default-foreground h-7 w-7 min-w-[1.5rem]"
-                                                >
+                                                <Button isIconOnly className="rounded-full px-0 !gap-0 bg-default/40 h-7 w-7 min-w-[1.5rem]">
                                                     <CancelIcon size={14} role="img" className="" />
                                                 </Button>
                                             </li>
@@ -270,19 +209,15 @@ const Checkout: React.FC<ComponentProps> = () => {
                                     <div>
                                         <form className="mb-4 mt-6 flex items-end gap-2">
                                             <Input
-                                                type="text"
                                                 label="Coupon code"
                                                 placeholder="Enter coupon code"
                                                 variant="bordered"
                                                 labelPlacement="outside"
                                                 className="max-w-xs"
                                             />
-                                            <button
-                                                className="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 px-4 min-w-20 h-10 text-small gap-2 rounded-medium [&>svg]:max-w-[theme(spacing.8)] data-[pressed=true]:scale-[0.97] transition-transform-colors-opacity motion-reduce:transition-none bg-default text-default-foreground data-[hover=true]:opacity-hover"
-                                                type="submit"
-                                            >
+                                            <Button className="px-4 min-w-20 h-10 text-small gap-2 bg-default" type="submit">
                                                 Apply
-                                            </button>
+                                            </Button>
                                         </form>
                                         <dl className="flex flex-col gap-4 py-4">
                                             <div className="flex justify-between">

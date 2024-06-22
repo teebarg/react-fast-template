@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Alert from "@/components/core/alert";
-import { TextField, TextAreaField, CheckBoxField } from "@/components/core/fields";
 import { Button } from "@nextui-org/react";
+import { Email, Input, TextArea, CheckBox } from "nextui-hook-form";
 
 type Inputs = {
     name: string;
@@ -72,32 +72,28 @@ export default function ContactForm() {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mt-10 space-y-4">
-                <TextField
+                <Input
                     name="name"
                     label="Name"
-                    type="text"
-                    placeholder="Ex. John"
+                    placeholder="Ex. John....."
                     register={register}
                     error={errors?.name}
-                    rules={{ required: true }}
+                    required
                     classNames={inputClass}
                 />
-
-                <TextField
+                <Email
                     name="email"
                     label="Email"
-                    type="email"
                     placeholder="Ex. email@email.com"
                     register={register}
                     error={errors.email}
-                    rules={{ required: true, email: true }}
+                    required
                     classNames={inputClass}
                 />
 
-                <TextField
+                <Input
                     name="phone"
                     label="Phone"
-                    type="text"
                     placeholder="Ex. 09000000000"
                     register={register}
                     error={errors.phone}
@@ -105,29 +101,29 @@ export default function ContactForm() {
                     classNames={inputClass}
                 />
 
-                <TextAreaField
+                <TextArea
                     name="message"
                     label="Message"
                     placeholder="Ex. I want to make an enquiry about..."
                     description="Your message to us"
                     register={register}
                     error={errors?.name}
-                    rules={{ required: true }}
+                    required
                     classNames={inputClass}
                 />
 
                 <div className="flex gap-4">
-                    <CheckBoxField name="agreement" register={register} control={control} rules={{ required: true }} />
+                    <CheckBox name="agreement" register={register} control={control} rules={{ required: true }} />
                     <p className="text-gray-700">I allow this website to store my submission so they can respond to my inquiry.</p>
                 </div>
 
-                <div className="">
+                <div>
                     {loading ? (
-                        <Button color="primary" isLoading size="lg" fullWidth>
+                        <Button color="primary" isLoading fullWidth>
                             Loading
                         </Button>
                     ) : (
-                        <Button color="primary" variant="shadow" size="lg" fullWidth type="submit">
+                        <Button color="primary" variant="shadow" fullWidth type="submit">
                             Submit
                         </Button>
                     )}

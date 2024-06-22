@@ -1,14 +1,14 @@
-import { Form, Link, LoaderFunction, redirect, useActionData, useLocation, useNavigate, useNavigation } from "react-router-dom";
+import { Form, Link, LoaderFunction, redirect, useActionData, useLocation, useNavigate, useNavigation, useSubmit } from "react-router-dom";
 
 import { ThemeSwitch } from "@/components/theme-switch";
 
-import { useForm } from "react-hook-form";
-import { PasswordField } from "@/components/core/fields";
-import { Button, Divider, Input } from "@nextui-org/react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { Button, Divider } from "@nextui-org/react";
 
 import useNotifications from "@/store/notifications";
 import useWatch from "@/hooks/use-watch";
 import { useAuth } from "@/hooks/use-auth";
+import { Password, Email } from "nextui-hook-form";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useCookie } from "@/hooks/use-cookie";
 import { AuthContextValue } from "@/store/auth-provider";
@@ -41,6 +41,7 @@ const Login: React.FC<Props> = () => {
 
     const actionData = useActionData() as { error: string } | undefined;
     const [, notificationsActions] = useNotifications();
+    const submit = useSubmit();
     const { setCookie } = useCookie();
     const { login } = useAuthCtx() as AuthContextValue;
 
@@ -54,7 +55,7 @@ const Login: React.FC<Props> = () => {
     });
 
     const handleGoogleSignIn = useGoogleLogin({
-        onSuccess: async (codeResponse) => {
+        onSuccess: async (codeResponse: any) => {
             const userInfo = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
                 method: "GET",
                 headers: { Authorization: `Bearer ${codeResponse.access_token}` },
@@ -81,7 +82,7 @@ const Login: React.FC<Props> = () => {
                 });
             }
         },
-        onError: (errorResponse) => {
+        onError: (errorResponse: any) => {
             notificationsActions.push({
                 options: {
                     type: "danger",
@@ -93,8 +94,18 @@ const Login: React.FC<Props> = () => {
 
     const {
         register,
+        handleSubmit,
         formState: { errors },
     } = useForm<Inputs>();
+
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        const { email, password } = data;
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("password", password);
+
+        submit(formData, { method: "post", action: "/login" });
+    };
 
     return (
         <div className="flex min-h-screen">
@@ -102,7 +113,7 @@ const Login: React.FC<Props> = () => {
                 <ThemeSwitch />
             </div>
             <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-                <div className="mx-auto w-full max-w-sm md:min-w-[30rem] bg-content1 px-8 py-12 rounded-md">
+                <div className="mx-auto w-full max-w-sm md:min-w-[30rem] bg-default-50 px-8 py-12 rounded-md shadow-xl">
                     <div>
                         <Link to={"/"} className="text-3xl font-semibold">
                             RFT
@@ -117,22 +128,30 @@ const Login: React.FC<Props> = () => {
                     </div>
 
                     <div className="mt-8">
-                        <Form className="space-y-8" method="post" replace>
+                        <Form onSubmit={handleSubmit(onSubmit)} className="space-y-8" method="post" replace>
                             <input type="hidden" name="redirectTo" value={from} />
                             <div>
-                                <Input name="email" isRequired type="email" label="Email" defaultValue="admin@email.com" />
+                                <Email
+                                    register={register}
+                                    name="email"
+                                    label="Email"
+                                    defaultValue="admin@email.com"
+                                    required="Email is required for Login"
+                                    isClearable
+                                    error={errors?.email}
+                                />
                             </div>
                             <div>
-                                <PasswordField
+                                <Password
                                     name="password"
                                     label="Password"
                                     register={register}
                                     error={errors?.password}
-                                    rules={{ required: true }}
+                                    required="Password is required"
                                 />
                             </div>
                             {isLoggingIn ? (
-                                <Button color="primary" isLoading size="lg" fullWidth type="submit">
+                                <Button color="primary" isLoading variant="shadow" size="lg" fullWidth isDisabled>
                                     Logging in...
                                 </Button>
                             ) : (

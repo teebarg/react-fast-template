@@ -102,3 +102,10 @@ stage: ## Prepare postges database
 # Helpers
 scaffold: ## Scaffold a resource
 	@cd scripts && python scaffold.py run -n $(name)
+
+pre-commit:
+	npx concurrently --kill-others-on-fail --prefix "[{name}]" --names "frontend:lint,build,backend:lint" \
+	--prefix-colors "bgRed.bold.white,bgGreen.bold.white,bgBlue.bold.white,bgMagenta.bold.white" \
+    "cd frontend && npm run lint:check" \
+    "cd frontend && npm run build" \
+	"cd backend && black ."

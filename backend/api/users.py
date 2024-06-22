@@ -11,7 +11,9 @@ router = APIRouter()
 
 
 @router.get("/me")
-async def read_user_me(session: deps.SessionDep, current_user: deps.CurrentUser) -> User:
+async def read_user_me(
+    session: deps.SessionDep, current_user: deps.CurrentUser
+) -> User:
     """
     Get current user.
     """
