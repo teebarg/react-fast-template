@@ -73,20 +73,25 @@ def register_user(session: deps.SessionDep, user_in: UserRegister) -> Any:
     """
     Create new user without the need to be logged in.
     """
-    if not settings.USERS_OPEN_REGISTRATION:
+    try:
+        if not settings.USERS_OPEN_REGISTRATION:
+            raise HTTPException(
+                status_code=403,
+                detail="Open user registration is forbidden on this server",
+            )
+        user = crud.user.get_user_by_email(session=session, email=user_in.email)
+        if user:
+            raise HTTPException(
+                status_code=400,
+                detail="The user with this email already exists in the system",
+            )
+        user_create = UserCreate.model_validate(user_in)
+        user = crud.user.create(session=session, user_create=user_create)
+        return user
+    except Exception as e:
         raise HTTPException(
-            status_code=403,
-            detail="Open user registration is forbidden on this server",
-        )
-    user = crud.user.get_user_by_email(session=session, email=user_in.email)
-    if user:
-        raise HTTPException(
-            status_code=400,
-            detail="The user with this email already exists in the system",
-        )
-    user_create = UserCreate.model_validate(user_in)
-    user = crud.user.create(session=session, user_create=user_create)
-    return user
+            status_code=500, detail=f"An error occurred while signing up. Error: ${e}"
+        ) from e
 
 
 @router.get("/refresh-token", response_model=schemas.Token)
@@ -97,23 +102,28 @@ async def test_token(
     """
     Return a new token for current user
     """
-    if not current_user.is_active:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    access_token = security.create_access_token(
-        current_user.id,
-        expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
-    )
-    response.set_cookie(
-        key="access_token",
-        value=access_token,
-        max_age=timedelta(days=30),
-        secure=True,
-        httponly=True,
-    )
-    return {
-        "access_token": access_token,
-        "token_type": "bearer",
-    }
+    try:
+        if not current_user.is_active:
+            raise HTTPException(status_code=400, detail="Inactive user")
+        access_token = security.create_access_token(
+            current_user.id,
+            expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+        )
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            max_age=timedelta(days=30),
+            secure=True,
+            httponly=True,
+        )
+        return {
+            "access_token": access_token,
+            "token_type": "bearer",
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"An error occurred while refreshing token. Error: ${e}"
+        ) from e
 
 
 @router.post("/social", response_model=schemas.Token)
