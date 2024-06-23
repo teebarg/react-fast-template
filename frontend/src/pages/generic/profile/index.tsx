@@ -10,9 +10,10 @@ import userService from "@/services/user.service";
 
 interface Props {}
 
-interface loaderData {
+interface profileData {
     user: Record<string, any>;
     error: boolean;
+    errorMessage: string;
 }
 
 const profileLoader: LoaderFunction = async ({ request }) => {
@@ -42,7 +43,7 @@ const Profile: React.FC<Props> = () => {
     // Get our logged in user, if they exist, from the root route loader data
     // const { data } = useRouteLoaderData("root") as { user: string | null };
     const fetcher = useFetcher();
-    const { user, error } = useLoaderData() as loaderData;
+    const { user, error } = useLoaderData() as profileData;
 
     if (error || !user) {
         return <NotFound />;
