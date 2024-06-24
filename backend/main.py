@@ -4,6 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from api.auth import router as auth_router
 from api.users import router as users_router
 from core.config import settings
+from datetime import datetime
+import json
 
 app = FastAPI(title=settings.PROJECT_NAME, openapi_url="/api/openapi.json")
 
@@ -37,3 +39,13 @@ async def root():
 @app.get("/api/health-check")
 async def health_check():
     return {"message": "Server is running"}
+
+
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return super().default(obj)
+
+
+app.json_encoder = CustomJSONEncoder

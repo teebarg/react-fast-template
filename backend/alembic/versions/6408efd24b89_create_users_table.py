@@ -5,6 +5,7 @@ Revises:
 Create Date: 2023-12-08 13:57:56.140886
 
 """
+
 from typing import Sequence, Union
 
 import sqlalchemy as sa
@@ -24,9 +25,10 @@ def upgrade() -> None:
     op.create_table(
         "user",
         sa.Column("id", sa.Integer(), nullable=False),
-        sa.Column("firstname", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-        sa.Column("lastname", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+        sa.Column("firstname", sa.String(length=255), nullable=True),
+        sa.Column("lastname", sa.String(length=255), nullable=True),
         sa.Column("email", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+        sa.Column("hashed_password", sa.String(length=255), nullable=False),
         sa.Column("is_active", sa.Boolean(), nullable=False),
         sa.Column("is_superuser", sa.Boolean(), nullable=False),
         sa.Column("created_at", sa.DateTime(), nullable=True),

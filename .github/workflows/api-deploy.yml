@@ -37,7 +37,7 @@ jobs:
                   tags: ${{ secrets.DOCKER_USERNAME }}/react-fast-template-backend:latest
                   context: "{{defaultContext}}:backend"
 
-            - name: Deploy
+            - name: Deploy to Render
               env:
                 deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
               run: |

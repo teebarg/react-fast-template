@@ -1,13 +1,26 @@
-from typing import Any, List, Optional
+import secrets
+from typing import Any, List, Literal, Optional
 
-from pydantic import AnyHttpUrl, EmailStr, PostgresDsn, ValidationInfo, field_validator
+from pydantic import (
+    AnyHttpUrl,
+    EmailStr,
+    PostgresDsn,
+    ValidationInfo,
+    field_validator,
+    computed_field,
+)
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    ACCESS_TOKEN_EXPIRE_SECONDS: int = 3000  # 50 minutes
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = (
+        60 * 24 * 8
+    )  # 60 minutes * 24 hours * 8 days = 8 days
+    API_V1_STR: str = "/api"
+    SECRET_KEY: str = secrets.token_urlsafe(32)
+
     PROJECT_NAME: str
-    FIREBASE_CONFIG: dict = {}
+    EMAIL_RESET_TOKEN_EXPIRE_HOURS: int = 48
     FIREBASE_CRED: dict = {}
 
     POSTGRES_SERVER: str
@@ -16,6 +29,17 @@ class Settings(BaseSettings):
     POSTGRES_DB: str = "postgres"
     STORAGE_BUCKET: str = "bucket"
     SQLALCHEMY_DATABASE_URI: str | None = None
+
+    DOMAIN: str = "localhost"
+    ENVIRONMENT: Literal["local", "staging", "production"] = "local"
+
+    @computed_field  # type: ignore[misc]
+    @property
+    def server_host(self) -> str:
+        # Use HTTPS for anything other than local development
+        if self.ENVIRONMENT == "local":
+            return f"http://{self.DOMAIN}"
+        return f"https://{self.DOMAIN}"
 
     @field_validator("SQLALCHEMY_DATABASE_URI", mode="before")
     def assemble_db_connection(cls, v: Optional[str], info: ValidationInfo) -> Any:
@@ -37,6 +61,17 @@ class Settings(BaseSettings):
     FIRST_SUPERUSER: EmailStr = "admin@email.com"
     FIRST_SUPERUSER_PASSWORD: str = "password"
     USERS_OPEN_REGISTRATION: bool = False
+
+    SMTP_TLS: bool = True
+    SMTP_SSL: bool = False
+    SMTP_PORT: int = 587
+    SMTP_HOST: str | None = None
+    SMTP_USER: str | None = None
+    SMTP_PASSWORD: str | None = None
+    # TODO: update type to EmailStr when sqlmodel supports it
+    EMAILS_FROM_EMAIL: str | None = None
+    EMAILS_FROM_NAME: str | None = None
+    EMAILS_ENABLED: bool = False
 
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
     # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \

@@ -1,181 +1,72 @@
 from datetime import datetime, timedelta
 from typing import Annotated, Any
+from core.logging import logger
 
-from fastapi import APIRouter, Depends, HTTPException, Response
+from core.utils import (
+    generate_new_account_email,
+    send_email,
+)
+from core import security
+from fastapi import APIRouter, Depends, HTTPException, Response, BackgroundTasks
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
-from firebase_admin import auth as firebase_auth
 
 import crud
-import deps
+from core import deps
 import schemas
 from core.config import settings
-from models.user import User, UserCreate
+from models.user import User, UserCreate, UserPublic, UserRegister
+from models.token import Token
+from fastapi.encoders import jsonable_encoder
 
 # Create a router for users
 router = APIRouter()
 
 
-@router.post("/login")
-async def login_for_access_token(
-    response: Response,
-    credentials: schemas.SignIn,
-    auth: Any = Depends(deps.get_auth),
-    db=Depends(deps.get_db),
-) -> Any:
-    """
-    User login to get access token (JWT).
-    """
-    email = credentials.email
-    password = credentials.password
-    try:
-        user = auth.sign_in_with_email_and_password(email, password)
-        access_token = user.get("idToken")
-        refresh_token = user.get("refreshToken")
-        content = {
-            "message": "success",
-            "access_token": access_token,
-            "refresh_token": refresh_token,
-            "expires": get_timestamp(),
-        }
-
-        # Enrich user
-        if user := crud.get_user_by_email(db=db, email=user["email"]):
-            details = user.dict()
-            details["name"] = details["firstname"] + " " + details["lastname"]
-            content |= details
-
-        response.set_cookie(
-            key="access_token",
-            value=access_token,
-            max_age=timedelta(days=30),
-            secure=True,
-            httponly=True,
-        )
-        response.set_cookie(
-            key="refresh_token",
-            value=refresh_token,
-            max_age=timedelta(days=30),
-            secure=True,
-            httponly=True,
-        )
-
-        return content
-    except Exception as e:
-        if "INVALID_LOGIN_CREDENTIALS" in str(e):
-            raise HTTPException(
-                status_code=401, detail="Invalid login credentials"
-            ) from e
-        elif "MISSING_PASSWORD" in str(e):
-            raise HTTPException(
-                status_code=400, detail="Password is required to Login"
-            ) from e
-        else:
-            raise HTTPException(
-                status_code=400, detail=f"An error occurred. {e}"
-            ) from e
-
-
-@router.post("/signup")
-async def sign_up(
-    credentials: schemas.SignUp,
-    session: deps.SessionDep,
-    auth: Any = Depends(deps.get_auth),
-):
-    """
-    User login to get access token (JWT).
-    """
-    email = credentials.email
-    password = credentials.password
-    confirmPassword = credentials.confirmPassword
-    firstname = credentials.firstname
-    lastname = credentials.lastname
-
-    # Validate password
-    if password != confirmPassword:
-        raise HTTPException(status_code=400, detail="Passwords do not match")
-
-    try:
-        # user = firebase_auth.create_user( email=email, password=password)
-        user = auth.create_user_with_email_and_password(email=email, password=password)
-
-        user_in = UserCreate(firstname=firstname, lastname=lastname, email=email)
-        crud.user.create(db=session, obj_in=user_in)
-
-        return JSONResponse(
-            status_code=200,
-            content={"message": "success", "token": user.get("idToken")},
-        )
-    except Exception as e:
-        if "EMAIL_EXISTS" in str(e):
-            raise HTTPException(status_code=400, detail="email already exists") from e
-        elif "INVALID_EMAIL" in str(e):
-            raise HTTPException(status_code=400, detail="invalid email") from e
-        else:
-            raise HTTPException(status_code=400, detail="An error occurred") from e
-
-
-@router.post("/login/password", response_model=schemas.Token)
+@router.post("/login/access-token")
 def login_access_token(
-    form_data: OAuth2PasswordRequestForm = Depends(),
-    auth: Any = Depends(deps.get_auth),
-) -> Any:
+    session: deps.SessionDep, form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
+) -> Token:
+    """
+    OAuth2 compatible token login, get an access token for future requests
+    """
+    user = crud.user.authenticate(
+        session=session, email=form_data.username, password=form_data.password
+    )
+    if not user:
+        raise HTTPException(status_code=400, detail="Incorrect email or password")
+    elif not user.is_active:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return Token(
+        access_token=security.create_access_token(
+            user.id,
+            expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+        )
+    )
+
+
+@router.post("/login")
+def login(
+    response: Response,
+    session: deps.SessionDep,
+    credentials: schemas.SignIn,
+    background_tasks: BackgroundTasks,
+) -> UserPublic:
     """
     OAuth2 compatible token login, get an access token for future requests
     """
     try:
-        user = auth.sign_in_with_email_and_password(
-            form_data.username, form_data.password
+        user = crud.user.authenticate(
+            session=session, email=credentials.email, password=credentials.password
         )
-        return JSONResponse(
-            status_code=200,
-            content={
-                "access_token": user["idToken"],
-                "refresh_token": user["refreshToken"],
-                "expires": get_timestamp(),
-                "token_type": "bearer",
-            },
+        if not user:
+            raise HTTPException(status_code=400, detail="Incorrect email or password")
+        elif not user.is_active:
+            raise HTTPException(status_code=400, detail="Inactive user")
+        access_token = security.create_access_token(
+            user.id,
+            expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
         )
-    except Exception as e:
-        if "INVALID_LOGIN_CREDENTIALS" in str(e):
-            raise HTTPException(
-                status_code=400, detail="Incorrect email or password"
-            ) from e
-        else:
-            raise HTTPException(status_code=400, detail="An error occurred") from e
-
-
-@router.post("/logout")
-def logout(uid: str = Depends(deps.get_token_uid)) -> Any:
-    """
-    Log out current user.
-    """
-    try:
-        firebase_auth.revoke_refresh_tokens(uid)
-        return JSONResponse(
-            status_code=200,
-            content={"message": "User signed out successfully"},
-        )
-    except Exception as e:
-        raise HTTPException(
-            status_code=400, detail=f"Error signing out user. Error: ${e}"
-        ) from e
-
-
-@router.post("/refresh-token")
-def refresh_token(
-    response: Response,
-    refresh_token: deps.TokenDep2,
-    current_user: deps.CurrentUser,
-    auth: Any = Depends(deps.get_auth),
-) -> Any:
-    """
-    Refresh access token.
-    """
-    try:
-        user = auth.refresh(refresh_token)
-        access_token = user.get("idToken")
-        ref_token = user.get("refreshToken")
 
         response.set_cookie(
             key="access_token",
@@ -184,78 +75,150 @@ def refresh_token(
             secure=True,
             httponly=True,
         )
-        response.set_cookie(
-            key="refresh_token",
-            value=ref_token,
-            max_age=timedelta(days=30),
-            secure=True,
-            httponly=True,
+
+        email_data = generate_new_account_email(
+            email_to=user.email, username=user.email, password=credentials.password
+        )
+        background_tasks.add_task(
+            send_email,
+            email_to="neyostica2000@yahoo.com",
+            subject=email_data.subject,
+            html_content=email_data.html_content,
         )
 
-        return JSONResponse(
-            status_code=200,
-            content={
-                "access_token": access_token,
-                "refresh_token": ref_token,
-                "expires": get_timestamp(),
-                "token_type": "bearer",
-            },
-        )
-    except Exception:
-        raise HTTPException(status_code=400, detail="Error refreshing token")
+        return user
+    except Exception as e:
+        logger.error(e)
+        raise HTTPException(
+            status_code=500, detail=f"Error signing in. Error: ${e}"
+        ) from e
 
 
-@router.post("/social")
-def social(
-    response: Response,
-    credentials: schemas.Social,
-    db: deps.SessionDep,
-    auth: Any = Depends(deps.get_auth),
-) -> Any:
+@router.post("/signup", response_model=UserPublic)
+def register_user(session: deps.SessionDep, user_in: UserRegister) -> Any:
     """
-    Create a new user from social login if user does not exist.
+    Create new user without the need to be logged in.
     """
-
-    email = credentials.email
-
-    def get_token(uid: str) -> str:
-        custom_token = firebase_auth.create_custom_token(uid).decode("utf-8")
-        user = auth.sign_in_with_custom_token(custom_token)
-        return {
-            "access_token": user["idToken"],
-            "refresh_token": user["refreshToken"],
-            "expires": get_timestamp(),
-            "token_type": "bearer",
-        }
-
     try:
-        user: User = crud.get_user_by_email(db=db, email=email)
+        if not settings.USERS_OPEN_REGISTRATION:
+            raise HTTPException(
+                status_code=403,
+                detail="Open user registration is forbidden on this server",
+            )
+        user = crud.user.get_user_by_email(session=session, email=user_in.email)
         if user:
-            return JSONResponse(status_code=200, content=get_token(str(user.id)))
-
-        user: User = crud.user.create(db=db, obj_in=credentials)
-        content = get_token(str(user.id))
+            raise HTTPException(
+                status_code=400,
+                detail="The user with this email already exists in the system",
+            )
+        user_create = UserCreate.model_validate(user_in)
+        user = crud.user.create(session=session, user_create=user_create)
+        access_token = security.create_access_token(
+            user.id,
+            expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+        )
+        response = JSONResponse(content=jsonable_encoder(user))
         response.set_cookie(
             key="access_token",
-            value=content.get("access_token"),
+            value=access_token,
             max_age=timedelta(days=30),
             secure=True,
             httponly=True,
+        )
+        return response
+    except Exception as e:
+        logger.error(e)
+        raise HTTPException(
+            status_code=500, detail=f"An error occurred while signing up. Error: ${e}"
+        ) from e
+
+
+@router.get("/refresh-token", response_model=schemas.Token)
+async def test_token(
+    response: Response,
+    current_user: User = Depends(deps.get_current_user),
+) -> Any:
+    """
+    Return a new token for current user
+    """
+    try:
+        if not current_user.is_active:
+            raise HTTPException(status_code=400, detail="Inactive user")
+        access_token = security.create_access_token(
+            current_user.id,
+            expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
         )
         response.set_cookie(
-            key="refresh_token",
-            value=content.get("refresh_token"),
+            key="access_token",
+            value=access_token,
             max_age=timedelta(days=30),
             secure=True,
             httponly=True,
         )
-        return JSONResponse(status_code=200, content=content)
-
+        return {
+            "access_token": access_token,
+            "token_type": "bearer",
+        }
     except Exception as e:
-        return JSONResponse(
-            status_code=400,
-            content={"message": "An error occurred", "error": str(e)},
+        logger.error(e)
+        raise HTTPException(
+            status_code=500,
+            detail=f"An error occurred while refreshing token. Error: ${e}",
+        ) from e
+
+
+@router.post("/social", response_model=schemas.Token)
+async def social(
+    response: Response, credentials: schemas.Social, session: deps.SessionDep
+) -> Any:
+    """
+    Return a new token for current user
+    """
+    try:
+        user = crud.user.get_user_by_email(session=session, email=credentials.email)
+        if not user:
+            user_create = UserCreate.model_validate(credentials)
+            user = crud.user.create(session=session, user_create=user_create)
+        access_token = security.create_access_token(
+            user.id,
+            expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
         )
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            max_age=timedelta(days=30),
+            secure=True,
+            httponly=True,
+        )
+        return {
+            "access_token": access_token,
+            "token_type": "bearer",
+        }
+    except Exception as e:
+        logger.error(e)
+        raise HTTPException(
+            status_code=500, detail=f"Error signing in user. Error: ${e}"
+        ) from e
+
+
+@router.post("/logout")
+def logout() -> Any:
+    """
+    Log out current user.
+    """
+    try:
+        response = JSONResponse(content={"message": "User signed out successfully"})
+        response.set_cookie(
+            key="access_token",
+            value="expired",
+            max_age=timedelta(days=-1),
+        )
+        return response
+    except Exception as e:
+        logger.error(e)
+        raise HTTPException(
+            status_code=400, detail=f"Error signing out user. Error: ${e}"
+        ) from e
 
 
 def get_timestamp() -> int:
@@ -264,7 +227,7 @@ def get_timestamp() -> int:
 
     # Add 1 hour (3600 seconds) to the current datetime.
     new_datetime = current_datetime + timedelta(
-        seconds=settings.ACCESS_TOKEN_EXPIRE_SECONDS
+        seconds=settings.ACCESS_TOKEN_EXPIRE_MINUTES
     )
 
     # Convert the new datetime to a Unix timestamp (milliseconds since epoch).

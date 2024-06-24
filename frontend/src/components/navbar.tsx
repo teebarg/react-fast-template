@@ -15,10 +15,9 @@ import { SearchIcon } from "react-icons";
 import UserDropDown from "@/components/user-menu";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "@/store/auth-provider";
-import type { AuthContextValue } from "@/store/auth-provider";
 
 const Navbar = () => {
-    const { isAuthenticated } = useAuth() as AuthContextValue;
+    const { isAuthenticated } = useAuth();
     const searchInput = (
         <Input
             aria-label="Search"

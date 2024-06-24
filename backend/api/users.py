@@ -3,11 +3,19 @@ from typing import Any
 from fastapi import APIRouter, Query
 
 import crud
-import deps
+from core import deps
 from models.user import User
 
 # Create a router for users
 router = APIRouter()
+
+
+@router.get("/admin-me")
+async def read_admin(admin_user: deps.AdminUser) -> User:
+    """
+    Get current admin user.
+    """
+    return admin_user  # type: ignore
 
 
 @router.get("/me")

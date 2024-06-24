@@ -1,29 +1,23 @@
-import React from "react";
-import { LoaderFunction, redirect, useFetcher, useLoaderData } from "react-router-dom";
+import React, { useEffect } from "react";
+import { LoaderFunction, redirect, useFetcher, useLoaderData, useLocation, useNavigate } from "react-router-dom";
 import { Button, Image } from "@nextui-org/react";
-import { useAuth } from "@/hooks/use-auth";
 import { useCookie } from "@/hooks/use-cookie";
 import NotFound from "@/pages/NotFound";
 import Navbar from "@/components/navbar";
 import Meta from "@/components/Meta";
 import userService from "@/services/user.service";
+import { useAuth } from "@/store/auth-provider";
 
 interface Props {}
 
-interface loaderData {
+interface profileData {
     user: Record<string, any>;
     error: boolean;
+    errorMessage: string;
 }
 
 const profileLoader: LoaderFunction = async ({ request }) => {
-    const { isAuthenticated } = useAuth();
     const { removeCookie } = useCookie();
-    if (!isAuthenticated) {
-        removeCookie("user");
-        const params = new URLSearchParams();
-        params.set("from", new URL(request.url).pathname);
-        return redirect("/login?" + params.toString());
-    }
     try {
         const user = await userService.getProfile();
         return { user, error: false };
@@ -39,10 +33,21 @@ const profileLoader: LoaderFunction = async ({ request }) => {
 };
 
 const Profile: React.FC<Props> = () => {
-    // Get our logged in user, if they exist, from the root route loader data
-    // const { data } = useRouteLoaderData("root") as { user: string | null };
+    const navigate = useNavigate();
+    const location = useLocation();
     const fetcher = useFetcher();
-    const { user, error } = useLoaderData() as loaderData;
+    const { user, error } = useLoaderData() as profileData;
+
+    const { isAuthenticated } = useAuth();
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            const params = new URLSearchParams();
+            params.set("from", location.pathname);
+            navigate("/login?" + params.toString());
+            return;
+        }
+    }, []);
 
     if (error || !user) {
         return <NotFound />;

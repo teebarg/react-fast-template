@@ -86,7 +86,7 @@ prep: ## Prepare postges database
 
 prep-docker: ## Prepare postges database
 	@echo "$(YELLOW)Preparing docker database...$(RESET)"
-	docker exec local-api-1 ./prestart.sh
+	docker exec react-fast-template-backend-1 ./prestart.sh
 
 
 # Backend Deployment

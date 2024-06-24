@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { redirect, LoaderFunctionArgs } from "react-router-dom";
 // import { useMutation } from "@tanstack/react-query";
-import { useCookie } from "@/hooks/use-cookie";
 import authService from "@/services/auth.service";
 
 const loginAction =
@@ -10,7 +9,6 @@ const loginAction =
         const formData = await request.formData();
         const email = formData.get("email") as string | null;
         const password = formData.get("password") as string | null;
-        const { setCookie } = useCookie();
 
         // Validate our form inputs and return validation errors via useActionData()
         if (!email) {
@@ -33,11 +31,7 @@ const loginAction =
             // });
             // mutation.mutate()
             const user = await authService.login({ email, password: password ?? "" });
-            if (user) {
-                setCookie("user", { name: user.name, email: user.email }, { maxAge: 3600 });
-                setCookie("accessTokenExpires", user.expires, { maxAge: 3600 });
-                login();
-            }
+            await login(user);
         } catch (error) {
             // Unused as of now but this is how you would handle invalid
             // username/password combinations - just like validating the inputs
