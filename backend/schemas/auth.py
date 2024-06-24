@@ -6,7 +6,7 @@ class Social(BaseModel):
     email: str
     firstname: str
     lastname: str
-    password: str = secrets.token_urlsafe(32)
+    password: str = secrets.token_urlsafe(6)
 
     class Config:
         json_schema_extra = {

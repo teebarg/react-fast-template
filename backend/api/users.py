@@ -10,6 +10,14 @@ from models.user import User
 router = APIRouter()
 
 
+@router.get("/admin-me")
+async def read_admin(admin_user: deps.AdminUser) -> User:
+    """
+    Get current admin user.
+    """
+    return admin_user  # type: ignore
+
+
 @router.get("/me")
 async def read_user_me(
     session: deps.SessionDep, current_user: deps.CurrentUser

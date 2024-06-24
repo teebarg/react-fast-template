@@ -1,28 +1,48 @@
-import React from "react";
-import { Outlet, ScrollRestoration, redirect, useNavigation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Outlet, ScrollRestoration, redirect, useLocation, useNavigate, useNavigation } from "react-router-dom";
 import type { LoaderFunction, Location, useMatches } from "react-router-dom";
 import Sidebar from "@/components/core/sidebar";
 import AdminNavbar from "@/components/admin-navbar";
-import { useAuth } from "@/hooks/use-auth";
+import { useCookie } from "@/hooks/use-cookie";
+import authService from "@/services/auth.service";
+import { useAuth } from "@/store/auth-provider";
 
 const adminLoader: LoaderFunction = async ({ request }) => {
-    const { isAuthenticated } = useAuth();
-    // function profileLoader({ request }: LoaderFunctionArgs) {
-    // If the user is not logged in and tries to access `/protected`, we redirect
-    // them to `/login` with a `from` parameter that allows login to redirect back
-    // to this page upon successful authentication
-    if (!isAuthenticated) {
-        const params = new URLSearchParams();
-        params.set("from", new URL(request.url).pathname);
-        return redirect("/login?" + params.toString());
+    const { removeCookie } = useCookie();
+    try {
+        const user = await authService.admin();
+        return { user, error: false };
+    } catch (error: any) {
+        if ([403].includes(error.status)) {
+            return redirect("/");
+        }
+        if ([401, 422].includes(error.status)) {
+            removeCookie("user");
+            const params = new URLSearchParams();
+            params.set("from", new URL(request.url).pathname);
+            return redirect("/login?" + params.toString());
+        }
+        return { user: null, error: true, errorMessage: error.message };
     }
-    return null;
 };
 
 interface Props {}
 
 const AdminLayout: React.FC<Props> = () => {
     const navigation = useNavigation();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { isAuthenticated } = useAuth();
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            const params = new URLSearchParams();
+            params.set("from", location.pathname);
+            navigate("/login?" + params.toString());
+            return;
+        }
+    }, []);
+
     // You can provide a custom implementation of what "key" should be used to
     // cache scroll positions for a given location.  Using the location.key will
     // provide standard browser behavior and only restore on back/forward

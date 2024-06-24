@@ -3,16 +3,9 @@
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, User } from "@nextui-org/react";
 import { useFetcher } from "react-router-dom";
 import { useAuth } from "@/store/auth-provider";
-import type { AuthContextValue } from "@/store/auth-provider";
-
-interface User {
-    name: string;
-    email: string;
-    image: string;
-}
 
 export default function UserDropDown() {
-    const { currentUser } = useAuth() as AuthContextValue;
+    const { currentUser } = useAuth();
     const fetcher = useFetcher();
 
     return (
@@ -26,13 +19,13 @@ export default function UserDropDown() {
                     }}
                     className="transition-transform"
                     description={currentUser?.email}
-                    name={currentUser?.name}
+                    name={currentUser?.lastname}
                 />
             </DropdownTrigger>
             <DropdownMenu aria-label="User Actions" variant="flat">
                 <DropdownItem key="user" className="h-14 gap-2">
                     <p className="font-bold">Signed in as</p>
-                    <p className="font-bold">@{currentUser?.email}</p>
+                    <p className="font-bold">@{currentUser?.firstname}</p>
                 </DropdownItem>
 
                 <DropdownItem key="admin">

@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
-from typing import Any
+from typing import Annotated, Any
+from core.logging import logger
 
 from core.utils import (
     generate_new_account_email,
@@ -8,6 +9,7 @@ from core.utils import (
 from core import security
 from fastapi import APIRouter, Depends, HTTPException, Response, BackgroundTasks
 from fastapi.responses import JSONResponse
+from fastapi.security import OAuth2PasswordRequestForm
 
 import crud
 from core import deps
@@ -15,18 +17,41 @@ import schemas
 from core.config import settings
 from models.user import User, UserCreate, UserPublic, UserRegister
 from models.token import Token
+from fastapi.encoders import jsonable_encoder
 
 # Create a router for users
 router = APIRouter()
 
 
-@router.post("/login")
+@router.post("/login/access-token")
 def login_access_token(
+    session: deps.SessionDep, form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
+) -> Token:
+    """
+    OAuth2 compatible token login, get an access token for future requests
+    """
+    user = crud.user.authenticate(
+        session=session, email=form_data.username, password=form_data.password
+    )
+    if not user:
+        raise HTTPException(status_code=400, detail="Incorrect email or password")
+    elif not user.is_active:
+        raise HTTPException(status_code=400, detail="Inactive user")
+    return Token(
+        access_token=security.create_access_token(
+            user.id,
+            expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+        )
+    )
+
+
+@router.post("/login")
+def login(
     response: Response,
     session: deps.SessionDep,
     credentials: schemas.SignIn,
     background_tasks: BackgroundTasks,
-) -> Token:
+) -> UserPublic:
     """
     OAuth2 compatible token login, get an access token for future requests
     """
@@ -61,8 +86,9 @@ def login_access_token(
             html_content=email_data.html_content,
         )
 
-        return Token(access_token=access_token)
+        return user
     except Exception as e:
+        logger.error(e)
         raise HTTPException(
             status_code=500, detail=f"Error signing in. Error: ${e}"
         ) from e
@@ -87,8 +113,21 @@ def register_user(session: deps.SessionDep, user_in: UserRegister) -> Any:
             )
         user_create = UserCreate.model_validate(user_in)
         user = crud.user.create(session=session, user_create=user_create)
-        return user
+        access_token = security.create_access_token(
+            user.id,
+            expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+        )
+        response = JSONResponse(content=jsonable_encoder(user))
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            max_age=timedelta(days=30),
+            secure=True,
+            httponly=True,
+        )
+        return response
     except Exception as e:
+        logger.error(e)
         raise HTTPException(
             status_code=500, detail=f"An error occurred while signing up. Error: ${e}"
         ) from e
@@ -121,8 +160,10 @@ async def test_token(
             "token_type": "bearer",
         }
     except Exception as e:
+        logger.error(e)
         raise HTTPException(
-            status_code=500, detail=f"An error occurred while refreshing token. Error: ${e}"
+            status_code=500,
+            detail=f"An error occurred while refreshing token. Error: ${e}",
         ) from e
 
 
@@ -154,6 +195,7 @@ async def social(
             "token_type": "bearer",
         }
     except Exception as e:
+        logger.error(e)
         raise HTTPException(
             status_code=500, detail=f"Error signing in user. Error: ${e}"
         ) from e
@@ -165,11 +207,15 @@ def logout() -> Any:
     Log out current user.
     """
     try:
-        return JSONResponse(
-            status_code=200,
-            content={"message": "User signed out successfully"},
+        response = JSONResponse(content={"message": "User signed out successfully"})
+        response.set_cookie(
+            key="access_token",
+            value="expired",
+            max_age=timedelta(days=-1),
         )
+        return response
     except Exception as e:
+        logger.error(e)
         raise HTTPException(
             status_code=400, detail=f"Error signing out user. Error: ${e}"
         ) from e

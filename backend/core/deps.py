@@ -16,7 +16,9 @@ from core.logging import logger
 from db.engine import engine
 from models.user import User
 
-reusable_oauth2 = OAuth2PasswordBearer(tokenUrl="/auth/login/password")
+reusable_oauth2 = OAuth2PasswordBearer(
+    tokenUrl=f"{settings.API_V1_STR}/auth/login/access-token"
+)
 
 
 def get_db() -> Generator:
@@ -47,15 +49,15 @@ def get_storage() -> Generator:
         logger.debug("storage closed")
 
 
-def get_current_user(session: SessionDep, token: TokenDep2) -> User:
+def get_current_user(session: SessionDep, access_token: TokenDep2) -> User:
     try:
         payload = jwt.decode(
-            token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
+            access_token, settings.SECRET_KEY, algorithms=[security.ALGORITHM]
         )
         token_data = TokenPayload(**payload)
     except (InvalidTokenError, ValidationError):
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
         )
     user = session.get(User, token_data.sub)
@@ -79,3 +81,14 @@ def get_current_active_user(
 
 
 CurrentUser = Annotated[User, Depends(get_current_user)]
+
+
+def get_current_active_superuser(current_user: CurrentUser) -> User:
+    if not current_user.is_superuser:
+        raise HTTPException(
+            status_code=403, detail="The user doesn't have enough privileges"
+        )
+    return current_user
+
+
+AdminUser = Annotated[User, Depends(get_current_active_superuser)]

@@ -11,13 +11,12 @@ import { adminRoutes, tboRoutes } from "@/routes/routes";
 import asyncComponentLoader from "@/utils/loader";
 import LoadingPage from "@/components/loading";
 import { useAuth } from "@/store/auth-provider";
-import type { AuthContextValue } from "@/store/auth-provider";
 import useAddToHomeScreenPrompt from "@/hooks/useAddToHomeScreenPrompt";
 import { PwaBanner } from "@/components/pwa-banner";
 
 function App() {
     const [promptEvent, promptToInstall] = useAddToHomeScreenPrompt();
-    const { logout, login } = useAuth() as AuthContextValue;
+    const { logout, login } = useAuth();
     const router = createBrowserRouter([
         {
             id: "root",
@@ -65,13 +64,23 @@ function App() {
                     },
                 },
                 {
+                    path: "signup",
+                    async lazy() {
+                        const { SignUp } = await import("@/pages/auth/signup");
+                        const { SignUpAction } = await import("@/pages/auth/signup/action");
+                        return {
+                            action: SignUpAction({ login }),
+                            Component: SignUp,
+                        };
+                    },
+                },
+                {
                     path: "login",
                     async lazy() {
-                        const { loginLoader, Login } = await import("@/pages/auth/login");
-                        const { loginAction } = await import("@/actions");
+                        const { Login } = await import("@/pages/auth/login");
+                        const { loginAction } = await import("@/pages/auth/login/action");
                         return {
                             action: loginAction({ login }),
-                            loader: loginLoader,
                             Component: Login,
                         };
                     },
@@ -90,8 +99,7 @@ function App() {
         {
             path: "/logout",
             async action() {
-                // We signout in a "resource route" that we can hit from a fetcher.Form
-                logout();
+                await logout();
                 return redirect("/");
             },
         },

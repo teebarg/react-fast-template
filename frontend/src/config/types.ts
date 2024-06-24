@@ -2,6 +2,13 @@
 import type { OptionsObject } from "notistack";
 import { ReactNode } from "react";
 
+interface LoginUser {
+    firstname?: string;
+    lastname?: string;
+    email?: string;
+    image?: string;
+}
+
 type Notifications = {
     options: OptionsObject;
     maxSnack: number;
@@ -30,4 +37,4 @@ type TableProps = {
     query: string;
 };
 
-export type { Pagination, Column, TableProps, Notifications };
+export type { Pagination, Column, TableProps, Notifications, LoginUser };
