@@ -1,6 +1,6 @@
 import isMobile from "@/utils/is-mobile";
 
-import type { Notifications } from "./types";
+import type { Notifications } from "../types";
 
 const title = "React Fast Template";
 

@@ -4,7 +4,7 @@ import React, { useRef } from "react";
 import { Chip, Badge, Avatar, Tooltip } from "@nextui-org/react";
 import { CheckIcon, EyeIcon, EditIcon, DeleteIcon } from "react-icons";
 import { useLocation, useNavigate } from "react-router-dom";
-import { TableProps } from "@/config/types";
+import { TableProps } from "@/types";
 import Table from "@/components/table";
 import NextModal from "@/components/modal";
 // import NextModal from "@/components/core/Modal";

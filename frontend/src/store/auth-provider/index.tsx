@@ -1,5 +1,5 @@
 // auth-context.tsx
-import type { LoginUser } from "@/config/types";
+import type { LoginUser } from "@/types";
 import { useCookie } from "@/hooks/use-cookie";
 import authService from "@/services/auth.service";
 import React, { createContext, useState, useEffect, useContext } from "react";
