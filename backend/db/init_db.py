@@ -27,6 +27,6 @@ def init_db(session: Session) -> None:
                 password=settings.FIRST_SUPERUSER_PASSWORD,
                 is_superuser=True,
             )
-            user = crud.user.create(session=session, user_create=user_in)
+            user = crud.user.create(db=session, user_create=user_in)
         except Exception as e:
             logger.error(e)

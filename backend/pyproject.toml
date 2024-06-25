@@ -14,6 +14,14 @@ exclude = '''
 '''
 
 [tool.ruff]
+# Exclude specific directories or files
+exclude = ["migrations", "node_modules", "__pycache__", "alembic"]
+# Max line length
+line-length = 90
+indent-width = 4
+
+[tool.ruff.lint]
+# List of enabled rules
 select = [
     "B",      # flake8-bugbear
     "C",      # flake8-comprehensions
@@ -24,6 +32,7 @@ select = [
     "Q",      # flake8-quotes
     "RUF100", # Unused noqa directive
 ]
+
 
 [tool.isort]
 profile = "black"

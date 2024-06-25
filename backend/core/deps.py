@@ -1,19 +1,19 @@
 from typing import Annotated, Generator, Union
 
-from core import security
-from models.token import TokenPayload
-import jwt
 import firebase_admin
-from fastapi import Depends, HTTPException, status, Cookie
+import jwt
+from fastapi import Cookie, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from firebase_admin import credentials, storage
 from jwt.exceptions import InvalidTokenError
 from pydantic import ValidationError
-from fastapi.security import APIKeyHeader, OAuth2PasswordBearer
-from firebase_admin import credentials, storage
 from sqlmodel import Session
 
+from core import security
 from core.config import settings
 from core.logging import logger
 from db.engine import engine
+from models.token import TokenPayload
 from models.user import User
 
 reusable_oauth2 = OAuth2PasswordBearer(
@@ -59,7 +59,7 @@ def get_current_user(session: SessionDep, access_token: TokenDep2) -> User:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
-        )
+        ) from None
     user = session.get(User, token_data.sub)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")

@@ -67,9 +67,7 @@ const AdminLayout: React.FC<Props> = () => {
                 style={{
                     display: navigation.state === "idle" ? "none" : "block",
                 }}
-            >
-                Navigating...
-            </div>
+            ></div>
             <div className="flex min-h-screen">
                 <div className="hidden sm:block min-w-[20rem] h-screen overflow-y-auto">
                     <Sidebar />

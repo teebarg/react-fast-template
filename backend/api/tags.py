@@ -7,7 +7,6 @@ from sqlalchemy.exc import IntegrityError
 
 import crud
 from core import deps
-import schemas
 from models.product import Tag
 
 # Create a router for tags
@@ -59,7 +58,7 @@ async def show(id: str, db: deps.SessionDep):
 
 
 @router.post("/", response_model=Tag, status_code=201)
-async def create(tag: schemas.TagCreate, db: deps.SessionDep):
+async def create(tag: Any, db: deps.SessionDep):
     """
     Create a new tag.
     """
@@ -68,13 +67,13 @@ async def create(tag: schemas.TagCreate, db: deps.SessionDep):
     except IntegrityError as e:
         raise HTTPException(
             status_code=422, detail=f"Error creating tag, {e.orig.pgerror}"
-        )
+        ) from e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error creating tag, {e}")
+        raise HTTPException(status_code=500, detail=f"Error creating tag, {e}") from e
 
 
 @router.put("/{id}", response_model=Tag)
-async def update(id: int, update: schemas.TagUpdate, db: deps.SessionDep):
+async def update(id: int, update: Any, db: deps.SessionDep):
     """
     Update a specific tag by ID.
     """
@@ -85,9 +84,9 @@ async def update(id: int, update: schemas.TagUpdate, db: deps.SessionDep):
     except IntegrityError as e:
         raise HTTPException(
             status_code=422, detail=f"Error updating tag, {e.orig.pgerror}"
-        )
+        ) from e
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error updating tag, {e}")
+        raise HTTPException(status_code=500, detail=f"Error updating tag, {e}") from e
 
 
 @router.delete("/{id}", response_model=Tag)
@@ -102,4 +101,4 @@ async def delete(id: int, db: deps.SessionDep):
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error deleting tag, invalid tag id, {e}"
-        )
+        ) from e

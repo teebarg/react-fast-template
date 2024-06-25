@@ -19,7 +19,7 @@ import {
     SortDescriptor,
 } from "@nextui-org/react";
 import { PlusIcon, SearchIcon, ChevronDownIcon } from "react-icons";
-import { Column, TableProps } from "@/config/types";
+import { Column, TableProps } from "@/types";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Table({ rows = [], columns = [], callbackFunction, onSearchChange, onAddNew, pagination, query }: TableProps) {

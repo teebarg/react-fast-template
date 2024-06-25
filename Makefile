@@ -108,4 +108,4 @@ pre-commit:
 	--prefix-colors "bgRed.bold.white,bgGreen.bold.white,bgBlue.bold.white,bgMagenta.bold.white" \
     "cd frontend && npm run lint:check" \
     "cd frontend && npm run build" \
-	"cd backend && black ."
+	"cd backend && make format"

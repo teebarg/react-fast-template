@@ -67,8 +67,8 @@ const Sidebar: React.FC<Props> = () => {
                     href: "/admin/settings",
                 },
                 {
-                    label: "Bar charts",
-                    href: "/admin/bar-chart",
+                    label: "Users",
+                    href: "/admin/users",
                 },
             ],
         },

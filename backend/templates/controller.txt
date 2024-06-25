@@ -7,7 +7,6 @@ from sqlalchemy.exc import IntegrityError
 
 import crud
 import deps
-import schemas
 from models.{{name}} import {{cname}}
 
 # Create a router for {{name}}
@@ -48,7 +47,7 @@ async def show(id: str, db: deps.SessionDep):
 
 
 @router.post("/", response_model={{cname}}, status_code=201)
-async def create({{name}}: schemas.{{cname}}Create, db: deps.SessionDep):
+async def create({{name}}: {{cname}}Create, db: deps.SessionDep):
     """
     Create a new {{name}}.
     """
@@ -61,7 +60,7 @@ async def create({{name}}: schemas.{{cname}}Create, db: deps.SessionDep):
 
 
 @router.put("/{id}", response_model={{cname}})
-async def update(id: int, update: schemas.{{cname}}Update, db: deps.SessionDep):
+async def update(id: int, update: {{cname}}Update, db: deps.SessionDep):
     """
     Update a specific {{name}} by ID.
     """

@@ -6,8 +6,8 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 
-from db.engine import engine
 from core.deps import get_current_user
+from db.engine import engine
 from main import app
 from models.user import User
 

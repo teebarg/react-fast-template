@@ -1,4 +1,4 @@
-import { Pagination } from "@/config/types";
+import { Pagination } from "@/types";
 
 const users = [
     {
