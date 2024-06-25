@@ -57,14 +57,11 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db_obj: ModelType,
         obj_in: Union[UpdateSchemaType, Dict[str, Any]],
     ) -> ModelType:
-        obj_data = jsonable_encoder(db_obj)
         if isinstance(obj_in, dict):
             update_data = obj_in
         else:
-            update_data = obj_in.dict(exclude_unset=True)
-        for field in obj_data:
-            if field in update_data:
-                setattr(db_obj, field, update_data[field])
+            update_data = obj_in.model_dump(exclude_unset=True)
+        db_obj.sqlmodel_update(update_data)
         return self.sync(db=db, update=db_obj, type="update")
 
     def update_or_create(
@@ -103,12 +100,12 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         return model
 
     def remove(self, db: Session, *, id: int) -> ModelType:
-        obj = db.query(self.model).get(id)
-        db.delete(obj)
+        db_obj = db.get(self.model, id)
+        db.delete(db_obj)
         db.commit()
-        return obj
+        return db_obj
 
-    def sync(self, db: Session, update: Any, type: str = "create") -> Any:
+    def sync(self, db: Session, update: ModelType, type: str = "create") -> ModelType:
         update.updated_at = datetime.now()
         if type == "create":
             update.created_at = datetime.now()

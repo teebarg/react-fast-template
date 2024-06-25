@@ -37,4 +37,28 @@ type TableProps = {
     query: string;
 };
 
-export type { Pagination, Column, TableProps, Notifications, LoginUser };
+type User = {
+    id?: string | number;
+    firstname?: string;
+    lastname?: string;
+    email?: string;
+    is_active?: boolean;
+    is_superuser?: boolean;
+};
+
+type CreateUser = {
+    firstname: string;
+    lastname: string;
+    email: string;
+    password: string;
+};
+
+type UpdateUser = {
+    firstname?: string;
+    lastname?: string;
+    email?: string;
+    is_active?: boolean;
+    is_superuser?: boolean;
+};
+
+export type { Pagination, Column, TableProps, Notifications, LoginUser, User, CreateUser, UpdateUser };

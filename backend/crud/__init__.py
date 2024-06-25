@@ -8,14 +8,8 @@ from models.user import User, UserCreate
 
 from .crud_user import user
 
+
 # For a new basic set of CRUD operations you could just do
-
-
-def get_user_by_email(*, db: Session, email: str) -> User | None:
-    statement = select(User).where(User.email == email)
-    return db.exec(statement).first()
-
-
 def update_or_create_user(
     *,
     db: Session,

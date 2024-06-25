@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Chip, Badge, Avatar, Tooltip } from "@nextui-org/react";
 import { CheckIcon, EyeIcon, EditIcon, DeleteIcon } from "react-icons";
 import { useLocation, useNavigate } from "react-router-dom";
-import { TableProps } from "@/types";
+import type { TableProps, User } from "@/types";
 import Table from "@/components/table";
 import NextModal from "@/components/modal";
+import { UserForm } from "./userForm";
 // import NextModal from "@/components/core/Modal";
 
 interface ChildComponentHandles {
@@ -24,13 +25,14 @@ export default function TableData({
     query: string;
 }) {
     const modalRef = useRef<ChildComponentHandles>(null);
+    const [currentUser, setCurrent] = useState<User>({});
 
     const navigate = useNavigate();
     const location = useLocation();
 
     const columns = [
         { name: "AVATAR", uid: "avatar" },
-        { name: "NAME", uid: "name", sortable: true },
+        { name: "FULLNAME", uid: "name", sortable: true },
         { name: "EMAIL", uid: "email", sortable: true },
         { name: "STATUS", uid: "status", sortable: true },
         { name: "CREATED_AT", uid: "create" },
@@ -50,13 +52,20 @@ export default function TableData({
         updateQueryParams("name", value);
     };
 
-    const handleView = () => {
+    const handleEdit = (value: User) => {
+        setCurrent((prev) => ({ ...prev, ...value }));
         if (modalRef.current) {
             modalRef.current.onOpen();
         }
     };
 
-    const handleEdit = (id: number | string) => {
+    const handleModalClose = () => {
+        if (modalRef.current) {
+            modalRef.current.onClose();
+        }
+    };
+
+    const handleView = (id: number | string) => {
         navigate(`/admin/user/${id}`);
     };
 
@@ -66,16 +75,10 @@ export default function TableData({
         switch (columnKey) {
             case "avatar":
                 return (
-                    <Badge
-                        key={"avatar"}
-                        isOneChar
-                        content={<CheckIcon />}
-                        color={user.status == "active" ? "success" : "danger"}
-                        placement="bottom-right"
-                    >
+                    <Badge key={"avatar"} isOneChar content={<CheckIcon />} color={user.is_active ? "success" : "danger"} placement="bottom-right">
                         <Avatar
                             isBordered
-                            color={user.status == "active" ? "success" : "danger"}
+                            color={user.is_active ? "success" : "danger"}
                             radius="md"
                             src="https://i.pravatar.cc/300?u=a042581f4e290267072"
                         />
@@ -84,30 +87,32 @@ export default function TableData({
             case "name":
                 return (
                     <div className="flex items-center space-x-3">
-                        <div className="font-bold">{user?.name}</div>
+                        <div className="font-bold">
+                            {user?.firstname} {user?.lastname}
+                        </div>
                     </div>
                 );
             case "email":
                 return <p>{user.email}</p>;
             case "status":
                 return (
-                    <Chip color={user.role == "admin" ? "warning" : "secondary"} variant="bordered">
-                        {user.role == "admin" ? "Admin" : "Member"}
+                    <Chip color={user.is_superuser ? "warning" : "secondary"} variant="bordered">
+                        {user.is_superuser ? "Admin" : "Member"}
                     </Chip>
                 );
             case "create":
-                return <time dateTime={user.createdAt}>{user.createdAt}</time>;
+                return <time dateTime={user.created_at}>{user.created_at}</time>;
             case "actions":
                 return (
                     <div className="relative flex items-center gap-2">
                         <Tooltip content="Details">
                             <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                                <EyeIcon onClick={handleView} />
+                                <EyeIcon onClick={() => handleView(user.id)} />
                             </span>
                         </Tooltip>
                         <Tooltip content="Edit user">
                             <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                                <EditIcon onClick={() => handleEdit(user.id)} />
+                                <EditIcon onClick={() => handleEdit(user)} />
                             </span>
                         </Tooltip>
                         <Tooltip color="danger" content="Delete user">
@@ -125,11 +130,8 @@ export default function TableData({
     return (
         <>
             <Table callbackFunction={rowRender} onSearchChange={onSearchChange} columns={columns} rows={rows} pagination={pagination} query={query} />
-            <NextModal ref={modalRef} modalTitle="User Details">
-                <p>
-                    Hey there! Im a modal. You can close me by clicking the close button or clicking outside of me. I am quite useful. You can put any
-                    content here.
-                </p>
+            <NextModal ref={modalRef} size="lg">
+                <UserForm currentUser={currentUser} onClose={handleModalClose} type="update" />
             </NextModal>
         </>
     );

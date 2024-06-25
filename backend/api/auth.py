@@ -25,13 +25,13 @@ router = APIRouter()
 
 @router.post("/login/access-token")
 def login_access_token(
-    session: deps.SessionDep, form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
+    db: deps.SessionDep, form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ) -> Token:
     """
     OAuth2 compatible token login, get an access token for future requests
     """
     user = crud.user.authenticate(
-        session=session, email=form_data.username, password=form_data.password
+        db=db, email=form_data.username, password=form_data.password
     )
     if not user:
         raise HTTPException(status_code=400, detail="Incorrect email or password")
@@ -48,7 +48,7 @@ def login_access_token(
 @router.post("/login")
 def login(
     response: Response,
-    session: deps.SessionDep,
+    db: deps.SessionDep,
     credentials: schemas.SignIn,
     background_tasks: BackgroundTasks,
 ) -> UserPublic:
@@ -57,7 +57,7 @@ def login(
     """
     try:
         user = crud.user.authenticate(
-            session=session, email=credentials.email, password=credentials.password
+            db=db, email=credentials.email, password=credentials.password
         )
         if not user:
             raise HTTPException(status_code=400, detail="Incorrect email or password")
@@ -95,7 +95,7 @@ def login(
 
 
 @router.post("/signup", response_model=UserPublic)
-def register_user(session: deps.SessionDep, user_in: UserRegister) -> Any:
+def register_user(db: deps.SessionDep, user_in: UserRegister) -> Any:
     """
     Create new user without the need to be logged in.
     """
@@ -105,14 +105,14 @@ def register_user(session: deps.SessionDep, user_in: UserRegister) -> Any:
                 status_code=403,
                 detail="Open user registration is forbidden on this server",
             )
-        user = crud.user.get_user_by_email(session=session, email=user_in.email)
+        user = crud.user.get_user_by_email(db=db, email=user_in.email)
         if user:
             raise HTTPException(
                 status_code=400,
                 detail="The user with this email already exists in the system",
             )
         user_create = UserCreate.model_validate(user_in)
-        user = crud.user.create(session=session, user_create=user_create)
+        user = crud.user.create(db=db, user_create=user_create)
         access_token = security.create_access_token(
             user.id,
             expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
@@ -169,16 +169,16 @@ async def test_token(
 
 @router.post("/social", response_model=schemas.Token)
 async def social(
-    response: Response, credentials: schemas.Social, session: deps.SessionDep
+    response: Response, credentials: schemas.Social, db: deps.SessionDep
 ) -> Any:
     """
     Return a new token for current user
     """
     try:
-        user = crud.user.get_user_by_email(session=session, email=credentials.email)
+        user = crud.user.get_user_by_email(db=db, email=credentials.email)
         if not user:
             user_create = UserCreate.model_validate(credentials)
-            user = crud.user.create(session=session, user_create=user_create)
+            user = crud.user.create(db=db, user_create=user_create)
         access_token = security.create_access_token(
             user.id,
             expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
