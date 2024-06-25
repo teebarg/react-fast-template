@@ -1,32 +1,28 @@
 from typing import Any
 
-from core.utils import generate_new_account_email, send_email
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlmodel import func, select
 
 import crud
 from core import deps
-from models.user import (
-    UpdatePassword,
-    User,
-    UserCreate,
-    UserPublic,
-    UserUpdate,
-    UserUpdateMe,
-    UsersPublic,
-)
-from models.message import Message
-from typing import Any
-
-from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import col, delete, func, select
-
+from core.config import settings
 from core.deps import (
     CurrentUser,
     SessionDep,
     get_current_active_superuser,
 )
-from core.config import settings
 from core.security import get_password_hash, verify_password
+from core.utils import generate_new_account_email, send_email
+from models.message import Message
+from models.user import (
+    UpdatePassword,
+    User,
+    UserCreate,
+    UserPublic,
+    UsersPublic,
+    UserUpdate,
+    UserUpdateMe,
+)
 
 # Create a router for users
 router = APIRouter()

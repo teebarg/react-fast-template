@@ -1,15 +1,12 @@
-from typing import Any, Dict, Optional, Union
-
 from sqlmodel import Session, select
 
-import schemas
-from crud.base import CRUDBase
-from models.user import User, UserUpdate
 from core.security import get_password_hash, verify_password
+from crud.base import CRUDBase
+from models.user import User, UserCreate, UserUpdate
 
 
-class CRUDUser(CRUDBase[User, schemas.UserCreate, schemas.UserUpdate]):
-    def create(self, db: Session, user_create: schemas.UserCreate) -> User:
+class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
+    def create(self, db: Session, user_create: UserCreate) -> User:
         db_obj = User.model_validate(
             user_create,
             update={"hashed_password": get_password_hash(user_create.password)},
@@ -20,7 +17,6 @@ class CRUDUser(CRUDBase[User, schemas.UserCreate, schemas.UserUpdate]):
         return db_obj
 
     def authenticate(self, *, db: Session, email: str, password: str) -> User | None:
-        # sourcery skip: assign-if-exp, reintroduce-else, swap-if-else-branches, use-named-expression
         db_user = self.get_user_by_email(db=db, email=email)
         if not db_user:
             return None

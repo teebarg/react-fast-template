@@ -6,8 +6,8 @@ from pydantic import (
     EmailStr,
     PostgresDsn,
     ValidationInfo,
-    field_validator,
     computed_field,
+    field_validator,
 )
 from pydantic_settings import BaseSettings, SettingsConfigDict
 

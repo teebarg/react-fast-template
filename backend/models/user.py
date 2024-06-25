@@ -6,7 +6,7 @@ from models.base import BaseModel
 
 # Shared properties
 class UserBase(BaseModel):
-    email: EmailStr = Field(unique=True, index=True, max_length=255)
+    email: EmailStr | None = Field(unique=True, index=True, max_length=255)
     is_active: bool = True
     is_superuser: bool = False
     firstname: str | None = Field(default=None, max_length=255)

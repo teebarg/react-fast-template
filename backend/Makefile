@@ -21,7 +21,7 @@ dev:
 
 format:
 	black .
-	ruff --fix .
+	ruff check .
 
 backend-test: ## Run backend tests
 	@echo "$(YELLOW)Running backend tests...$(RESET)"

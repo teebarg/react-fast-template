@@ -1,23 +1,22 @@
 from datetime import datetime, timedelta
 from typing import Annotated, Any
-from core.logging import logger
 
-from core.utils import (
-    generate_new_account_email,
-    send_email,
-)
-from core import security
-from fastapi import APIRouter, Depends, HTTPException, Response, BackgroundTasks
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Response
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 
 import crud
-from core import deps
-import schemas
+from core import deps, security
 from core.config import settings
-from models.user import User, UserCreate, UserPublic, UserRegister
+from core.logging import logger
+from core.utils import (
+    generate_new_account_email,
+    send_email,
+)
+from models.auth import SignIn, Social
 from models.token import Token
-from fastapi.encoders import jsonable_encoder
+from models.user import UserCreate, UserPublic, UserRegister
 
 # Create a router for users
 router = APIRouter()
@@ -49,7 +48,7 @@ def login_access_token(
 def login(
     response: Response,
     db: deps.SessionDep,
-    credentials: schemas.SignIn,
+    credentials: SignIn,
     background_tasks: BackgroundTasks,
 ) -> UserPublic:
     """
@@ -133,10 +132,10 @@ def register_user(db: deps.SessionDep, user_in: UserRegister) -> Any:
         ) from e
 
 
-@router.get("/refresh-token", response_model=schemas.Token)
+@router.get("/refresh-token", response_model=Token)
 async def test_token(
     response: Response,
-    current_user: User = Depends(deps.get_current_user),
+    current_user: deps.CurrentUser,
 ) -> Any:
     """
     Return a new token for current user
@@ -167,10 +166,8 @@ async def test_token(
         ) from e
 
 
-@router.post("/social", response_model=schemas.Token)
-async def social(
-    response: Response, credentials: schemas.Social, db: deps.SessionDep
-) -> Any:
+@router.post("/social", response_model=Token)
+async def social(response: Response, credentials: Social, db: deps.SessionDep) -> Any:
     """
     Return a new token for current user
     """

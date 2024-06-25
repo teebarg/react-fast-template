@@ -3,17 +3,16 @@ from typing import Any, Dict, Union
 from fastapi.encoders import jsonable_encoder
 from sqlmodel import Session, select
 
-import schemas
-from models.user import User, UserCreate
+from models.user import User, UserUpdate
 
-from .crud_user import user
+from .crud_user import user  # noqa: F401
 
 
 # For a new basic set of CRUD operations you could just do
 def update_or_create_user(
     *,
     db: Session,
-    obj_in: Union[schemas.UserUpdate, Dict[str, Any]],
+    obj_in: Union[UserUpdate, Dict[str, Any]],
     email: str,
 ) -> User:
     update_data = {}

@@ -1,4 +1,3 @@
-from core.logging import logger
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -10,6 +9,7 @@ from jinja2 import Template
 from jwt.exceptions import InvalidTokenError
 
 from core.config import settings
+from core.logging import logger
 
 
 @dataclass
