@@ -71,6 +71,18 @@ class UserService {
         }
         return await res.json();
     }
+
+    async deleteUser(id: number | string): Promise<None> {
+        const res = await fetch(`${API_URL}/users/${id}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+        });
+        if (!res.ok) {
+            const errorText = await res.text();
+            throw new UnauthorizedError(errorText, res.status);
+        }
+        return await res.json();
+    }
 }
 
 export default new UserService();

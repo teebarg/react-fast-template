@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { useActionData, useRevalidator } from "react-router-dom";
+import { useRevalidator } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from "@nextui-org/react";
 import useNotifications from "@/store/notifications";
-import useWatch from "@/hooks/use-watch";
 import { Password, Email, Input, Switch } from "nextui-hook-form";
 import userService from "@/services/user.service";
 import type { User } from "@/types";
@@ -27,18 +26,8 @@ const UserForm: React.FC<Props> = ({ type = "create", onClose, currentUser }) =>
     const revalidator = useRevalidator();
     const [isPending, setIsPending] = useState<boolean>(false);
 
-    const actionData = useActionData() as { error: string } | undefined;
     const [, notificationsActions] = useNotifications();
     const isCreate = type === "create";
-
-    useWatch(actionData, (newData) => {
-        notificationsActions.push({
-            options: {
-                type: "danger",
-            },
-            message: newData?.error,
-        });
-    });
 
     const {
         reset,
