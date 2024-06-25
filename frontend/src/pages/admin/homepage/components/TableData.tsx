@@ -1,14 +1,13 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { Chip, Badge, Avatar, Tooltip } from "@nextui-org/react";
+import { Chip, Badge, Avatar, Tooltip, Button } from "@nextui-org/react";
 import { CheckIcon, EyeIcon, EditIcon, DeleteIcon } from "react-icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { TableProps, User } from "@/types";
 import Table from "@/components/table";
 import NextModal from "@/components/modal";
 import { UserForm } from "./userForm";
-// import NextModal from "@/components/core/Modal";
 
 interface ChildComponentHandles {
     onOpen: () => void;
@@ -25,7 +24,10 @@ export default function TableData({
     query: string;
 }) {
     const modalRef = useRef<ChildComponentHandles>(null);
-    const [currentUser, setCurrent] = useState<User>({});
+    const deleteModalRef = useRef<ChildComponentHandles>(null);
+    const [currentUser, setCurrent] = useState<User>({ is_active: true });
+    const [mode, setMode] = useState<"create" | "update">("create");
+    const [isPending, setIsPending] = useState<boolean>(false);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -53,13 +55,22 @@ export default function TableData({
     };
 
     const handleEdit = (value: User) => {
+        setMode("update");
         setCurrent((prev) => ({ ...prev, ...value }));
         if (modalRef.current) {
             modalRef.current.onOpen();
         }
     };
 
+    const addNew = () => {
+        setMode("create");
+        if (modalRef.current) {
+            modalRef.current.onOpen();
+        }
+    };
+
     const handleModalClose = () => {
+        setCurrent({} as User);
         if (modalRef.current) {
             modalRef.current.onClose();
         }
@@ -67,6 +78,24 @@ export default function TableData({
 
     const handleView = (id: number | string) => {
         navigate(`/admin/user/${id}`);
+    };
+
+    const handleDelete = (value: User) => {
+        setCurrent((prev) => ({ ...prev, ...value }));
+        if (deleteModalRef.current) {
+            deleteModalRef.current.onOpen();
+        }
+    };
+
+    const onCloseDelete = () => {
+        setCurrent({} as User);
+        if (deleteModalRef.current) {
+            deleteModalRef.current.onClose();
+        }
+    };
+
+    const onDeleteSubmit = () => {
+        setIsPending(true);
     };
 
     const rowRender = React.useCallback((user: Record<string, string>, columnKey: string | number) => {
@@ -117,7 +146,7 @@ export default function TableData({
                         </Tooltip>
                         <Tooltip color="danger" content="Delete user">
                             <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                                <DeleteIcon />
+                                <DeleteIcon onClick={() => handleDelete(user)} />
                             </span>
                         </Tooltip>
                     </div>
@@ -129,9 +158,43 @@ export default function TableData({
 
     return (
         <>
-            <Table callbackFunction={rowRender} onSearchChange={onSearchChange} columns={columns} rows={rows} pagination={pagination} query={query} />
+            <Table
+                onAddNew={addNew}
+                callbackFunction={rowRender}
+                onSearchChange={onSearchChange}
+                columns={columns}
+                rows={rows}
+                pagination={pagination}
+                query={query}
+            />
             <NextModal ref={modalRef} size="lg">
-                <UserForm currentUser={currentUser} onClose={handleModalClose} type="update" />
+                <UserForm currentUser={currentUser} onClose={handleModalClose} type={mode} />
+            </NextModal>
+            <NextModal ref={deleteModalRef} size="lg">
+                <div>
+                    <div className="mt-2">
+                        <p className="text-sm text-gray-500">
+                            Are you sure you want to deactivate your account? All of your data will be permanently removed from our servers forever.
+                            This action cannot be undone.
+                        </p>
+                    </div>
+                    <div className="flex justify-end gap-2">
+                        <Button color="danger" variant="shadow" onPress={onCloseDelete} className="min-w-32">
+                            Close
+                        </Button>
+                        <div>
+                            {isPending ? (
+                                <Button color="primary" isLoading variant="shadow" isDisabled className="min-w-32">
+                                    Deleting...
+                                </Button>
+                            ) : (
+                                <Button onPress={onDeleteSubmit} color="primary" variant="shadow" className="min-w-32">
+                                    Delete User
+                                </Button>
+                            )}
+                        </div>
+                    </div>
+                </div>
             </NextModal>
         </>
     );

@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from "@nextui-org/react";
 import useNotifications from "@/store/notifications";
 import useWatch from "@/hooks/use-watch";
-import { Password, Email, Input } from "nextui-hook-form";
+import { Password, Email, Input, Switch } from "nextui-hook-form";
 import userService from "@/services/user.service";
 import type { User } from "@/types";
 
@@ -13,6 +13,8 @@ type Inputs = {
     lastname: string;
     email: string;
     password: string;
+    is_active: boolean;
+    is_superuser: boolean;
 };
 
 interface Props {
@@ -40,6 +42,7 @@ const UserForm: React.FC<Props> = ({ type = "create", onClose, currentUser }) =>
 
     const {
         reset,
+        control,
         register,
         handleSubmit,
         formState: { errors },
@@ -94,6 +97,12 @@ const UserForm: React.FC<Props> = ({ type = "create", onClose, currentUser }) =>
                         {isCreate && (
                             <Password name="password" label="Password" register={register} error={errors?.password} required="Password is required" />
                         )}
+                        <div className="block">
+                            <Switch name="is_active" label="Active" control={control} />
+                        </div>
+                        <div className="block">
+                            <Switch name="is_superuser" label="Admin" control={control} />
+                        </div>
                         <div className="flex justify-end gap-2">
                             <Button color="danger" variant="shadow" onPress={onClose} className="min-w-32">
                                 Close
