@@ -72,7 +72,6 @@ def login(
             value=access_token,
             max_age=timedelta(days=30),
             secure=True,
-            httponly=True,
         )
 
         email_data = generate_new_account_email(
@@ -122,7 +121,6 @@ def register_user(db: deps.SessionDep, user_in: UserRegister) -> Any:
             value=access_token,
             max_age=timedelta(days=30),
             secure=True,
-            httponly=True,
         )
         return response
     except Exception as e:
@@ -152,7 +150,6 @@ async def test_token(
             value=access_token,
             max_age=timedelta(days=30),
             secure=True,
-            httponly=True,
         )
         return {
             "access_token": access_token,
@@ -185,7 +182,6 @@ async def social(response: Response, credentials: Social, db: deps.SessionDep) -
             value=access_token,
             max_age=timedelta(days=30),
             secure=True,
-            httponly=True,
         )
         return {
             "access_token": access_token,
