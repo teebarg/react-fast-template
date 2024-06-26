@@ -1,6 +1,20 @@
-from typing import Any
+import asyncio
+import json
+import uuid
+from typing import Annotated, Any, Dict
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+import pandas as pd
+from fastapi import (
+    APIRouter,
+    Depends,
+    File,
+    HTTPException,
+    Query,
+    UploadFile,
+    WebSocket,
+    WebSocketDisconnect,
+)
+from pydantic import BaseModel
 from sqlmodel import func, or_, select
 
 import crud
@@ -23,6 +37,7 @@ from models.user import (
     UserUpdate,
     UserUpdateMe,
 )
+from core.logging import logger
 
 # Create a router for users
 router = APIRouter()
@@ -215,3 +230,78 @@ def delete_user(db: SessionDep, current_user: CurrentUser, user_id: int) -> Mess
     db.delete(user)
     db.commit()
     return Message(message="User deleted successfully")
+
+
+class UploadStatus(BaseModel):
+    total_rows: int
+    processed_rows: int
+    status: str
+
+
+upload_statuses: Dict[str, UploadStatus] = {}
+active_connections: Dict[str, WebSocket] = {}
+
+
+async def process_chunk(chunk: pd.DataFrame, task_id: str, db: SessionDep):
+    try:
+        products = chunk.to_dict("records")
+        for item in products:
+            crud.user.create(db=db, user_create=item)
+        upload_statuses[task_id].processed_rows += len(products)
+        await send_status_update(task_id)
+    except Exception as e:
+        upload_statuses[task_id].status = f"Error: {str(e)}"
+        await send_status_update(task_id)
+
+
+async def process_file(file: UploadFile, task_id: str):
+    chunk_size = 1000
+    try:
+        # contents = await file.read()
+        df = pd.read_excel(file.file, engine='openpyxl')
+        total_rows = len(df)
+        upload_statuses[task_id] = UploadStatus(total_rows=total_rows, processed_rows=0, status="Processing")
+        await send_status_update(task_id)
+
+        for i in range(0, total_rows, chunk_size):
+            chunk = df.iloc[i : i + chunk_size]
+            await process_chunk(chunk, task_id)
+            await asyncio.sleep(0.1)  # Allow other tasks to run
+
+        upload_statuses[task_id].status = "Completed"
+        await send_status_update(task_id)
+    except Exception as e:
+        logger.error("🚀 ~ e:", e)
+        upload_statuses[task_id].status = f"Error: {str(e)}"
+        await send_status_update(task_id)
+
+
+async def send_status_update(task_id: str):
+    if task_id in active_connections:
+        await active_connections[task_id].send_text(
+            json.dumps(upload_statuses[task_id].model_dump())
+        )
+
+
+@router.post("/excel")
+async def upload_products(fileb: UploadFile, file: Annotated[UploadFile, File()]):
+    if file is None:
+        return {"error": "No file provided"}
+
+    file = File(file)
+    task_id = str(uuid.uuid4())
+    asyncio.create_task(process_file(file, task_id))
+    return {"task_id": task_id, "message": "File upload started"}
+
+
+@router.websocket("/ws/{task_id}")
+async def websocket_endpoint(websocket: WebSocket, task_id: str):
+    await websocket.accept()
+    active_connections[task_id] = websocket
+    try:
+        while True:
+            await websocket.receive_text()
+            if task_id in upload_statuses:
+                await send_status_update(task_id)
+    except WebSocketDisconnect:
+        del active_connections[task_id]
