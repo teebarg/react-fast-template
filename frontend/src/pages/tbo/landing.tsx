@@ -2,7 +2,7 @@ import React from "react";
 import TBONavbar from "@/pages/tbo/components/navbar";
 import Meta from "@/components/Meta";
 import { Button, Image } from "@nextui-org/react";
-import { LocationIcon, MailIcon } from "react-icons";
+import { LocationIcon, MailIcon } from "nui-react-icons";
 import ContactForm from "./components/contact-form";
 import { Fade } from "react-awesome-reveal";
 import { openingHours, products } from "./data";

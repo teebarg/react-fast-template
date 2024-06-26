@@ -48,7 +48,7 @@ test-frontend: ## Run frontend tests
 
 test-backend: ## Run backend tests
 	@echo "$(YELLOW)Running backend tests...$(RESET)"
-	@cd backend && POSTGRES_SERVER=null PROJECT_NAME=null FIRST_SUPERUSER_FIRSTNAME=null FIRST_SUPERUSER_LASTNAME=null FIRST_SUPERUSER=email@email.com FIRST_SUPERUSER_PASSWORD=null python -m pytest
+	docker exec react-fast-template-backend-1 ./test.sh
 
 test: ## Run project tests
 	@$(MAKE) -s test-frontend
@@ -104,8 +104,9 @@ scaffold: ## Scaffold a resource
 	@cd scripts && python scaffold.py run -n $(name)
 
 pre-commit:
-	npx concurrently --kill-others-on-fail --prefix "[{name}]" --names "frontend:lint,build,backend:lint" \
+	npx concurrently --kill-others-on-fail --prefix "[{name}]" --names "frontend:lint,build,backend:lint,test" \
 	--prefix-colors "bgRed.bold.white,bgGreen.bold.white,bgBlue.bold.white,bgMagenta.bold.white" \
     "cd frontend && npm run lint:check" \
     "cd frontend && npm run build" \
-	"cd backend && make format"
+	"cd backend && make format" \
+	"make test"

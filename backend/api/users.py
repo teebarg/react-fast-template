@@ -1,7 +1,7 @@
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlmodel import func, select
+from sqlmodel import func, or_, select
 
 import crud
 from core import deps
@@ -59,12 +59,17 @@ def read_users(
     Retrieve users.
     """
 
+    query = {"firstname": name, "lastname": name}
+    filters = crud.user.build_query(query)
+
     count_statement = select(func.count()).select_from(User)
+    if filters:
+        count_statement = count_statement.where(or_(*filters))
     total_count = db.exec(count_statement).one()
 
     users = crud.user.get_multi(
         db=db,
-        queries={"name": name},
+        filters=filters,
         per_page=per_page,
         offset=(page - 1) * per_page,
     )

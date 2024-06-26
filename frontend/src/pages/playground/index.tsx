@@ -1,7 +1,7 @@
 import React from "react";
 import Meta from "@/components/Meta";
 import { Button, Select, SelectItem, Textarea, Slider, Tabs, Tab, ScrollShadow } from "@nextui-org/react";
-import { RightArrowIcon, AttachmentIcon, VoiceIcon, TemplateIcon } from "react-icons";
+import { RightArrowIcon, AttachmentIcon, VoiceIcon, TemplateIcon } from "nui-react-icons";
 import { AiMessage } from "./components/ai-message";
 import { UserMessage } from "./components/user-message";
 

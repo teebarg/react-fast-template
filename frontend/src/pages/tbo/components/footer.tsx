@@ -1,4 +1,4 @@
-import { GithubIcon, TwitterIcon, WhatsAppIcon, YoutubeIcon } from "react-icons";
+import { GithubIcon, TwitterIcon, WhatsAppIcon, YoutubeIcon } from "nui-react-icons";
 import { siteConfig } from "@/config/site";
 import { Link } from "@nextui-org/react";
 import { NavLink } from "react-router-dom";

@@ -1,5 +1,5 @@
 import React from "react";
-import { GithubIcon } from "react-icons";
+import { GithubIcon } from "nui-react-icons";
 import { Image, ScrollShadow } from "@nextui-org/react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";

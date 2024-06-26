@@ -7,7 +7,7 @@ import { Input } from "@nextui-org/input";
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { Logo } from "@/components/icons";
-import { SearchIcon } from "react-icons";
+import { SearchIcon } from "nui-react-icons";
 import UserDropDown from "@/components/user-menu";
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "@/store/auth-provider";
