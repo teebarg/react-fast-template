@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { CustomContentProps, useSnackbar } from "notistack";
 import cn from "classnames";
-import { CancelIcon, CheckIcon } from "react-icons";
+import { CancelIcon, CheckIcon } from "nui-react-icons";
 
 type Types = "default" | "danger" | "info" | "success" | "warning";
 

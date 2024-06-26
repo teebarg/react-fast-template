@@ -1,4 +1,4 @@
-import { CancelIcon, DocumentIcon, MasterCardIcon, PayPalIcon, VisaCardIcon } from "react-icons";
+import { CancelIcon, DocumentIcon, MasterCardIcon, PayPalIcon, VisaCardIcon } from "nui-react-icons";
 import { BreadcrumbItem, Breadcrumbs, Button, Checkbox, Radio, RadioGroup, cn, Image } from "@nextui-org/react";
 import React from "react";
 import { useForm } from "react-hook-form";

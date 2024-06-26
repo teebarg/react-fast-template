@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Radio, RadioGroup, cn } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
-import { MailIcon } from "react-icons";
+import { MailIcon } from "nui-react-icons";
 import { Input, Select } from "nextui-hook-form";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

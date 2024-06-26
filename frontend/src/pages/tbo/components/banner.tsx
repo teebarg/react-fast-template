@@ -1,4 +1,4 @@
-import { RightArrowIcon } from "react-icons";
+import { RightArrowIcon } from "nui-react-icons";
 import { Button } from "@nextui-org/react";
 import React from "react";
 import { useEffect, useState } from "react";

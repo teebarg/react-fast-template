@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import { Chip, Badge, Avatar, Tooltip } from "@nextui-org/react";
-import { CheckIcon, EyeIcon, EditIcon, DeleteIcon } from "react-icons";
+import { CheckIcon, EyeIcon, EditIcon, DeleteIcon } from "nui-react-icons";
 import { useLocation, useNavigate, useRevalidator } from "react-router-dom";
 import type { TableProps, User } from "@/types";
 import Table from "@/components/table";

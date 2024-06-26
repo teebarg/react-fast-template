@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "@nextui-org/react";
-import { DeleteIcon } from "react-icons";
+import { ExclamationIcon } from "nui-react-icons";
 
 interface Props {
     onConfirm?: () => void;
@@ -19,7 +19,7 @@ const Confirm: React.FC<Props> = ({ onConfirm, onClose }) => {
             <div className="mx-auto w-full px-4 pb-8">
                 <div className="space-y-10">
                     <div className="flex justify-center items-center">
-                        <DeleteIcon className="text-danger h-12 w-12" />
+                        <ExclamationIcon className="text-danger h-12 w-12" />
                     </div>
                     <div>
                         <p className="text-sm text-gray-500">

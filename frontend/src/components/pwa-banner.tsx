@@ -1,5 +1,5 @@
 import React from "react";
-import { RightArrowIcon } from "react-icons";
+import { RightArrowIcon } from "nui-react-icons";
 import { Button } from "@nextui-org/react";
 
 export interface ThemeSwitchProps {
