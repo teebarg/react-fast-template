@@ -72,7 +72,7 @@ class UserService {
         return await res.json();
     }
 
-    async deleteUser(id: number | string): Promise<None> {
+    async deleteUser(id: number | string): Promise<Record<string, string>> {
         const res = await fetch(`${API_URL}/users/${id}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },

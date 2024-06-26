@@ -4,7 +4,7 @@ from typing import Any, Dict, Generic, Optional, Type, TypeVar, Union
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from sqlmodel import select
+from sqlmodel import or_, select
 
 ModelType = TypeVar("ModelType", bound=Any)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
@@ -23,18 +23,28 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         """
         self.model = model
 
+    def build_query(
+        self,
+        queries: dict,
+    ) -> list:
+        filters = []
+        for key, value in queries.items():
+            if value:
+                column = getattr(self.model, key)
+                filters.append(column.like(f"%{value}%"))
+        return filters
+
     def get_multi(
         self,
         db: Session,
-        queries: dict,
+        filters: list,
         per_page: int,
         offset: int,
         sort: str = "desc",
     ) -> list[ModelType]:
         statement = select(self.model)
-        for key, value in queries.items():
-            if value:
-                statement = statement.where(getattr(self.model, key).like(f"%{value}%"))
+        if filters:
+            statement = statement.where(or_(*filters))
         if sort == "desc":
             statement = statement.order_by(self.model.created_at.desc())
         return db.exec(statement.offset(offset).limit(per_page))
