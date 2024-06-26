@@ -7,6 +7,7 @@ import userService from "@/services/user.service";
 import { useCookie } from "@/hooks/use-cookie";
 import { User } from "@/models/user";
 import { Pagination } from "@/types";
+import { useQueryParams } from "@/hooks/use-query-params";
 
 interface Props {}
 interface userData {
@@ -19,10 +20,11 @@ interface userData {
 
 const usersLoader: LoaderFunction = async ({ request }) => {
     const url = new URL(request.url);
+    const name = url.searchParams.get("name") ?? "";
     const page = url.searchParams.get("page");
     const { removeCookie } = useCookie();
     try {
-        const { data, ...pagination } = await userService.getUsers({ page });
+        const { data, ...pagination } = await userService.getUsers({ name, page });
         return { users: data, pagination, error: false };
     } catch (error: any) {
         if ([422].includes(error.status)) {
@@ -40,6 +42,7 @@ const usersLoader: LoaderFunction = async ({ request }) => {
 
 const Users: React.FC<Props> = () => {
     const navigate = useNavigate();
+    const { name } = useQueryParams();
     const { users, pagination } = useLoaderData() as userData;
 
     return (
@@ -48,7 +51,7 @@ const Users: React.FC<Props> = () => {
             <div>
                 <div className="max-w-7xl mx-auto p-8">
                     <h1 className="text-2xl font-semibold mb-2">Users:</h1>
-                    <TableData rows={users} pagination={pagination} query={""} />
+                    <TableData rows={users} pagination={pagination} query={name} />
                     <Button color="secondary" onClick={() => navigate(-1)} className="mt-6">
                         Back
                     </Button>

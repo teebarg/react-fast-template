@@ -33,10 +33,10 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     ) -> list[ModelType]:
         statement = select(self.model)
         for key, value in queries.items():
-            if value and key == "name":
-                statement = statement.where(self.model.name.like(f"%{value}%"))
-            if sort == "desc":
-                statement = statement.order_by(self.model.created_at.desc())
+            if value:
+                statement = statement.where(getattr(self.model, key).like(f"%{value}%"))
+        if sort == "desc":
+            statement = statement.order_by(self.model.created_at.desc())
         return db.exec(statement.offset(offset).limit(per_page))
 
     def all(self, db: Session) -> list[ModelType]:

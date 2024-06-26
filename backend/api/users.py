@@ -64,7 +64,7 @@ def read_users(
 
     users = crud.user.get_multi(
         db=db,
-        queries={"name": name},
+        queries={"firstname": name},
         per_page=per_page,
         offset=(page - 1) * per_page,
     )

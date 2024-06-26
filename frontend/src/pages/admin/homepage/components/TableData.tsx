@@ -182,7 +182,7 @@ export default function TableData({
     }, []);
 
     return (
-        <>
+        <React.Fragment>
             <Table
                 onAddNew={addNew}
                 callbackFunction={rowRender}
@@ -198,6 +198,6 @@ export default function TableData({
             <NextModal ref={deleteModalRef} size="md">
                 <Confirm onClose={onCloseDelete} onConfirm={onConfirmDelete} />
             </NextModal>
-        </>
+        </React.Fragment>
     );
 }
