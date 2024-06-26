@@ -51,6 +51,7 @@ class UserService {
             method: "POST",
             body: JSON.stringify(data),
             headers: { "Content-Type": "application/json" },
+            credentials: "include",
         });
         if (!res.ok) {
             const errorText = await res.text();
@@ -64,6 +65,7 @@ class UserService {
             method: "PATCH",
             body: JSON.stringify(data),
             headers: { "Content-Type": "application/json" },
+            credentials: "include",
         });
         if (!res.ok) {
             const errorText = await res.text();
@@ -76,6 +78,7 @@ class UserService {
         const res = await fetch(`${API_URL}/users/${id}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
+            credentials: "include",
         });
         if (!res.ok) {
             const errorText = await res.text();
