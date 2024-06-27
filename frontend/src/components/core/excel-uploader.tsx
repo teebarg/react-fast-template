@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import userService from "@/services/user.service";
 import useNotifications from "@/store/notifications";
 import { useWebSocket } from "@/hooks/use-websocket";
@@ -9,10 +9,11 @@ interface Props {
 }
 
 const Excel: React.FC<Props> = () => {
+    const id = useId();
     const [, notificationsActions] = useNotifications();
     const [file, setFile] = useState(null);
     const [message, setMessage] = useState("");
-    const { messages: wsMessages, connect: initializeWebsocket, disconnect: disconnectWebsocket } = useWebSocket({ url: "/api/users/ws/beaf" });
+    const { messages: wsMessages, connect: initializeWebsocket, disconnect: disconnectWebsocket } = useWebSocket({ url: `/api/users/ws/${id}` });
 
     useEffect(() => {
         initializeWebsocket();
@@ -38,7 +39,7 @@ const Excel: React.FC<Props> = () => {
         formData.append("file", file);
 
         try {
-            await userService.excelUpload(formData);
+            await userService.excelUpload({ id, formData });
             notificationsActions.push({
                 options: {
                     type: "success",

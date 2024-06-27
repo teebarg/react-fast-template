@@ -87,8 +87,8 @@ class UserService {
         return await res.json();
     }
 
-    async excelUpload(formData: any): Promise<Record<string, string>> {
-        const res = await fetch(`${API_URL}/users/excel`, {
+    async excelUpload({ id, formData }: { id: string; formData: any }): Promise<Record<string, string>> {
+        const res = await fetch(`${API_URL}/users/excel/${id}`, {
             method: "POST",
             body: formData,
             credentials: "include",

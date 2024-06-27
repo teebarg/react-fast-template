@@ -17,14 +17,14 @@ const useWebSocket = ({ url, onOpen, onClose }: Props) => {
         const socket = new WebSocket(`${domain}${url}`);
 
         socket.onopen = () => {
-            socket.send(JSON.stringify({ type: "auth", token: "jwt token" }));
+            // socket.send(JSON.stringify({ type: "auth", token: "jwt token" }));
             if (typeof onOpen === "function") {
                 onOpen();
             }
         };
 
         socket.onmessage = (event) => {
-            setMessages((prev: string[]) => [...prev, event.data]);
+            setMessages((prev: any[]) => [...prev, JSON.parse(event.data)]);
         };
 
         socket.onclose = () => {
