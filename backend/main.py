@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from api.auth import router as auth_router
 from api.users import router as users_router
+from api.websocket import router as websocket_router
 from core.config import settings
 
 app = FastAPI(title=settings.PROJECT_NAME, openapi_url="/api/openapi.json")
@@ -17,6 +18,13 @@ app.include_router(
 app.include_router(
     auth_router, prefix="/api/auth", tags=["auth"]
 )  # Include the user router
+
+
+app.include_router(
+    websocket_router,
+    prefix="/api/ws",
+    tags=["Websockets"],
+)
 
 app.add_middleware(
     CORSMiddleware,

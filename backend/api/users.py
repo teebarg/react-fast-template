@@ -1,25 +1,23 @@
 import asyncio
 from io import BytesIO
-import json
-import uuid
-from typing import Annotated, Any, Dict, Union
+from typing import Annotated, Any, Dict
 
 import pandas as pd
 from fastapi import (
     APIRouter,
+    BackgroundTasks,
     Depends,
     File,
+    Form,
     HTTPException,
     Query,
     UploadFile,
-    WebSocket,
-    WebSocketDisconnect,
-    BackgroundTasks,
 )
 from pydantic import BaseModel
 from sqlmodel import func, or_, select
 
 import crud
+from api.websocket import manager
 from core import deps
 from core.config import settings
 from core.deps import (
@@ -27,6 +25,7 @@ from core.deps import (
     SessionDep,
     get_current_active_superuser,
 )
+from core.logging import logger
 from core.security import get_password_hash, verify_password
 from core.utils import generate_new_account_email, send_email
 from models.message import Message
@@ -39,7 +38,6 @@ from models.user import (
     UserUpdate,
     UserUpdateMe,
 )
-from core.logging import logger
 
 # Create a router for users
 router = APIRouter()
@@ -241,71 +239,52 @@ class UploadStatus(BaseModel):
 
 
 upload_statuses: Dict[str, UploadStatus] = {}
-active_connections: Dict[str, WebSocket] = {}
-
-
-async def process_chunk(chunk: pd.DataFrame, task_id: str, db: SessionDep):
-    try:
-        products = chunk.to_dict("records")
-        crud.user.bulk_upload(db=db, users=products)
-        upload_statuses[task_id].processed_rows += len(products)
-        await send_status_update(task_id)
-    except Exception as e:
-        logger.error(e)
-        upload_statuses[task_id].status = f"Error: {str(e)}"
-        await send_status_update(task_id)
 
 
 async def process_file(file, task_id: str, db: SessionDep):
-    chunk_size = 1000
+    chunk_size = 100
     try:
         df = pd.read_excel(BytesIO(file))
         total_rows = len(df)
-        print("🚀 ~ total_rows:", total_rows)
-        upload_statuses[task_id] = UploadStatus(total_rows=total_rows, processed_rows=0, status="Processing")
-        print(upload_statuses)
+        upload_statuses[task_id] = UploadStatus(
+            total_rows=total_rows, processed_rows=0, status="Processing"
+        )
         await send_status_update(task_id)
 
         for i in range(0, total_rows, chunk_size):
             chunk = df.iloc[i : i + chunk_size]
-            await process_chunk(chunk, task_id, db)
+            users = chunk.to_dict("records")
+            await crud.user.bulk_upload(db=db, users=users)
+            upload_statuses[task_id].processed_rows += len(users)
+            await send_status_update(task_id)
             await asyncio.sleep(0.1)  # Allow other tasks to run
 
-        if upload_statuses.get("task_id"):
+        if upload_statuses.get(task_id):
             upload_statuses[task_id].status = "Completed"
         await send_status_update(task_id)
     except Exception as e:
-        print()
-        logger.error(e)
-        print()
-        upload_statuses[task_id].status = f"Error: {str(e)}"
-        await send_status_update(task_id)
+        logger.error(f"Error: {e}")
+        if upload_statuses.get(task_id):
+            upload_statuses[task_id].status = f"Error: {str(e)}"
+            await send_status_update(task_id)
 
 
 async def send_status_update(task_id: str):
-    print('sending update')
-    print(task_id)
-    print(active_connections)
-    if task_id in active_connections:
-        await active_connections[task_id].send_text(
-            json.dumps(upload_statuses[task_id].model_dump())
-        )
-        print("sent")
+    await manager.broadcast(id=task_id, data=upload_statuses.get(task_id).model_dump())
 
 
 @router.post("/excel/{task_id}")
 async def upload_products(
     file: Annotated[UploadFile, File()],
+    batch: Annotated[str, Form()],
     task_id: str,
     db: SessionDep,
     background_tasks: BackgroundTasks,
 ):
-    print(task_id)
     if file is None:
         logger.error("Invalid file provided")
         raise HTTPException(status_code=422, detail="No file provided")
 
-    # task_id = str(uuid.uuid4())
     size_in_mb = file.size / 1024 / 1024
     if size_in_mb > 1.5:
         logger.error("Uploaded file is greater than 1.5MB")
@@ -315,19 +294,4 @@ async def upload_products(
 
     contents = await file.read()
     background_tasks.add_task(process_file, contents, task_id, db)
-    return {"task_id": task_id, "message": "File upload started"}
-
-
-@router.websocket("/ws/{task_id}")
-async def websocket_endpoint(websocket: WebSocket, task_id: str):
-    await websocket.accept()
-    active_connections[task_id] = websocket
-    try:
-        while True:
-            await websocket.receive_text()
-            print(upload_statuses)
-            if task_id in upload_statuses:
-                await send_status_update(task_id)
-    except WebSocketDisconnect:
-        print(active_connections)
-        active_connections.pop(task_id, None)
+    return {"batch": batch, "message": "File upload started"}

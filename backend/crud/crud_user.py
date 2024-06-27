@@ -1,10 +1,11 @@
-from typing import Any, Dict, Union
+from typing import Any, Dict
+
 from sqlmodel import Session, select
 
+from core.logging import logger
 from core.security import get_password_hash, verify_password
 from crud.base import CRUDBase
 from models.user import User, UserCreate, UserUpdate
-from core.logging import logger
 
 
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
@@ -69,7 +70,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         db.refresh(model)
         return model
 
-    def bulk_upload(self, db: Session, *, users: list[Dict[str, Any]]) -> User:
+    async def bulk_upload(self, db: Session, *, users: list[Dict[str, Any]]) -> User:
         for user in users:
             try:
                 if model := db.exec(
