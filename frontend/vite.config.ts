@@ -8,31 +8,18 @@ import manifest from "./public/manifest.json";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    build: {
-        sourcemap: process.env.SOURCE_MAP === "true",
-        rollupOptions: {
-            input: {
-                main: path.resolve(__dirname, "index.html"),
-            },
-        },
-    },
     plugins: [
         react(),
         VitePWA({
             registerType: "prompt",
-            injectRegister: false,
             manifest,
-            includeAssets: ["apple-touch-icon.png", "masked-icon.svg", "favicon.ico", "robots.txt", "apple-touch-icon.png"],
+            includeAssets: ["favicon.svg", "favicon.ico", "robots.txt", "apple-touch-icon.png"],
+            // switch to "true" to enable sw on development
             devOptions: {
-                enabled: process.env.SW_DEV === "true",
-                navigateFallback: "index.html",
-                suppressWarnings: true,
-                type: "module",
+                enabled: process.env.SW_DEV === 'true',
             },
             workbox: {
-                globPatterns: ["**/*.{js,css,html,svg,png,ico}"],
-                cleanupOutdatedCaches: true,
-                clientsClaim: true,
+                globPatterns: ["**/*.{js,css,html}", "**/*.{svg,png,jpg,gif}"],
             },
         }),
     ],
@@ -40,5 +27,8 @@ export default defineConfig({
         alias: {
             "@": path.resolve(__dirname, "./src"),
         },
+    },
+    test: {
+        root: path.resolve(__dirname, "./src"),
     },
 });
