@@ -5,24 +5,20 @@ import { useWebSocket } from "@/hooks/use-websocket";
 import { Button, Progress } from "@nextui-org/react";
 import { CancelIcon } from "nui-react-icons";
 
-interface Props {
-    onConfirm?: () => void;
-    onClose?: () => void;
-    onError?: (error: string) => void;
-}
+interface Props {}
 
 const Excel: React.FC<Props> = () => {
-    const id = "beaf";
+    const id = "nK12eRTbo";
     const fileInput = useRef<any>(null);
     const [, notificationsActions] = useNotifications();
     const [file, setFile] = useState<File>();
     const [status, setStatus] = useState<boolean>(false);
-    const { messages: wsMessages, connect: initializeWebsocket, disconnect: disconnectWebsocket } = useWebSocket({ url: `/api/ws/users/${id}` });
+    const { messages: wsMessages, connect: initializeWebsocket, disconnect: disconnectWebsocket } = useWebSocket({});
 
     const currentMessage = wsMessages[wsMessages.length - 1];
 
     useEffect(() => {
-        initializeWebsocket();
+        initializeWebsocket(`/api/ws/users/${id}`);
         return () => {
             disconnectWebsocket();
         };
@@ -134,7 +130,7 @@ const Excel: React.FC<Props> = () => {
                         size="sm"
                         value={(currentMessage?.processed_rows / currentMessage?.total_rows) * 100 || 0}
                         color="success"
-                        label={`Progress: ${currentMessage?.processed_rows || 0} / ${currentMessage?.total_rows || 0} rows`}
+                        label={`progress: ${currentMessage?.processed_rows || 0} / ${currentMessage?.total_rows || 0} rows`}
                         showValueLabel={true}
                         className=""
                     />

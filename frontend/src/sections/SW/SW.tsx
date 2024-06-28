@@ -75,8 +75,12 @@ function SW() {
                     persist: true,
                     action: (
                         <>
-                            <Button onClick={() => updateServiceWorker(true)}>Reload</Button>
-                            <Button onClick={close}>Close</Button>
+                            <Button color="default" variant="faded" onClick={() => updateServiceWorker(true)}>
+                                Reload
+                            </Button>
+                            <Button color="danger" onClick={close} className="ml-2">
+                                Close
+                            </Button>
                         </>
                     ),
                 },

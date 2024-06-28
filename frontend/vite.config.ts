@@ -12,14 +12,20 @@ export default defineConfig({
         react(),
         VitePWA({
             registerType: "prompt",
+            injectRegister: false,
             manifest,
             includeAssets: ["favicon.svg", "favicon.ico", "robots.txt", "apple-touch-icon.png"],
             // switch to "true" to enable sw on development
             devOptions: {
-                enabled: process.env.SW_DEV === 'true',
+                enabled: true,
+                navigateFallback: 'index.html',
+                suppressWarnings: true,
+                type: 'module',
             },
             workbox: {
-                globPatterns: ["**/*.{js,css,html}", "**/*.{svg,png,jpg,gif}"],
+                globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
+                cleanupOutdatedCaches: true,
+                clientsClaim: true,
             },
         }),
     ],

@@ -3,8 +3,6 @@ from typing import Dict
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
-# from filters.jwt import decode_token
-
 
 class ConnectionManager:
     def __init__(self):

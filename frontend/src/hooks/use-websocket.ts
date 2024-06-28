@@ -1,17 +1,16 @@
 import { useState } from "react";
 
 interface Props {
-    url: string;
     onOpen?: () => void;
     onClose?: () => void;
 }
 
-const useWebSocket = ({ url, onOpen, onClose }: Props) => {
+const useWebSocket = ({ onOpen, onClose }: Props) => {
     const [socket, setSocket] = useState<WebSocket>();
     const [messages, setMessages] = useState<any[]>([]);
     const [error, setError] = useState<Event>();
 
-    const connect = async () => {
+    const connect = async (url: string) => {
         const domain = import.meta.env.DEV ? "ws://localhost:4010" : `wss://${import.meta.env.VITE_DOMAIN}`;
 
         const socket = new WebSocket(`${domain}${url}`);
