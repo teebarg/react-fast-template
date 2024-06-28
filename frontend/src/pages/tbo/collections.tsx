@@ -13,9 +13,7 @@ const Collections: React.FC<ComponentProps> = () => {
     return (
         <React.Fragment>
             <Meta title="Children Clothings | Collections" />
-            <div className="px-8">
-                <TBONavbar />
-            </div>
+            <TBONavbar />
             <div className=" h-full w-full px-2 lg:px-24 py-4 mt-4">
                 <Breadcrumbs>
                     <BreadcrumbItem>Home</BreadcrumbItem>

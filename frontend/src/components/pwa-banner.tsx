@@ -7,7 +7,7 @@ export interface ThemeSwitchProps {
 }
 const PwaBanner: React.FC<ThemeSwitchProps> = ({ onClick }) => {
     return (
-        <div className="flex w-full items-center justify-between md:justify-center gap-x-3 py-2 border-b">
+        <div className="flex w-full items-center justify-center gap-x-3 py-2 border-b">
             <div className="text-small flex items-end sm:text-[0.93rem] text-foreground hover:opacity-80 transition-opacity">
                 <span aria-label="rocket" className="hidden md:block" role="img">
                     🚀
