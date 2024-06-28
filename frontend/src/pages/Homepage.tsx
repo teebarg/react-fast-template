@@ -53,7 +53,7 @@ const Homepage: React.FC<Props> = () => {
                                     sapiente quidem fugit deserunt nam perferendis?
                                 </p>
                                 <div className="relative max-w-7xl w-auto h-[500px] mt-4">
-                                    <Image isZoomed src="/hero.jpg" alt="hero" />
+                                    <Image isZoomed src="/images/hero.jpg" alt="hero" />
                                 </div>
                             </div>
                         </div>

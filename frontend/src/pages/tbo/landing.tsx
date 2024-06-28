@@ -76,13 +76,13 @@ const Landing: React.FC<Props> = () => {
                         <p className="text-lg uppercase text-primary mb-2 font-medium">Collections</p>
                         <div className="md:grid grid-cols-2 gap-4">
                             <div className="md:grid grid-cols-2 gap-4">
-                                <Image radius="none" src="/cat1.jpeg" />
-                                <Image src="/cat2.jpeg" />
-                                <Image src="/cat4.jpeg" />
-                                <Image src="/cat3.jpeg" />
+                                <Image radius="none" src="/images/cat1.jpeg" />
+                                <Image src="/images/cat2.jpeg" />
+                                <Image src="/images/cat4.jpeg" />
+                                <Image src="/images/cat3.jpeg" />
                             </div>
-                            <div className="">
-                                <Image src="/cat5.avif" className="h-[inherit]" />
+                            <div>
+                                <Image src="/images/cat5.avif" className="h-[inherit]" />
                             </div>
                         </div>
                     </div>
@@ -153,7 +153,7 @@ const Landing: React.FC<Props> = () => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-fixed bg-center" style={{ backgroundImage: `url("/hero3.jpeg")` }}>
+                <div className="bg-fixed bg-center" style={{ backgroundImage: `url("/images/hero3.jpeg")` }}>
                     <div className="flex items-center h-full backdrop-blur-smp backdrop-saturate-150p bg-white/10p">
                         <div className="max-w-5xl mx-auto sm:flex gap-8 py-16 sm:px-2">
                             <div className="sm:w-1/2 sm:pr-10 backdrop-blur bg-white/60 p-4 sm:p-8 rounded-lg shadow-lg shadow-gray-400">
