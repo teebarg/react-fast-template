@@ -52,8 +52,8 @@ const Homepage: React.FC<Props> = () => {
                                     cupiditate quasi dolor nulla explicabo, similique sit reprehenderit quisquam numquam delectus? Consequuntur natus
                                     sapiente quidem fugit deserunt nam perferendis?
                                 </p>
-                                <div className="relative max-w-7xl w-auto h-[500px] mt-4">
-                                    <Image isZoomed src="/hero.jpg" alt="hero" />
+                                <div className="relative max-w-7xl w-auto h-[300px] md:h-[500px] mt-4">
+                                    <Image isZoomed src="/images/hero.jpg" alt="hero" />
                                 </div>
                             </div>
                         </div>
@@ -76,7 +76,7 @@ const Homepage: React.FC<Props> = () => {
                         </div>
                     </div>
                     <div className="bg-content1 py-8 px-6">
-                        <div className="mx-auto w-full max-w-5xl px-6 py-20">
+                        <div className="mx-auto w-full max-w-5xl px-6 py-8 md:py-20">
                             <ScrollShadow className="mask" orientation="horizontal" size={400}>
                                 <div className="flex w-max items-stretch gap-[40px] animate-scrolling-banner hover:[animation-play-state:paused]">
                                     {sponsors.map((item, index) => (

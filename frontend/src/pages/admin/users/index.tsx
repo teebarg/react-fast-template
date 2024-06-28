@@ -8,6 +8,7 @@ import { useCookie } from "@/hooks/use-cookie";
 import { User } from "@/models/user";
 import { Pagination } from "@/types";
 import { useQueryParams } from "@/hooks/use-query-params";
+import { Excel } from "@/components/core/excel-uploader";
 
 interface Props {}
 interface userData {
@@ -51,6 +52,9 @@ const Users: React.FC<Props> = () => {
             <div>
                 <div className="max-w-7xl mx-auto p-8">
                     <h1 className="text-2xl font-semibold mb-2">Users:</h1>
+                    <div className="py-4">
+                        <Excel />
+                    </div>
                     <TableData rows={users} pagination={pagination} query={name} />
                     <Button color="secondary" onClick={() => navigate(-1)} className="mt-6">
                         Back

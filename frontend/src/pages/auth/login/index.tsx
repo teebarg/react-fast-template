@@ -113,7 +113,7 @@ const Login: React.FC<Props> = () => {
                 </div>
             </div>
             <div className="relative hidden w-0 flex-1 lg:block blue-radial">
-                <img className="absolute inset-0 h-full w-full" src="/au-girl.svg" alt="background image" />
+                <img className="absolute inset-0 h-full w-full" src="/images/au-girl.svg" alt="background image" />
             </div>
         </div>
     );

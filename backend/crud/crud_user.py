@@ -1,5 +1,8 @@
+from typing import Any, Dict
+
 from sqlmodel import Session, select
 
+from core.logging import logger
 from core.security import get_password_hash, verify_password
 from crud.base import CRUDBase
 from models.user import User, UserCreate, UserUpdate
@@ -43,6 +46,43 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
 
     def is_superuser(self, user: User) -> bool:
         return user.is_superuser
+
+    def update_or_create(
+        self,
+        db: Session,
+        *,
+        obj_in: UserUpdate,
+        column_name: str,
+        column_value: str,
+    ) -> User:
+        update_data = obj_in.model_dump(exclude_unset=True)
+        if model := db.exec(
+            select(User).where(getattr(User, column_name) == column_value)
+        ).first():
+            model.sqlmodel_update(update_data)
+        else:
+            # If the record doesn't exist, create a new record
+            update_data[column_name] = column_value
+            model = User(**update_data)
+            db.add(model)
+
+        db.commit()
+        db.refresh(model)
+        return model
+
+    async def bulk_upload(self, db: Session, *, users: list[Dict[str, Any]]) -> User:
+        for user in users:
+            try:
+                if model := db.exec(
+                    select(User).where(User.email == user.get("email"))
+                ).first():
+                    model.sqlmodel_update(user)
+                else:
+                    model = User(**user)
+                    db.add(model)
+                db.commit()
+            except Exception as e:
+                logger.error(e)
 
 
 user = CRUDUser(User)

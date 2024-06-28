@@ -86,6 +86,19 @@ class UserService {
         }
         return await res.json();
     }
+
+    async excelUpload({ id, formData }: { id: string; formData: any }): Promise<Record<string, string>> {
+        const res = await fetch(`${API_URL}/users/excel/${id}`, {
+            method: "POST",
+            body: formData,
+            credentials: "include",
+        });
+        if (!res.ok) {
+            const errorText = await res.text();
+            throw new UnauthorizedError(errorText, res.status);
+        }
+        return await res.json();
+    }
 }
 
 export default new UserService();

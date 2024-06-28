@@ -12,7 +12,7 @@ const Banner: React.FC<ComponentProps> = ({ onClick }) => {
     const content = [
         "Summer Sale 😍 🌴 Save 30% off selected seasonal items",
         "Buy clothes worth 20,000 naira and get Free Gift Card",
-        "New Stock Available",
+        // "New Stock Available",
     ];
     useEffect(() => {
         const interval = setInterval(() => {
@@ -28,7 +28,7 @@ const Banner: React.FC<ComponentProps> = ({ onClick }) => {
                 <div
                     key={index}
                     className={`transition-opacity duration-1000 ${
-                        index === currentSlide ? "opacity-100 flex items-center gap-2" : "opacity-0 hidden"
+                        index === currentSlide ? "opacity-100 flex items-center justify-between md:justify-center gap-2 w-full" : "opacity-0 hidden"
                     }`}
                 >
                     <div className="text-small flex items-end sm:text-[0.93rem] text-foreground hover:opacity-80 transition-opacity">

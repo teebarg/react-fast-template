@@ -1,3 +1,5 @@
+import secrets
+
 from pydantic import EmailStr
 from sqlmodel import Field, SQLModel
 
@@ -45,7 +47,7 @@ class UpdatePassword(SQLModel):
 # Database model, database table inferred from class name
 class User(UserBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    hashed_password: str
+    hashed_password: str = secrets.token_urlsafe(6)
 
 
 # Properties to return via API, id is always required

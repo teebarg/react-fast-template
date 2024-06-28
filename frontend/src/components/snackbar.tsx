@@ -22,7 +22,7 @@ const SnackBar = React.forwardRef<HTMLDivElement, AlertProps>(({ id, message, ty
 
     const icon: Record<Types, ReactNode> = {
         default: <CheckIcon className="h-8 w-8 text-current" aria-hidden="true" />,
-        danger: <CheckIcon className="h-8 w-8 text-current" aria-hidden="true" />,
+        danger: <CheckIcon className="h-10 w-10 text-current" aria-hidden="true" />,
         info: <CheckIcon className="h-8 w-8 text-current" aria-hidden="true" />,
         success: <CheckIcon className="h-8 w-8 text-current" aria-hidden="true" />,
         warning: <CheckIcon className="h-8 w-8 text-current" aria-hidden="true" />,
@@ -37,7 +37,7 @@ const SnackBar = React.forwardRef<HTMLDivElement, AlertProps>(({ id, message, ty
             <div className="flex items-center gap-2">
                 <div>{icon[type]}</div>
                 <div className="pr-2">{message}</div>
-                <CancelIcon onClick={handleDismiss} className="fill-current cursor-pointer" aria-hidden="true" strokeWidth={2} size={36} />
+                <CancelIcon onClick={handleDismiss} className="fill-current cursor-pointer ml-auto" aria-hidden="true" strokeWidth={2} size={28} />
             </div>
         </div>
     );

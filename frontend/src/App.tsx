@@ -51,7 +51,7 @@ function App() {
                 },
                 {
                     path: "tbo",
-                    Component: asyncComponentLoader(() => import("@/pages/layout")),
+                    Component: asyncComponentLoader(() => import("@/pages/tbo/components/layout")),
                     children: tboRoutes,
                 },
                 {
