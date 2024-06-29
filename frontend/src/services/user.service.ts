@@ -99,6 +99,19 @@ class UserService {
         }
         return await res.json();
     }
+
+    async export(): Promise<Record<string, string>> {
+        const res = await fetch(`${API_URL}/users/export`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+        });
+        if (!res.ok) {
+            const errorText = await res.text();
+            throw new UnauthorizedError(errorText, res.status);
+        }
+        return await res.json();
+    }
 }
 
 export default new UserService();

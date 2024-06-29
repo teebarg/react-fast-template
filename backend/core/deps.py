@@ -5,6 +5,7 @@ import jwt
 from fastapi import Cookie, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from firebase_admin import credentials, storage
+from google.cloud.storage.bucket import Bucket
 from jwt.exceptions import InvalidTokenError
 from pydantic import ValidationError
 from sqlmodel import Session
@@ -47,6 +48,9 @@ def get_storage() -> Generator:
         raise
     finally:
         logger.debug("storage closed")
+
+
+Storage = Annotated[Bucket, Depends(get_storage)]
 
 
 def get_current_user(session: SessionDep, access_token: TokenDep2) -> User:

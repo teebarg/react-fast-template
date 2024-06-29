@@ -22,7 +22,18 @@ import { PlusIcon, SearchIcon, ChevronDownIcon } from "nui-react-icons";
 import { Column, TableProps } from "@/types";
 import { useNavigate, useLocation } from "react-router-dom";
 
-export default function Table({ rows = [], columns = [], callbackFunction, onSearchChange, onAddNew, pagination, query }: TableProps) {
+export default function Table({
+    rows = [],
+    columns = [],
+    callbackFunction,
+    onSearchChange,
+    onAddNew,
+    onExport,
+    pagination,
+    query,
+    canExport = false,
+    isExporting = false,
+}: TableProps) {
     type Model = (typeof rows)[0];
 
     const navigate = useNavigate();
@@ -119,6 +130,11 @@ export default function Table({ rows = [], columns = [], callbackFunction, onSea
                         <Button onPress={onAddNew} color="primary" endContent={<PlusIcon />}>
                             Add New
                         </Button>
+                        {canExport && (
+                            <Button isLoading={isExporting} isDisabled={isExporting} onPress={onExport} color="secondary" className="min-w-28">
+                                Export
+                            </Button>
+                        )}
                     </div>
                 </div>
                 <div className="flex justify-between items-center">

@@ -31,6 +31,7 @@ export default function TableData({
     const deleteModalRef = useRef<ChildComponentHandles>(null);
     const [currentUser, setCurrent] = useState<User>({ is_active: true });
     const [mode, setMode] = useState<"create" | "update">("create");
+    const [isExporting, setIExporting] = useState<boolean>(false);
     const [, notificationsActions] = useNotifications();
 
     const navigate = useNavigate();
@@ -122,6 +123,28 @@ export default function TableData({
             });
         }
     };
+    const onExport = async () => {
+        setIExporting(true);
+        try {
+            await userService.export();
+            // revalidator.revalidate();
+            notificationsActions.push({
+                options: {
+                    type: "success",
+                },
+                message: `Data exported successfully, please check your email`,
+            });
+        } catch (error) {
+            notificationsActions.push({
+                options: {
+                    type: "danger",
+                },
+                message: `An error occurred error exporting user data: ${error}`,
+            });
+        } finally {
+            setIExporting(false);
+        }
+    };
 
     const rowRender = React.useCallback((user: Record<string, string>, columnKey: string | number) => {
         const cellValue = user[columnKey];
@@ -191,6 +214,9 @@ export default function TableData({
                 rows={rows}
                 pagination={pagination}
                 query={query}
+                canExport
+                onExport={onExport}
+                isExporting={isExporting}
             />
             <NextModal ref={modalRef} size="lg">
                 <UserForm currentUser={currentUser} onClose={handleModalClose} type={mode} />

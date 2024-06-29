@@ -108,5 +108,5 @@ pre-commit:
 	--prefix-colors "bgRed.bold.white,bgGreen.bold.white,bgBlue.bold.white,bgMagenta.bold.white" \
     "cd frontend && npm run lint:check" \
     "cd frontend && npm run build" \
-	"cd backend && make format" \
+	"docker exec react-fast-template-backend-1 make format" \
 	"make test"

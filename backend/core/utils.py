@@ -97,6 +97,19 @@ def generate_new_account_email(
     return EmailData(html_content=html_content, subject=subject)
 
 
+def generate_data_export_email(download_link: str) -> EmailData:
+    project_name = settings.PROJECT_NAME
+    subject = f"{project_name} - Your Data Export is Ready"
+    html_content = render_email_template(
+        template_name="data_export.html",
+        context={
+            "project_name": settings.PROJECT_NAME,
+            "download_link": download_link,
+        },
+    )
+    return EmailData(html_content=html_content, subject=subject)
+
+
 def generate_password_reset_token(email: str) -> str:
     delta = timedelta(hours=settings.EMAIL_RESET_TOKEN_EXPIRE_HOURS)
     now = datetime.utcnow()
