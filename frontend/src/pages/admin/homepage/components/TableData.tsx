@@ -32,7 +32,7 @@ export default function TableData({
     const [currentUser, setCurrent] = useState<User>({ is_active: true });
     const [mode, setMode] = useState<"create" | "update">("create");
     const [isExporting, setIExporting] = useState<boolean>(false);
-    const [, notificationsActions] = useNotifications();
+    const [, notify] = useNotifications();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -106,41 +106,20 @@ export default function TableData({
         try {
             await userService.deleteUser(currentUser.id);
             revalidator.revalidate();
-            notificationsActions.push({
-                options: {
-                    type: "success",
-                },
-                message: `User deleted successfully`,
-            });
+            notify.success("User deleted successfully");
             setCurrent({} as User);
             onCloseDelete();
         } catch (error) {
-            notificationsActions.push({
-                options: {
-                    type: "danger",
-                },
-                message: `An error deleting user: ${error}`,
-            });
+            notify.error(`An error deleting user: ${error}`);
         }
     };
     const onExport = async () => {
         setIExporting(true);
         try {
             await userService.export();
-            // revalidator.revalidate();
-            notificationsActions.push({
-                options: {
-                    type: "success",
-                },
-                message: `Data exported successfully, please check your email`,
-            });
+            notify.success("Data exported successfully, check your email.");
         } catch (error) {
-            notificationsActions.push({
-                options: {
-                    type: "danger",
-                },
-                message: `An error occurred error exporting user data: ${error}`,
-            });
+            notify.error(`An error occurred error exporting user data: ${error}`);
         } finally {
             setIExporting(false);
         }

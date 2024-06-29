@@ -30,7 +30,7 @@ function registerPeriodicSync(period: number, swUrl: string, r: ServiceWorkerReg
 function SW() {
     // check for updates every hour
     const period = 60 * 60 * 1000;
-    const [, notificationsActions] = useNotifications();
+    const [, notify] = useNotifications();
     const notificationKey = useRef<SnackbarKey | null>(null);
     const {
         offlineReady: [offlineReady, setOfflineReady],
@@ -55,20 +55,20 @@ function SW() {
         setNeedRefresh(false);
 
         if (notificationKey.current) {
-            notificationsActions.close(notificationKey.current);
+            notify.close(notificationKey.current);
         }
-    }, [setOfflineReady, setNeedRefresh, notificationsActions]);
+    }, [setOfflineReady, setNeedRefresh, notify]);
 
     useEffect(() => {
         if (offlineReady) {
-            notificationsActions.push({
+            notify.push({
                 options: {
                     autoHideDuration: 4500,
                     content: <div>App is ready to work offline.</div>,
                 },
             });
         } else if (needRefresh) {
-            notificationKey.current = notificationsActions.push({
+            notificationKey.current = notify.push({
                 message: "New content is available, click on reload button to update.",
                 options: {
                     variant: "warning",
@@ -86,7 +86,7 @@ function SW() {
                 },
             });
         }
-    }, [close, needRefresh, offlineReady, notificationsActions, updateServiceWorker]);
+    }, [close, needRefresh, offlineReady, notify, updateServiceWorker]);
 
     return null;
 }

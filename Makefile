@@ -104,9 +104,10 @@ scaffold: ## Scaffold a resource
 	@cd scripts && python scaffold.py run -n $(name)
 
 pre-commit:
-	npx concurrently --kill-others-on-fail --prefix "[{name}]" --names "frontend:lint,build,backend:lint,test" \
+	npx concurrently --kill-others-on-fail --prefix "[{name}]" --names "frontend:lint,frontend:test,frontend:build,backend:lint,backend:test" \
 	--prefix-colors "bgRed.bold.white,bgGreen.bold.white,bgBlue.bold.white,bgMagenta.bold.white" \
-    "cd frontend && npm run lint:check" \
-    "cd frontend && npm run build" \
+    "docker exec react-fast-template-frontend-1 npm run lint:check" \
+    "docker exec react-fast-template-frontend-1 npm run test:unit" \
+    "docker exec react-fast-template-frontend-1 npm run build" \
 	"docker exec react-fast-template-backend-1 make format" \
-	"make test"
+	"docker exec react-fast-template-backend-1 make test"

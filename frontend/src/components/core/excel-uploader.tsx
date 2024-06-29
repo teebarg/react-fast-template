@@ -10,7 +10,7 @@ interface Props {}
 const Excel: React.FC<Props> = () => {
     const id = "nK12eRTbo";
     const fileInput = useRef<any>(null);
-    const [, notificationsActions] = useNotifications();
+    const [, notify] = useNotifications();
     const [file, setFile] = useState<File>();
     const [status, setStatus] = useState<boolean>(false);
     const { messages: wsMessages, connect: initializeWebsocket, disconnect: disconnectWebsocket } = useWebSocket({});
@@ -31,12 +31,6 @@ const Excel: React.FC<Props> = () => {
         return currentMessage?.status == "Processing" ? "Processing" : "Submit";
     };
 
-    const notify = (message: string, type: string = "success") => {
-        notificationsActions.push({
-            options: { type },
-            message,
-        });
-    };
     const handleClick = () => {
         fileInput?.current?.click();
     };
@@ -46,7 +40,7 @@ const Excel: React.FC<Props> = () => {
         // Check file size (in kilobytes)
         const maxFileSize = 1500;
         if (selectedFile.size > maxFileSize * 1024) {
-            notify(`File size exceeds ${maxFileSize} KB`, "danger");
+            notify.error(`File size exceeds ${maxFileSize} KB`);
             return;
         }
 
@@ -60,7 +54,7 @@ const Excel: React.FC<Props> = () => {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         if (!file) {
-            notify("Please select a file", "danger");
+            notify.error("Please select a file");
             return;
         }
         setStatus(true);
@@ -71,7 +65,7 @@ const Excel: React.FC<Props> = () => {
         try {
             await userService.excelUpload({ id, formData });
         } catch (error) {
-            notify(`Error uploading file: ${error}`, "danger");
+            notify.error(`Error uploading file: ${error}`);
         } finally {
             setStatus(false);
         }

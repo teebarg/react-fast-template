@@ -15,7 +15,7 @@ const GoogleLogin: React.FC<Props> = () => {
 
     const navigate = useNavigate();
 
-    const [, notificationsActions] = useNotifications();
+    const [, notify] = useNotifications();
     const { login } = useAuth();
 
     const handleGoogleSignIn = useGoogleLogin({
@@ -40,21 +40,11 @@ const GoogleLogin: React.FC<Props> = () => {
                     navigate(from ?? "/");
                 }
             } catch (error) {
-                notificationsActions.push({
-                    options: {
-                        type: "danger",
-                    },
-                    message: `Google Login request failed: ${error}`,
-                });
+                notify.error(`Google Login request failed: ${error}`);
             }
         },
         onError: (errorResponse: any) => {
-            notificationsActions.push({
-                options: {
-                    type: "danger",
-                },
-                message: `Use Google Login request failed: ${errorResponse}`,
-            });
+            notify.error(`Use Google Login request failed: ${errorResponse}`);
         },
     });
 
