@@ -1,5 +1,10 @@
-import { IconSvgProps } from "@/store/types";
 import * as React from "react";
+import { SVGProps } from "react";
+
+// eslint-disable-next-line no-undef
+type IconSvgProps = SVGProps<SVGSVGElement> & {
+    size?: number;
+};
 
 export const Logo: React.FC<IconSvgProps> = ({ size = 36, width, height, ...props }) => (
     <svg fill="none" height={size || height} viewBox="0 0 32 32" width={size || width} {...props}>
