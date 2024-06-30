@@ -110,6 +110,24 @@ def generate_data_export_email(download_link: str) -> EmailData:
     return EmailData(html_content=html_content, subject=subject)
 
 
+def generate_contact_form_email(
+    name: str, email: str, phone: str, message: str
+) -> EmailData:
+    project_name = settings.PROJECT_NAME
+    subject = f"{project_name} - New Contact Email"
+    html_content = render_email_template(
+        template_name="contact_form.html",
+        context={
+            "project_name": settings.PROJECT_NAME,
+            "name": name,
+            "email": email,
+            "phone": phone,
+            "message": message,
+        },
+    )
+    return EmailData(html_content=html_content, subject=subject)
+
+
 def generate_password_reset_token(email: str) -> str:
     delta = timedelta(hours=settings.EMAIL_RESET_TOKEN_EXPIRE_HOURS)
     now = datetime.utcnow()

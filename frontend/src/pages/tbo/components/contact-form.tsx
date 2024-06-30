@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import Alert from "@/components/core/alert";
 import { Button } from "@nextui-org/react";
 import { Email, Input, TextArea, CheckBox } from "nextui-hook-form";
+import baseService from "@/services/base.service";
+import useNotifications from "@/store/notifications";
 
 type Inputs = {
     name: string;
@@ -24,9 +25,8 @@ const inputClass = {
 };
 
 export default function ContactForm() {
-    const [error, setError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
+    const [, notify] = useNotifications();
 
     const {
         control,
@@ -38,33 +38,19 @@ export default function ContactForm() {
         if (loading) {
             return;
         }
-        // setLoading(true);
-        const body = JSON.stringify(data);
+        const { agreement, ...payload } = data;
+        if (!agreement) {
+            notify.error("You must agree to submit form");
+            return;
+        }
+
         try {
-            // Sign Up
-            const res = await fetch(`${import.meta.env.VITE_API_DOMAIN}/message`, {
-                method: "POST",
-                headers: {
-                    accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body,
-            });
-            const data = await res.json();
-            setLoading(false);
-            if (res.ok) {
-                return;
-            }
-            setError(true);
-            if (res.status === 400) {
-                setErrorMessage(data.detail);
-                return;
-            } else if (res.status === 422) {
-                setErrorMessage("Please check your inputs and try again");
-                return;
-            }
-        } catch (error) {
-            setErrorMessage("An error occurred, please contact the administrator");
+            setLoading(true);
+            const res = await baseService.sendContactMessage(payload);
+            notify.success(res.message);
+        } catch (error: any) {
+            notify.error(error.message);
+        } finally {
             setLoading(false);
         }
     };
@@ -113,7 +99,7 @@ export default function ContactForm() {
                 />
 
                 <div className="flex gap-4">
-                    <CheckBox name="agreement" register={register} control={control} rules={{ required: true }} />
+                    <CheckBox name="agreement" register={register} control={control} required />
                     <p className="text-gray-700">I allow this website to store my submission so they can respond to my inquiry.</p>
                 </div>
 
@@ -129,11 +115,6 @@ export default function ContactForm() {
                     )}
                 </div>
             </div>
-            {error && (
-                <Alert type="alert" delay={5000} onClose={() => setError(false)}>
-                    <p>{errorMessage}</p>
-                </Alert>
-            )}
         </form>
     );
 }

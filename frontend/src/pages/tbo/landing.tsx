@@ -131,7 +131,7 @@ const Landing: React.FC<Props> = () => {
                             </div>
                             <div className="sm:w-1/2 backdrop-blur bg-white/60 p-4 sm:p-8 rounded-lg text-gray-800 mt-6 sm:mt-0">
                                 <div>
-                                    <p className="font-semibold mt-4 text-xl">Get in touch</p>
+                                    <p className="font-semibold mt-4 text-xl">Our Contacts</p>
                                     <div className="flex gap-2">
                                         <MailIcon />
                                         <p>obathrift@gmail.com</p>

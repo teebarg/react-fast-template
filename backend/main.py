@@ -8,6 +8,8 @@ from api.auth import router as auth_router
 from api.users import router as users_router
 from api.websocket import router as websocket_router
 from core.config import settings
+from core.utils import generate_contact_form_email, send_email
+from models.generic import ContactFormCreate
 
 app = FastAPI(title=settings.PROJECT_NAME, openapi_url="/api/openapi.json")
 
@@ -48,6 +50,20 @@ async def root():
 @app.get("/api/health-check")
 async def health_check():
     return {"message": "Server is running"}
+
+
+@app.post("/api/contact-form")
+async def contact_form(data: ContactFormCreate):
+    # Send download link
+    email_data = generate_contact_form_email(
+        name=data.name, email=data.email, phone=data.phone, message=data.message
+    )
+    send_email(
+        email_to=settings.ADMIN_EMAIL,
+        subject=email_data.subject,
+        html_content=email_data.html_content,
+    )
+    return {"message": "Message sent successfully"}
 
 
 class CustomJSONEncoder(json.JSONEncoder):

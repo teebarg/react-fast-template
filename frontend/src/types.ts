@@ -64,4 +64,11 @@ type UpdateUser = {
     is_superuser?: boolean;
 };
 
-export type { Pagination, Column, TableProps, Notifications, LoginUser, User, CreateUser, UpdateUser };
+type ContactMessage = {
+    name: string;
+    email: string;
+    phone?: string;
+    message: string;
+};
+
+export type { Pagination, Column, TableProps, Notifications, LoginUser, User, CreateUser, UpdateUser, ContactMessage };
