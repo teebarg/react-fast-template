@@ -1,11 +1,26 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@nextui-org/react";
+import { useCookie } from "@/hooks/use-cookie";
 
 export interface CookieProps {}
 
 export const Cookie: FC<CookieProps> = () => {
+    const { getCookie, setCookie } = useCookie();
     const [showCookie, setShowCookie] = useState(true);
+
+    useEffect(() => {
+        const acceptCookie = getCookie("accept_cookie");
+        if (acceptCookie) {
+            setShowCookie(false);
+        }
+    }, []);
+
+    const handleCookie = () => {
+        setShowCookie(false);
+        setCookie("accept_cookie", true);
+    };
+
     return (
         <div className={showCookie ? "" : "hidden"}>
             <div className="pointer-events-none fixed inset-x-0 bottom-0 px-6 pb-6 z-50">
@@ -21,7 +36,7 @@ export const Cookie: FC<CookieProps> = () => {
                     </p>
                     <div className="mt-4 space-y-2">
                         <Button
-                            onClick={() => setShowCookie(false)}
+                            onClick={handleCookie}
                             className="w-full"
                             style={{
                                 border: "2px solid transparent",
