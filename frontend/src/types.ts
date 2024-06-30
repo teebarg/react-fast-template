@@ -34,7 +34,10 @@ type TableProps = {
     callbackFunction: (user: any, columnKey: string | number) => ReactNode;
     onSearchChange: (value: string) => void;
     onAddNew?: () => void;
+    onExport?: () => void;
     query: string;
+    canExport?: boolean;
+    isExporting?: boolean;
 };
 
 type User = {

@@ -23,6 +23,8 @@ type Actions = {
     push: (notification: Partial<Notification>) => SnackbarKey;
     close: (key: SnackbarKey, dismissAll?: boolean) => void;
     remove: (key: SnackbarKey) => void;
+    error: (message: string) => void;
+    success: (message: string) => void;
 };
 
 export type { Notification, Actions };

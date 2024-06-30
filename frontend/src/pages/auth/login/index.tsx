@@ -29,7 +29,7 @@ const Login: React.FC<Props> = () => {
     const navigate = useNavigate();
 
     const actionData = useActionData() as { error: string } | undefined;
-    const [, notificationsActions] = useNotifications();
+    const [, notify] = useNotifications();
     const submit = useSubmit();
     const { isAuthenticated } = useAuth();
 
@@ -41,12 +41,9 @@ const Login: React.FC<Props> = () => {
     }, []);
 
     useWatch(actionData, (newData) => {
-        notificationsActions.push({
-            options: {
-                type: "danger",
-            },
-            message: newData?.error,
-        });
+        if (newData?.error) {
+            notify.error(newData?.error);
+        }
     });
 
     const {

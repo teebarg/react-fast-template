@@ -1,4 +1,6 @@
 import asyncio
+import os
+from datetime import datetime
 from io import BytesIO
 from typing import Annotated, Any, Dict
 
@@ -27,7 +29,11 @@ from core.deps import (
 )
 from core.logging import logger
 from core.security import get_password_hash, verify_password
-from core.utils import generate_new_account_email, send_email
+from core.utils import (
+    generate_data_export_email,
+    generate_new_account_email,
+    send_email,
+)
 from models.message import Message
 from models.user import (
     UpdatePassword,
@@ -38,6 +44,8 @@ from models.user import (
     UserUpdate,
     UserUpdateMe,
 )
+from services.pd import data_to_csv
+from services.storage import upload_to_firebase
 
 # Create a router for users
 router = APIRouter()
@@ -295,3 +303,29 @@ async def upload_products(
     contents = await file.read()
     background_tasks.add_task(process_file, contents, task_id, db)
     return {"batch": batch, "message": "File upload started"}
+
+
+@router.post("/export")
+async def export_users(current_user: CurrentUser, db: SessionDep, bucket: deps.Storage):
+    try:
+        users = db.exec(select(User))
+        # Get the current date
+        current_date = datetime.now().strftime("%Y-%m-%d")
+        filename = f"users_export_{current_date}.csv"
+        csv = data_to_csv(items=users, filename=filename)
+        file_url = upload_to_firebase(file_path=csv, bucket=bucket)
+
+        # Send download link
+        email_data = generate_data_export_email(download_link=file_url)
+        send_email(
+            email_to=current_user.email,
+            subject=email_data.subject,
+            html_content=email_data.html_content,
+        )
+
+        # Clean up
+        os.remove(f"./{filename}")
+        return {"message": "Export successful", "file_url": file_url}
+    except Exception as e:
+        logger.error(f"Export users error: {e}")
+        raise HTTPException(status_code=500, detail=str(e)) from e

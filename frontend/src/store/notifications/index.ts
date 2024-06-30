@@ -58,7 +58,31 @@ function useNotifications(): [Notification[], Actions] {
         [setNotifications]
     );
 
-    const actions = useMemo(() => ({ push, close, remove }), [push, close, remove]);
+    const error = useCallback(
+        (message: string) => {
+            push({
+                options: {
+                    type: "danger",
+                },
+                message,
+            });
+        },
+        [push]
+    );
+
+    const success = useCallback(
+        (message: string) => {
+            push({
+                options: {
+                    type: "success",
+                },
+                message,
+            });
+        },
+        [push]
+    );
+
+    const actions = useMemo(() => ({ push, close, remove, error, success }), [push, close, remove, error, success]);
 
     return [notifications, actions];
 }

@@ -23,6 +23,5 @@ format:
 	black .
 	ruff check --fix .
 
-backend-test: ## Run backend tests
-	@echo "$(YELLOW)Running backend tests...$(RESET)"
+test:
 	POSTGRES_SERVER=null PROJECT_NAME=null FIRST_SUPERUSER_FIRSTNAME=null FIRST_SUPERUSER_LASTNAME=null FIRST_SUPERUSER=email@email.com FIRST_SUPERUSER_PASSWORD=null python -m pytest

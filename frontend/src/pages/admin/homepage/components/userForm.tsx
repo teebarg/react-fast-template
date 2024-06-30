@@ -26,7 +26,7 @@ const UserForm: React.FC<Props> = ({ type = "create", onClose, currentUser }) =>
     const revalidator = useRevalidator();
     const [isPending, setIsPending] = useState<boolean>(false);
 
-    const [, notificationsActions] = useNotifications();
+    const [, notify] = useNotifications();
     const isCreate = type === "create";
 
     const {
@@ -55,19 +55,9 @@ const UserForm: React.FC<Props> = ({ type = "create", onClose, currentUser }) =>
                 reset();
             }
             revalidator.revalidate();
-            notificationsActions.push({
-                options: {
-                    type: "success",
-                },
-                message: `User ${isCreate ? "created" : "updated"} successfully`,
-            });
+            notify.success(`User ${isCreate ? "created" : "updated"} successfully`);
         } catch (error) {
-            notificationsActions.push({
-                options: {
-                    type: "danger",
-                },
-                message: `An error occurred: ${error}`,
-            });
+            notify.error(`An error occurred: ${error}`);
         } finally {
             setIsPending(false);
         }
