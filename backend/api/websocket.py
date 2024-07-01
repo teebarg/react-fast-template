@@ -49,6 +49,11 @@ class ConnectionManager:
         for connection in self.connections.get(id, []):
             await connection.send_json(data)
 
+    async def send_personal_message(self, message: str, user_id: str):
+        if user_id in self.active_connections:
+            websocket = self.active_connections[user_id]
+            await websocket.send_text(message)
+
 
 manager = ConnectionManager()
 
@@ -72,3 +77,27 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
         await websocket.receive_text()
     except WebSocketDisconnect:
         manager.disconnect(websocket)
+
+import aio_pika
+import json
+
+@app.websocket("/ws/{user_id}")
+async def websocket_endpoint(websocket: WebSocket, user_id: str):
+    await manager.connect(user_id, websocket)
+    try:
+        while True:
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        manager.disconnect(user_id)
+
+async def consume_events():
+    connection = await aio_pika.connect_robust("amqp://rabbitmq")
+    channel = await connection.channel()
+    queue = await channel.declare_queue("new_user")
+
+    async with queue.iterator() as queue_iter:
+        async for message in queue_iter:
+            async with message.process():
+                event = json.loads(message.body)
+                print("🚀 ~ event:", event)
+                await manager.broadcast(id="beaf", data={"message": "yooooo"})
