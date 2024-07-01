@@ -4,8 +4,6 @@ from datetime import datetime
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.auth import router as auth_router
-from api.users import router as users_router
 from api.websocket import router as websocket_router
 from core.config import settings
 from core.utils import generate_contact_form_email, send_email
@@ -14,13 +12,6 @@ from models.generic import ContactFormCreate
 app = FastAPI(title=settings.PROJECT_NAME, openapi_url="/api/openapi.json")
 
 # Mount the routers under their respective paths
-app.include_router(
-    users_router, prefix="/api/users", tags=["users"]
-)  # Include the user router
-app.include_router(
-    auth_router, prefix="/api/auth", tags=["auth"]
-)  # Include the user router
-
 
 app.include_router(
     websocket_router,

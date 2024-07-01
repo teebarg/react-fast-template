@@ -8,7 +8,7 @@ from sqlmodel import or_, select
 
 ModelType = TypeVar("ModelType", bound=Any)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
-UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
+UpdateSchemaType = TypeVar("UpdateSchemaType", bound=Any)
 
 
 class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):

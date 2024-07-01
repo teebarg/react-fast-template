@@ -106,4 +106,3 @@ def generate_contact_form_email(
         },
     )
     return EmailData(html_content=html_content, subject=subject)
-
