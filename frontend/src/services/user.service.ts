@@ -3,7 +3,7 @@ import UnauthorizedError from "@/services/error.service";
 import { CreateUser, Pagination, UpdateUser } from "@/types";
 import { buildUrl } from "@/utils/util";
 
-const API_URL = import.meta.env.VITE_API_DOMAIN;
+const API_URL = import.meta.env.VITE_AUTH_DOMAIN;
 
 class UserService {
     async getProfile(): Promise<User> {
