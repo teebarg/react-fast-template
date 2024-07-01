@@ -13,45 +13,14 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./lb.yml:/config.yml:ro
     networks:
-      - ${TRAEFIK_PUBLIC_NETWORK?Variable not set}
-      - default
-
-  db:
-    image: postgres:12
-    ports:
-      - 4014:5432
-    networks:
-      - ${TRAEFIK_PUBLIC_NETWORK?Variable not set}
-      - default
-    volumes:
-      - volume-data:/var/lib/postgresql/data/pgdata
-    env_file:
-      - ./backend/.env
-    environment:
-      - PGDATA=/var/lib/postgresql/data/pgdata
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD?Variable not set}
-      - POSTGRES_USER=${POSTGRES_USER?Variable not set}
-      - POSTGRES_DB=${POSTGRES_DB?Variable not set}
-
-  adminer:
-    image: adminer
-    ports:
-      - 4015:8080
-    networks:
-      - ${TRAEFIK_PUBLIC_NETWORK?Variable not set}
-      - default
-    depends_on:
-      - db
+      - traefik-network
 
   backend:
     image: '${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}'
     ports:
       - 4012:8000
     networks:
-      - ${TRAEFIK_PUBLIC_NETWORK?Variable not set}
-      - default
-    depends_on:
-      - db
+      - traefik-network
     env_file:
       - ./backend/.env
     build:
@@ -68,8 +37,7 @@ services:
     ports:
       - 4013:5173
     networks:
-      - ${TRAEFIK_PUBLIC_NETWORK?Variable not set}
-      - default
+      - traefik-network
     depends_on:
       - backend
     build:
@@ -89,6 +57,6 @@ volumes:
   volume-data:
 
 networks:
-  traefik-public:
-    # Allow setting it to false for testing
-    external: false
+  traefik-network:
+    name: traefik-network
+    external: true

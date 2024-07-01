@@ -18,7 +18,9 @@ const Excel: React.FC<Props> = () => {
     const currentMessage = wsMessages[wsMessages.length - 1];
 
     useEffect(() => {
-        initializeWebsocket(`/api/ws/users/${id}`);
+        const domain = import.meta.env.DEV ? "ws://localhost:2222" : `wss://${import.meta.env.VITE_DOMAIN}`;
+        const url = `${domain}/api/ws/users/${id}`;
+        initializeWebsocket(url);
         return () => {
             disconnectWebsocket();
         };

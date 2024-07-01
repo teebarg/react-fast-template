@@ -11,9 +11,7 @@ const useWebSocket = ({ onOpen, onClose }: Props) => {
     const [error, setError] = useState<Event>();
 
     const connect = async (url: string) => {
-        const domain = import.meta.env.DEV ? "ws://localhost:4010" : `wss://${import.meta.env.VITE_DOMAIN}`;
-
-        const socket = new WebSocket(`${domain}${url}`);
+        const socket = new WebSocket(url);
 
         socket.onopen = () => {
             // socket.send(JSON.stringify({ type: "auth", token: "jwt token" }));
