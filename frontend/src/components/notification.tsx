@@ -1,6 +1,7 @@
 import { useWebSocket } from "@/hooks/use-websocket";
 import {
     Avatar,
+    Badge,
     Button,
     Card,
     CardBody,
@@ -35,12 +36,13 @@ const Notification: React.FC<Props> = () => {
     return (
         <div>
             <Dropdown placement="bottom-start" classNames={{ content: "p-0" }}>
-                {/* <Badge as="button" content={messages.length} shape="circle" color="danger"> */}
-                <DropdownTrigger>
-                    <Button variant="bordered">Open Menu</Button>
-                    {/* <NotificationIcon size={24} /> */}
-                </DropdownTrigger>
-                {/* </Badge> */}
+                <Badge as="button" content={messages.length} shape="circle" color="danger">
+                    <DropdownTrigger>
+                        <Button isIconOnly className="bg-transparent h-auto w-auto min-w-[auto]">
+                            <NotificationIcon size={24} />
+                        </Button>
+                    </DropdownTrigger>
+                </Badge>
                 <DropdownMenu aria-label="Profile Actions" variant="flat" classNames={{ base: "p-0" }}>
                     <DropdownItem key="profile" className="p-0">
                         <Card className="max-w-[400px]">
@@ -48,21 +50,18 @@ const Notification: React.FC<Props> = () => {
                                 <div className="flex w-full items-center justify-between px-2">
                                     <div className="inline-flex items-center gap-1">
                                         <h4 className="inline-block align-middle text-large font-medium">Notifications</h4>
-                                        <Chip size="sm">12</Chip>
+                                        <Chip size="sm">{messages.length}</Chip>
                                     </div>
-                                    <Button
-                                        className="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-20 text-small gap-2 rounded-full [&>svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-transparent text-primary data-[hover=true]:bg-primary/20 h-8 px-3"
-                                        type="button"
-                                    >
+                                    <Button className="rounded-full bg-transparent text-primary data-[hover=true]:bg-primary/20 px-3 h-8">
                                         Mark all as read
                                     </Button>
                                 </div>
                             </CardHeader>
                             <Divider />
-                            <CardBody>
-                                <ScrollShadow className="min-w-[300px] max-w-[400px] h-[300px]">
+                            <CardBody className="p-0">
+                                <ScrollShadow size={200} className="w-[350px] h-[300px]">
                                     {messages.map((message, index) => (
-                                        <div key={index} className="flex gap-3 border-b border-divider px-6 py-4" id="5">
+                                        <div key={index} className="flex gap-3 border-b border-divider px-6 py-4">
                                             <Avatar isBordered color="secondary" src="https://i.pravatar.cc/150?u=a042581f4e29026704d" />
                                             <div className="flex flex-col gap-1">
                                                 <p className="text-small text-foreground">
@@ -81,17 +80,9 @@ const Notification: React.FC<Props> = () => {
                                 </ScrollShadow>
                             </CardBody>
                             <Divider />
-                            <CardFooter>
-                                <Button
-                                    className="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 px-4 min-w-20 h-10 text-small gap-2 rounded-medium [&>svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-transparent text-default-foreground data-[hover=true]:bg-default/40"
-                                    type="button"
-                                >
-                                    Settings
-                                </Button>
-                                <Button
-                                    className="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 px-4 min-w-20 h-10 text-small gap-2 rounded-medium [&>svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-default/40 text-default-foreground data-[hover=true]:opacity-hover"
-                                    type="button"
-                                >
+                            <CardFooter className="justify-end gap-2">
+                                <Button className="bg-transparent text-default-foreground data-[hover=true]:bg-default/40 px-4 h-10">Settings</Button>
+                                <Button className="bg-default/40 text-default-foreground data-[hover=true]:opacity-hover px-4 h-10">
                                     Archive All
                                 </Button>
                             </CardFooter>

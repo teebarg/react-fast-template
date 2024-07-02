@@ -96,7 +96,9 @@ async def consume_events():
                 async with message.process():
                     event = json.loads(message.body)
                     await manager.broadcast(
-                        id="beaf", data=event.get("content", {}), type="registration"
+                        id="nK12eRTbo",
+                        data=event.get("content", {}),
+                        type="registration",
                     )
     except Exception as e:
         logger.error(e)
