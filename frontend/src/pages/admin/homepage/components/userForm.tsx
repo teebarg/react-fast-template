@@ -5,7 +5,9 @@ import { Button } from "@nextui-org/react";
 import useNotifications from "@/store/notifications";
 import { Password, Email, Input, Switch } from "nextui-hook-form";
 import userService from "@/services/user.service";
-import type { User } from "@/types";
+import type { CreateUser, User } from "@/types";
+
+import { useMutation, QueryClient } from "@tanstack/react-query";
 
 type Inputs = {
     firstname: string;
@@ -29,6 +31,35 @@ const UserForm: React.FC<Props> = ({ type = "create", onClose, currentUser }) =>
     const [, notify] = useNotifications();
     const isCreate = type === "create";
 
+    // Create a client
+    const queryClient = new QueryClient();
+
+    // Mutations
+    const mutation = useMutation({
+        mutationFn: (body: CreateUser) => {
+            return userService.createUser(body);
+        },
+        onSuccess: () => {
+            // Invalidate and refetch
+            queryClient.invalidateQueries({ queryKey: ["createUser"] });
+            notify.success(`User ${isCreate ? "created" : "updated"} successfully`);
+            revalidator.revalidate();
+        },
+        onError(error) {
+            // console.log("🚀 ~ onError ~ variables:", variables);
+            // console.log("🚀 ~ onError ~ error:", error);
+            // console.log(error.stack);
+            // console.log(error.message);
+            // console.log(JSON.parse(error.message)?.detail);
+            // console.log(error.name);
+            notify.error(JSON.parse(error.message)?.detail);
+        },
+        onSettled: () => {
+            // Error or success... doesn't matter!
+            notify.success("Settled.........");
+        },
+    });
+
     const {
         reset,
         control,
@@ -42,8 +73,9 @@ const UserForm: React.FC<Props> = ({ type = "create", onClose, currentUser }) =>
         const body = data;
         try {
             if (isCreate) {
-                await userService.createUser(body);
-                onClose?.();
+                mutation.mutate(body);
+                // await userService.createUser(body);
+                // onClose?.();
             } else {
                 if (!currentUser?.id) {
                     return;
@@ -54,8 +86,8 @@ const UserForm: React.FC<Props> = ({ type = "create", onClose, currentUser }) =>
             if (isCreate) {
                 reset();
             }
-            revalidator.revalidate();
-            notify.success(`User ${isCreate ? "created" : "updated"} successfully`);
+            // revalidator.revalidate();
+            // notify.success(`User ${isCreate ? "created" : "updated"} successfully`);
         } catch (error) {
             notify.error(`An error occurred: ${error}`);
         } finally {

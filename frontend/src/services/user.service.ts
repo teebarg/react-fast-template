@@ -46,8 +46,17 @@ class UserService {
         return await res.json();
     }
 
-    async createUser(data: CreateUser): Promise<User> {
-        const res = await fetch(`${API_URL}/users`, {
+    createUser(data: CreateUser) {
+        return fetch(`${API_URL}/users/`, {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+        });
+    }
+
+    async createUser2(data: CreateUser): Promise<User> {
+        const res = await fetch(`${API_URL}/users/`, {
             method: "POST",
             body: JSON.stringify(data),
             headers: { "Content-Type": "application/json" },
@@ -55,13 +64,14 @@ class UserService {
         });
         if (!res.ok) {
             const errorText = await res.text();
-            throw new UnauthorizedError(errorText, res.status);
+            // throw new UnauthorizedError(errorText, res.status);
+            throw Error(errorText);
         }
         return await res.json();
     }
 
     async updateUser(data: UpdateUser, id: number | string): Promise<User> {
-        const res = await fetch(`${API_URL}/users/${id}`, {
+        const res = await fetch(`${API_URL}/users/${id}/`, {
             method: "PATCH",
             body: JSON.stringify(data),
             headers: { "Content-Type": "application/json" },
@@ -75,7 +85,7 @@ class UserService {
     }
 
     async deleteUser(id: number | string): Promise<Record<string, string>> {
-        const res = await fetch(`${API_URL}/users/${id}`, {
+        const res = await fetch(`${API_URL}/users/${id}/`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
