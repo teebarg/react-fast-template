@@ -1,12 +1,16 @@
-import logging
+import json
 from typing import Dict
 
+import aio_pika
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+
+from core.config import settings
+from core.logging import logger
 
 
 class ConnectionManager:
     def __init__(self):
-        self.connections: Dict[str, list[WebSocket]] = {}
+        self.connections: Dict[str, WebSocket] = {}
 
     async def connect(self, id: str, websocket: WebSocket) -> None:
         """
@@ -19,11 +23,9 @@ class ConnectionManager:
         - None
         """
         await websocket.accept()
-        conns = self.connections.get(id, [])
-        conns.append(websocket)
-        self.connections.update({id: conns})
+        self.connections[id] = websocket
 
-    def disconnect(self, websocket: WebSocket) -> None:
+    def disconnect(self, id: str) -> None:
         """
         Disconnects a WebSocket connection.
 
@@ -33,10 +35,10 @@ class ConnectionManager:
         Returns:
         None
         """
-        for key in self.connections:
-            self.connections[key].remove(websocket)
+        if id in self.connections:
+            del self.connections[id]
 
-    async def broadcast(self, id: str, data: dict) -> None:
+    async def broadcast(self, id: str, data: dict, type: str = "general") -> None:
         """
         Broadcasts the given data to all active connections.
 
@@ -46,14 +48,14 @@ class ConnectionManager:
         Returns:
             None
         """
-        for connection in self.connections.get(id, []):
-            await connection.send_json(data)
+        if id in self.connections:
+            websocket = self.connections[id]
+            await websocket.send_json({**data, "type": type})
 
 
 manager = ConnectionManager()
 
 router = APIRouter()
-logger = logging.getLogger(__name__)
 
 
 @router.websocket("/users/{user_id}")
@@ -72,3 +74,31 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
         await websocket.receive_text()
     except WebSocketDisconnect:
         manager.disconnect(websocket)
+
+
+@router.websocket("/{user_id}")
+async def ws_notification_endpoint(websocket: WebSocket, user_id: str):
+    await manager.connect(id=user_id, websocket=websocket)
+    try:
+        await websocket.receive_text()
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+
+
+async def consume_events():
+    try:
+        connection = await aio_pika.connect_robust(f"amqp://{settings.RABBITMQ_HOST}")
+        channel = await connection.channel()
+        queue = await channel.declare_queue("new_user")
+
+        async with queue.iterator() as queue_iter:
+            async for message in queue_iter:
+                async with message.process():
+                    event = json.loads(message.body)
+                    await manager.broadcast(
+                        id="nK12eRTbo",
+                        data=event.get("content", {}),
+                        type="registration",
+                    )
+    except Exception as e:
+        logger.error(e)

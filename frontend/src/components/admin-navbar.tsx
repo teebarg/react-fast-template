@@ -12,6 +12,7 @@ import UserDropDown from "@/components/user-menu";
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "@/store/auth-provider";
 import type { AuthContextValue } from "@/store/auth-provider";
+import Notification from "@/components/notification";
 
 const AdminNavbar = () => {
     const { isAuthenticated } = useAuth() as AuthContextValue;
@@ -46,7 +47,8 @@ const AdminNavbar = () => {
             </NavbarContent>
 
             <NavbarContent className="flex basis-1/5 sm:basis-full" justify="end">
-                <NavbarItem className="flex gap-2">
+                <NavbarItem className="flex gap-2 items-baseline justify-center">
+                    <Notification />
                     <ThemeSwitch />
                 </NavbarItem>
                 <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
