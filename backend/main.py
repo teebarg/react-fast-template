@@ -4,7 +4,8 @@ from datetime import datetime
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.websocket import consume_events, router as websocket_router
+from api.websocket import consume_events
+from api.websocket import router as websocket_router
 from core.config import settings
 from core.utils import generate_contact_form_email, send_email
 from models.generic import ContactFormCreate
@@ -60,6 +61,7 @@ async def contact_form(data: ContactFormCreate):
 @app.on_event("startup")
 async def startup_event():
     import asyncio
+
     loop = asyncio.get_event_loop()
     loop.create_task(consume_events())
 

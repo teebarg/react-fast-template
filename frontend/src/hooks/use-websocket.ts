@@ -3,9 +3,10 @@ import { useState } from "react";
 interface Props {
     onOpen?: () => void;
     onClose?: () => void;
+    type?: string[];
 }
 
-const useWebSocket = ({ onOpen, onClose }: Props) => {
+const useWebSocket = ({ onOpen, onClose, type = [] }: Props) => {
     const [socket, setSocket] = useState<WebSocket>();
     const [messages, setMessages] = useState<any[]>([]);
     const [error, setError] = useState<Event>();
@@ -21,6 +22,10 @@ const useWebSocket = ({ onOpen, onClose }: Props) => {
         };
 
         socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (type.length && !type.includes(data.type)) {
+                return;
+            }
             setMessages((prev: any[]) => [...prev, JSON.parse(event.data)]);
         };
 

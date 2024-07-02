@@ -13,7 +13,7 @@ const Excel: React.FC<Props> = () => {
     const [, notify] = useNotifications();
     const [file, setFile] = useState<File>();
     const [status, setStatus] = useState<boolean>(false);
-    const { messages: wsMessages, connect: initializeWebsocket, disconnect: disconnectWebsocket } = useWebSocket({});
+    const { messages: wsMessages, connect: initializeWebsocket, disconnect: disconnectWebsocket } = useWebSocket({ type: ["sheet-processor"] });
 
     const currentMessage = wsMessages[wsMessages.length - 1];
 
