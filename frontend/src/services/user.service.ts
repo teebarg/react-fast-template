@@ -70,7 +70,7 @@ class UserService {
     }
 
     async updateUser(data: UpdateUser, id: number | string): Promise<User> {
-        const res = await fetch(`${API_URL}/users/${id}/`, {
+        const res = await fetch(`${API_URL}/users/${id}`, {
             method: "PATCH",
             body: JSON.stringify(data),
             headers: { "Content-Type": "application/json" },

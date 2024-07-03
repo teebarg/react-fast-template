@@ -3,7 +3,7 @@
 import React, { useRef, useState } from "react";
 import { Chip, Badge, Avatar, Tooltip } from "@nextui-org/react";
 import { CheckIcon, EyeIcon, EditIcon, DeleteIcon } from "nui-react-icons";
-import { useLocation, useNavigate, useRevalidator } from "react-router-dom";
+// import { useLocation, useNavigate } from "react-router-dom";
 import type { TableProps, User } from "@/types";
 import Table from "@/components/table";
 import NextModal from "@/components/modal";
@@ -11,6 +11,7 @@ import { UserForm } from "./userForm";
 import { Confirm } from "@/components/core/confirm";
 import userService from "@/services/user.service";
 import useNotifications from "@/store/notifications";
+import { useNavigate } from "@tanstack/react-router";
 
 interface ChildComponentHandles {
     onOpen: () => void;
@@ -26,7 +27,6 @@ export default function TableData({
     pagination: TableProps["pagination"];
     query: string;
 }) {
-    const revalidator = useRevalidator();
     const modalRef = useRef<ChildComponentHandles>(null);
     const deleteModalRef = useRef<ChildComponentHandles>(null);
     const [currentUser, setCurrent] = useState<User>({ is_active: true });
@@ -35,7 +35,7 @@ export default function TableData({
     const [, notify] = useNotifications();
 
     const navigate = useNavigate();
-    const location = useLocation();
+    // const location = useLocation();
 
     const columns = [
         { name: "AVATAR", uid: "avatar" },
@@ -46,17 +46,26 @@ export default function TableData({
         { name: "ACTIONS", uid: "actions" },
     ];
 
-    const updateQueryParams = React.useCallback(
-        (key: string, value: string) => {
-            const searchParams = new URLSearchParams(location.search);
-            searchParams.set(key, value);
-            navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
-        },
-        [navigate, location.search]
-    );
+    // const updateQueryParams = React.useCallback(
+    //     (key: string, value: string) => {
+    //         const searchParams = new URLSearchParams(location.search);
+    //         searchParams.set(key, value);
+    //         navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+    //     },
+    //     [navigate, location.search]
+    // );
 
     const onSearchChange = (value: string) => {
-        updateQueryParams("name", value);
+        // updateQueryParams("name", value);
+        navigate({
+            search: (old) => {
+                return {
+                    ...old,
+                    name: value,
+                };
+            },
+            replace: true,
+        });
     };
 
     const handleEdit = (value: User) => {
@@ -82,7 +91,7 @@ export default function TableData({
     };
 
     const handleView = (id: number | string) => {
-        navigate(`/admin/user/${id}`);
+        navigate({ to: `/admin/user/${id}` });
     };
 
     const handleDelete = (value: User) => {
@@ -105,7 +114,7 @@ export default function TableData({
         }
         try {
             await userService.deleteUser(currentUser.id);
-            revalidator.revalidate();
+            // revalidator.revalidate();
             notify.success("User deleted successfully");
             setCurrent({} as User);
             onCloseDelete();

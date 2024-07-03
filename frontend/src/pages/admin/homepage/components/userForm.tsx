@@ -1,5 +1,5 @@
 import React from "react";
-import { useRevalidator } from "react-router-dom";
+// import { useRevalidator } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from "@nextui-org/react";
 import useNotifications from "@/store/notifications";
@@ -7,7 +7,8 @@ import { Password, Email, Input, Switch } from "nextui-hook-form";
 import userService from "@/services/user.service";
 import type { UpdateUser, User } from "@/types";
 
-import { useMutation, QueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "@tanstack/react-router";
 
 type Inputs = {
     firstname: string;
@@ -25,13 +26,15 @@ interface Props {
 }
 
 const UserForm: React.FC<Props> = ({ type = "create", onClose, currentUser }) => {
-    const revalidator = useRevalidator();
+    // const revalidator = useRevalidator();
 
+    const router = useRouter();
     const [, notify] = useNotifications();
     const isCreate = type === "create";
 
     // Create a client
-    const queryClient = new QueryClient();
+    // const queryClient = new QueryClient();
+    const queryClient = useQueryClient();
 
     // Mutations
     const mutation = useMutation({
@@ -40,7 +43,9 @@ const UserForm: React.FC<Props> = ({ type = "create", onClose, currentUser }) =>
             queryClient.invalidateQueries({ queryKey: ["createUser"] });
             notify.success(`User created successfully`);
             reset();
-            revalidator.revalidate();
+            router.invalidate();
+            // queryClient.invalidateQueries({ queryKey: ["users"] });
+            // revalidator.revalidate();
         },
         onError(error) {
             notify.error(JSON.parse(error.message)?.detail);
@@ -55,9 +60,11 @@ const UserForm: React.FC<Props> = ({ type = "create", onClose, currentUser }) =>
             return userService.updateUser(body, currentUser.id);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["updateUser"] });
+            // queryClient.invalidateQueries({ queryKey: ["updateUser"] });
             notify.success(`User updated successfully`);
-            revalidator.revalidate();
+            queryClient.invalidateQueries({ queryKey: ["users", { page: "4" }] });
+            // router.invalidate();
+            // revalidator.revalidate();
         },
         onError(error) {
             notify.error(JSON.parse(error.message)?.detail);

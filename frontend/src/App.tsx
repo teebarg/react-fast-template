@@ -18,15 +18,23 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
+import LoadingPage from "./components/loading";
+import { QueryClient } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 // Create a new router instance
 const router = createRouter({
     routeTree,
     context: {
-        // auth will initially be undefined
-        // We'll be passing down the auth state from within a React component
         auth: undefined!,
+        queryClient,
     },
+    defaultPendingComponent: () => (
+        <div className={`p-2 text-2xl`}>
+            <LoadingPage />
+        </div>
+    ),
 });
 
 // Register the router instance for type safety
