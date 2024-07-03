@@ -1,10 +1,10 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@nextui-org/react";
 import useNotifications from "@/store/notifications";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useAuth } from "@/store/auth-provider";
 import authService from "@/services/auth.service";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 
 interface Props {}
 

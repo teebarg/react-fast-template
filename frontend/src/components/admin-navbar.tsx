@@ -9,10 +9,11 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import { Logo } from "@/components/icons";
 import { SearchIcon } from "nui-react-icons";
 import UserDropDown from "@/components/user-menu";
-import { Link, NavLink } from "react-router-dom";
+// import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "@/store/auth-provider";
 import type { AuthContextValue } from "@/store/auth-provider";
 import Notification from "@/components/notification";
+import { Link } from "@tanstack/react-router";
 
 const AdminNavbar = () => {
     const { isAuthenticated } = useAuth() as AuthContextValue;
@@ -56,9 +57,9 @@ const AdminNavbar = () => {
                     {isAuthenticated ? (
                         <UserDropDown />
                     ) : (
-                        <NavLink to="/login" className="text-sm font-semibold leading-6">
+                        <Link to="/login" className="text-sm font-semibold leading-6">
                             Log In <span aria-hidden="true">&rarr;</span>
-                        </NavLink>
+                        </Link>
                     )}
                 </NavbarItem>
                 <NavbarMenuToggle className="sm:hidden" />
@@ -68,9 +69,9 @@ const AdminNavbar = () => {
                 <div className="mx-4 mt-2 flex flex-col gap-2">
                     {siteConfig.navItems.map((item, index: number) => (
                         <NavbarMenuItem key={`${item}-${index}`}>
-                            <NavLink className={({ isActive, isPending }) => (isPending ? "pending" : isActive ? "text-danger" : "")} to={item.href}>
+                            <Link className="[&.active]:text-danger" to={item.href}>
                                 {item.label}
-                            </NavLink>
+                            </Link>
                         </NavbarMenuItem>
                     ))}
                 </div>

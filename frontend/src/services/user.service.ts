@@ -46,7 +46,7 @@ class UserService {
         return await res.json();
     }
 
-    createUser(data: CreateUser) {
+    createUser2(data: CreateUser) {
         return fetch(`${API_URL}/users/`, {
             method: "POST",
             body: JSON.stringify(data),
@@ -55,7 +55,7 @@ class UserService {
         });
     }
 
-    async createUser2(data: CreateUser): Promise<User> {
+    async createUser(data: CreateUser): Promise<User> {
         const res = await fetch(`${API_URL}/users/`, {
             method: "POST",
             body: JSON.stringify(data),
@@ -64,8 +64,7 @@ class UserService {
         });
         if (!res.ok) {
             const errorText = await res.text();
-            // throw new UnauthorizedError(errorText, res.status);
-            throw Error(errorText);
+            throw new UnauthorizedError(errorText, res.status);
         }
         return await res.json();
     }
