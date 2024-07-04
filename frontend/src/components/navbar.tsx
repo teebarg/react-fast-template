@@ -1,5 +1,3 @@
-"use client";
-
 import { Navbar as NextUINavbar, NavbarContent, NavbarMenu, NavbarMenuToggle, NavbarBrand, NavbarItem, NavbarMenuItem } from "@nextui-org/navbar";
 import { Kbd } from "@nextui-org/kbd";
 import { Link } from "@nextui-org/link";
@@ -12,7 +10,7 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import { TwitterIcon, GithubIcon, SearchIcon } from "nui-react-icons";
 import { Logo } from "@/components/icons";
 import UserDropDown from "@/components/user-menu";
-// import { NavLink } from "react-router-dom";
+
 import { useAuth } from "@/store/auth-provider";
 import { Link as NavLink } from "@tanstack/react-router";
 

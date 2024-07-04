@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Button } from "@nextui-org/react";
 import { useCookie } from "@/hooks/use-cookie";
+import { Link } from "@tanstack/react-router";
 
 export interface CookieProps {}
 

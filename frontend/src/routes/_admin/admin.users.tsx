@@ -2,16 +2,14 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
 import React from "react";
 import Meta from "@/components/Meta";
-// import { LoaderFunction, redirect, useLoaderData, useNavigate } from "react-router-dom";
 import { Button } from "@nextui-org/react";
 import userService from "@/services/user.service";
-// import { useCookie } from "@/hooks/use-cookie";
 import { User } from "@/models/user";
 import { Pagination } from "@/types";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { Excel } from "@/components/core/excel-uploader";
 import TableData from "@/pages/admin/homepage/components/TableData";
-import { Progess } from "@/components/core/progess";
+import { Progress } from "@/components/core/progress";
 
 interface Props {}
 interface userData {
@@ -46,22 +44,13 @@ const Users: React.FC<Props> = () => {
     );
 };
 
-// Create a client
-// const queryClient = new QueryClient();
-// const queryClient = useQueryClient()
-
 const getUsersQueryOptions = ({ name, page }: any) => ({
     queryKey: ["users", { name, page }],
     queryFn: () => userService.getUsers({ name, page }),
 });
 
-// const postsQueryOptions = queryOptions({
-//     queryKey: ["users"],
-//     queryFn: () => userService.getUsers({ name: "", page: "1" }),
-// });
-
 export const Route = createFileRoute("/_admin/admin/users")({
-    loader: async ({ context, deps }) => {
+    loader: async ({ context, deps }: any) => {
         const postsQueryOptions = getUsersQueryOptions(deps);
         return context.queryClient.ensureQueryData(postsQueryOptions);
     },
@@ -72,5 +61,5 @@ export const Route = createFileRoute("/_admin/admin/users")({
         };
     },
     component: Users,
-    pendingComponent: Progess,
+    pendingComponent: Progress,
 });

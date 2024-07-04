@@ -1,7 +1,7 @@
 import { GithubIcon, YoutubeIcon, TwitterIcon, MailIcon } from "nui-react-icons";
 import { Link } from "@nextui-org/link";
 import { siteConfig } from "@/config/site";
-import { NavLink } from "react-router-dom";
+import { Link as NavLink } from "@tanstack/react-router";
 import { Button, Input } from "@nextui-org/react";
 
 const services = [

@@ -1,27 +1,13 @@
-// import { createLazyFileRoute } from "@tanstack/react-router";
-
-// export const Route = createLazyFileRoute("/")({
-//     component: Index,
-// });
-
-// function Index() {
-//     return (
-//         <div className="p-2">
-//             <h3>Welcome Home!</h3>
-//         </div>
-//     );
-// }
-
 import React from "react";
 import { GithubIcon } from "nui-react-icons";
 import { Image, ScrollShadow } from "@nextui-org/react";
 import Navbar from "@/components/navbar";
-// import Footer from "@/components/footer";
-// import { Cookie } from "@/components/cookie";
 import Meta from "@/components/Meta";
 
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { sponsors } from "@/pages/data";
+import { Cookie } from "@/components/cookie";
+import Footer from "@/components/footer";
 
 interface Props {}
 
@@ -124,8 +110,8 @@ const Homepage: React.FC<Props> = () => {
                         </div>
                     </div>
                 </main>
-                {/* <Cookie /> */}
-                {/* <Footer /> */}
+                <Cookie />
+                <Footer />
             </div>
         </React.Fragment>
     );

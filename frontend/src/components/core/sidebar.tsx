@@ -180,7 +180,7 @@ const Sidebar: React.FC<Props> = () => {
             return (
                 <MenuItem
                     key={index}
-                    component={<Link to={menuItem.href} />}
+                    component={<Link to={menuItem.href} activeOptions={{ exact: true }} />}
                     suffix={<ChevronRightIcon strokeWidth={2.5} width="2em" height="2em" className="hidden" />}
                 >
                     {menuItem.label}
