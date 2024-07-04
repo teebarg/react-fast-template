@@ -1,5 +1,4 @@
 import React from "react";
-// import { useRevalidator } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from "@nextui-org/react";
 import useNotifications from "@/store/notifications";
@@ -26,26 +25,21 @@ interface Props {
 }
 
 const UserForm: React.FC<Props> = ({ type = "create", onClose, currentUser }) => {
-    // const revalidator = useRevalidator();
-
     const router = useRouter();
     const [, notify] = useNotifications();
     const isCreate = type === "create";
 
     // Create a client
-    // const queryClient = new QueryClient();
     const queryClient = useQueryClient();
 
     // Mutations
     const mutation = useMutation({
         mutationFn: userService.createUser,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["createUser"] });
-            notify.success(`User created successfully`);
-            reset();
+            queryClient.removeQueries({ queryKey: ["users"] });
             router.invalidate();
-            // queryClient.invalidateQueries({ queryKey: ["users"] });
-            // revalidator.revalidate();
+            notify.success("User created successfully");
+            reset();
         },
         onError(error) {
             notify.error(JSON.parse(error.message)?.detail);
@@ -60,11 +54,9 @@ const UserForm: React.FC<Props> = ({ type = "create", onClose, currentUser }) =>
             return userService.updateUser(body, currentUser.id);
         },
         onSuccess: () => {
-            // queryClient.invalidateQueries({ queryKey: ["updateUser"] });
+            queryClient.removeQueries({ queryKey: ["users"] });
             notify.success(`User updated successfully`);
-            queryClient.invalidateQueries({ queryKey: ["users", { page: "4" }] });
-            // router.invalidate();
-            // revalidator.revalidate();
+            router.invalidate();
         },
         onError(error) {
             notify.error(JSON.parse(error.message)?.detail);

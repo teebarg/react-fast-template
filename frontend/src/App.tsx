@@ -19,16 +19,16 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 import LoadingPage from "./components/loading";
-import { QueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
-const queryClient = new QueryClient();
+// const queryClient = new QueryClient();
 
 // Create a new router instance
 const router = createRouter({
     routeTree,
     context: {
         auth: undefined!,
-        queryClient,
+        queryClient: undefined,
     },
     defaultPendingComponent: () => (
         <div className={`p-2 text-2xl`}>
@@ -47,6 +47,7 @@ declare module "@tanstack/react-router" {
 function App() {
     const [promptEvent, promptToInstall] = useAddToHomeScreenPrompt();
     const auth = useAuth();
+    const queryClient = useQueryClient();
     // const router2 = createBrowserRouter([
     //     {
     //         id: "root",
@@ -145,7 +146,9 @@ function App() {
             <Notifications />
             <HotKeys />
             <SW />
-            <RouterProvider router={router} context={{ auth }} />
+            {/* <QueryClientProvider client={queryClient}> */}
+            <RouterProvider router={router} context={{ auth, queryClient }} />
+            {/* </QueryClientProvider> */}
             {/* <RouterProvider router={router} fallbackElement={<LoadingPage />} /> */}
         </Fragment>
     );

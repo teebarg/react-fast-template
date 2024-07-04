@@ -10,7 +10,6 @@ import { User } from "@/models/user";
 import { Pagination } from "@/types";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { Excel } from "@/components/core/excel-uploader";
-import { QueryClient } from "@tanstack/react-query";
 import TableData from "@/pages/admin/homepage/components/TableData";
 import { Progess } from "@/components/core/progess";
 
@@ -48,7 +47,7 @@ const Users: React.FC<Props> = () => {
 };
 
 // Create a client
-const queryClient = new QueryClient();
+// const queryClient = new QueryClient();
 // const queryClient = useQueryClient()
 
 const getUsersQueryOptions = ({ name, page }: any) => ({
@@ -62,9 +61,9 @@ const getUsersQueryOptions = ({ name, page }: any) => ({
 // });
 
 export const Route = createFileRoute("/_admin/admin/users")({
-    loader: ({ deps }) => {
+    loader: async ({ context, deps }) => {
         const postsQueryOptions = getUsersQueryOptions(deps);
-        return queryClient.ensureQueryData(postsQueryOptions);
+        return context.queryClient.ensureQueryData(postsQueryOptions);
     },
     loaderDeps: ({ search }: any) => {
         return {
