@@ -27,7 +27,7 @@ const GoogleLogin: React.FC<Props> = () => {
 
             const firstname = userInfo.given_name;
             const lastname = userInfo.family_name;
-            const email = userInfo.email;
+            const { email } = userInfo;
 
             try {
                 const user = await authService.socialLogin({
@@ -37,7 +37,7 @@ const GoogleLogin: React.FC<Props> = () => {
                 });
                 if (user) {
                     login({ firstname, lastname, email });
-                    navigate(from ?? "/");
+                    navigate({ to: from ?? "/" });
                 }
             } catch (error) {
                 notify.error(`Google Login request failed: ${error}`);
