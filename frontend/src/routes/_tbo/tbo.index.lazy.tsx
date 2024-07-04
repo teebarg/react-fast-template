@@ -1,4 +1,4 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { Link, createLazyFileRoute } from "@tanstack/react-router";
 
 import React from "react";
 import Meta from "@/components/Meta";
@@ -6,10 +6,11 @@ import { Button, Image } from "@nextui-org/react";
 import { LocationIcon, MailIcon } from "nui-react-icons";
 import { Fade } from "react-awesome-reveal";
 import { imgSrc } from "@/utils/util";
-import { openingHours, products } from "@/pages/tbo/data";
 import { ProductItem } from "./-components/product-item";
 import ContactForm from "./-components/contact-form";
 import TBONavbar from "./-components/navbar";
+import { openingHours, products } from "./-data/data";
+import type { Product } from "./-data/data";
 
 interface Props {}
 
@@ -109,7 +110,7 @@ const Index: React.FC<Props> = () => {
                             items including clothes, shoes, and accessories for your little ones.`}
                         </p>
                         <div className="grid sm:grid-cols-4 gap-8 mt-6">
-                            {products.slice(4, 8).map((product, index) => (
+                            {products.slice(4, 8).map((product: Product, index: number) => (
                                 <ProductItem key={index} product={product} />
                             ))}
                         </div>
@@ -144,7 +145,7 @@ const Index: React.FC<Props> = () => {
                                     </div>
                                     <p className="font-semibold mt-6 text-xl">Hours</p>
                                     <div>
-                                        {openingHours.map((hour, index) => (
+                                        {openingHours.map((hour: any, index: any) => (
                                             <div key={index} className="grid grid-cols-3">
                                                 <p className="">{hour.day}</p>
                                                 <p className="col-span-2">{hour.time}</p>
@@ -174,6 +175,6 @@ const Index: React.FC<Props> = () => {
     );
 };
 
-export const Route = createFileRoute("/_tbo/tbo/")({
+export const Route = createLazyFileRoute("/_tbo/tbo/")({
     component: Index,
 });

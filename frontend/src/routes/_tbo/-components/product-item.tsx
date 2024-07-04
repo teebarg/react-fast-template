@@ -1,8 +1,8 @@
 import { Button, Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { StarIcon } from "nui-react-icons";
 import { currency, imgSrc } from "@/utils/util";
-import type { Product } from "@/pages/tbo/data";
 import { useNavigate } from "@tanstack/react-router";
+import type { Product } from "../-data/data";
 
 interface ComponentProps {
     product: Product;

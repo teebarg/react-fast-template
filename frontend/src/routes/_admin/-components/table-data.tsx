@@ -3,15 +3,14 @@
 import React, { useRef, useState } from "react";
 import { Chip, Badge, Avatar, Tooltip } from "@nextui-org/react";
 import { CheckIcon, EyeIcon, EditIcon, DeleteIcon } from "nui-react-icons";
-// import { useLocation, useNavigate } from "react-router-dom";
 import type { TableProps, User } from "@/types";
 import Table from "@/components/table";
 import NextModal from "@/components/modal";
-import { UserForm } from "./userForm";
 import { Confirm } from "@/components/core/confirm";
 import userService from "@/services/user.service";
 import useNotifications from "@/store/notifications";
 import { useNavigate } from "@tanstack/react-router";
+import { UserForm } from "./user-form";
 
 interface ChildComponentHandles {
     onOpen: () => void;
@@ -35,28 +34,17 @@ export default function TableData({
     const [, notify] = useNotifications();
 
     const navigate = useNavigate();
-    // const location = useLocation();
 
     const columns = [
         { name: "AVATAR", uid: "avatar" },
-        { name: "FULLNAME", uid: "name", sortable: true },
+        { name: "FULL_NAME", uid: "name", sortable: true },
         { name: "EMAIL", uid: "email", sortable: true },
         { name: "STATUS", uid: "status", sortable: true },
         { name: "CREATED_AT", uid: "create" },
         { name: "ACTIONS", uid: "actions" },
     ];
 
-    // const updateQueryParams = React.useCallback(
-    //     (key: string, value: string) => {
-    //         const searchParams = new URLSearchParams(location.search);
-    //         searchParams.set(key, value);
-    //         navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
-    //     },
-    //     [navigate, location.search]
-    // );
-
     const onSearchChange = (value: string) => {
-        // updateQueryParams("name", value);
         navigate({
             search: (old) => {
                 return {

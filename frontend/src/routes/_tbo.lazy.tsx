@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, createFileRoute } from "@tanstack/react-router";
+import { Outlet, createLazyFileRoute } from "@tanstack/react-router";
 import { Banner } from "./_tbo/-components/banner";
 import Footer from "./_tbo/-components/footer";
 import { Progress } from "@/components/core/progress";
@@ -16,7 +16,7 @@ const Layout: React.FC<Props> = () => {
     );
 };
 
-export const Route = createFileRoute("/_tbo")({
+export const Route = createLazyFileRoute("/_tbo")({
     component: Layout,
     pendingComponent: Progress,
 });

@@ -2,8 +2,8 @@ import { createLazyFileRoute } from "@tanstack/react-router";
 import React from "react";
 import { Card, CardHeader, CardBody, CardFooter, Avatar, Button } from "@nextui-org/react";
 import Meta from "@/components/Meta";
-import TableData from "@/pages/admin/homepage/components/TableData";
-import { pagination, users } from "@/pages/admin/homepage/data";
+import { pagination, users } from "./-data/data";
+import TableData from "./-components/table-data";
 
 interface Props {}
 

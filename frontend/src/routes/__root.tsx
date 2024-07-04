@@ -17,12 +17,3 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ),
     notFoundComponent: NotFound,
 });
-// export const Route = createRootRoute({
-//     component: () => (
-//         <React.Fragment>
-//             <Outlet />
-//             <TanStackRouterDevtools />
-//         </React.Fragment>
-//     ),
-//     notFoundComponent: NotFound,
-// });

@@ -5,9 +5,9 @@ import Navbar from "@/components/navbar";
 import Meta from "@/components/Meta";
 
 import { createLazyFileRoute } from "@tanstack/react-router";
-import { sponsors } from "@/pages/data";
 import { Cookie } from "@/components/cookie";
 import Footer from "@/components/footer";
+import { sponsors } from "@/data";
 
 interface Props {}
 
@@ -81,7 +81,7 @@ const Homepage: React.FC<Props> = () => {
                         <div className="mx-auto w-full max-w-5xl px-6 py-8 md:py-20">
                             <ScrollShadow className="mask" orientation="horizontal" size={400}>
                                 <div className="flex w-max items-stretch gap-[40px] animate-scrolling-banner hover:[animation-play-state:paused]">
-                                    {sponsors.map((item, index) => (
+                                    {sponsors.map((item, index: number) => (
                                         <div key={index} className="flex items-center justify-center text-foreground">
                                             {item.icon}
                                         </div>

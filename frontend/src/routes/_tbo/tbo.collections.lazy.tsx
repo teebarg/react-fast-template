@@ -1,11 +1,13 @@
+import { createLazyFileRoute } from "@tanstack/react-router";
 import { BreadcrumbItem, Breadcrumbs, Button, Select, SelectItem } from "@nextui-org/react";
 import React from "react";
-import { CollectionsSideBar } from "./components/sidebar";
-import { filters, products } from "./data";
-import { ProductItem } from "./components/product-item";
-import TBONavbar from "./components/navbar";
 import Meta from "@/components/Meta";
 import { FunnelIcon } from "nui-react-icons";
+import { CollectionsSideBar } from "./-components/sidebar";
+import { ProductItem } from "./-components/product-item";
+import TBONavbar from "./-components/navbar";
+import { filters, products } from "./-data/data";
+import type { Product } from "./-data/data";
 
 interface ComponentProps {}
 
@@ -31,7 +33,7 @@ const Collections: React.FC<ComponentProps> = () => {
                             <div className="flex items-center justify-between gap-2 ">
                                 <div className="flex flex-row gap-2">
                                     <Button type="button">
-                                        <FunnelIcon size={16} role="img" className="text-default-500 iconify iconify--solar" focusable="false" />
+                                        <FunnelIcon size={16} role="img" className="text-default-500" focusable="false" />
                                         Filters
                                     </Button>
                                     <div className="hidden items-center gap-1 md:flex">
@@ -44,7 +46,7 @@ const Collections: React.FC<ComponentProps> = () => {
                                         Sort by
                                     </label>
                                     <Select id="filter" placeholder="Filter products" className="min-w-[15rem] max-w-xs flex-1">
-                                        {filters.map((filter) => (
+                                        {filters.map((filter: any) => (
                                             <SelectItem key={filter.key}>{filter.label}</SelectItem>
                                         ))}
                                     </Select>
@@ -54,7 +56,7 @@ const Collections: React.FC<ComponentProps> = () => {
                         <main className="mt-4 h-full w-full overflow-visible px-1">
                             <div className="block rounded-medium border-medium border-dashed border-divider p-2">
                                 <div className="grid w-full gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                                    {products.map((product, index) => (
+                                    {products.map((product: Product, index: number) => (
                                         <ProductItem key={index} product={product} />
                                     ))}
                                 </div>
@@ -67,4 +69,6 @@ const Collections: React.FC<ComponentProps> = () => {
     );
 };
 
-export { Collections };
+export const Route = createLazyFileRoute("/_tbo/tbo/collections")({
+    component: Collections,
+});

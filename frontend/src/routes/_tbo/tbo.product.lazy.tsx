@@ -1,14 +1,15 @@
+import { createLazyFileRoute } from "@tanstack/react-router";
 import React from "react";
 
 interface Props {}
 const Product: React.FC<Props> = () => {
     return (
         <React.Fragment>
-            <div className="mt-4">
+            <div>
                 <iframe
                     src="https://template.niyi.com.ng/product/7"
                     title="Product Page"
-                    style={{ minHeight: "80vh", height: "100%" }}
+                    style={{ minHeight: "70vh", height: "100%" }}
                     allowFullScreen
                     className="w-full"
                 ></iframe>
@@ -17,4 +18,6 @@ const Product: React.FC<Props> = () => {
     );
 };
 
-export { Product };
+export const Route = createLazyFileRoute("/_tbo/tbo/product")({
+    component: Product,
+});

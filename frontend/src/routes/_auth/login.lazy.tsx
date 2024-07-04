@@ -1,3 +1,4 @@
+import React from "react";
 import { Link, createLazyFileRoute, useLocation, useNavigate } from "@tanstack/react-router";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button, Divider } from "@nextui-org/react";
@@ -5,7 +6,6 @@ import { Button, Divider } from "@nextui-org/react";
 import useNotifications from "@/store/notifications";
 import { Password, Email } from "nextui-hook-form";
 import { GoogleLogin } from "@/components/core/google";
-import React from "react";
 import { useMutation } from "@tanstack/react-query";
 import authService from "@/services/auth.service";
 import { useAuth } from "@/store/auth-provider";
@@ -23,30 +23,17 @@ const Login: React.FC<Props> = () => {
     const { login } = useAuth() as AuthContextValue;
     const params = new URLSearchParams(location.search);
     const from = params.get("redirect") || "/";
-    // console.log("🚀 ~ from:", from);
     const navigate = useNavigate({ from });
-    // console.log("🚀 ~ navigate:", navigate);
-    const isLoggingIn = false;
 
     const [, notify] = useNotifications();
-
-    // useWatch(actionData, (newData) => {
-    //     if (newData?.error) {
-    //         notify.error(newData?.error);
-    //     }
-    // });
 
     // Mutations
     const mutation = useMutation({
         mutationFn: authService.login,
         onSuccess: async (data) => {
             await login(data);
-            notify.success(`User created successfully`);
-            // console.log("Navigating.....");
-            // console.log(from);
+            notify.success("User created successfully");
             navigate({ to: from ?? "/" });
-            // reset();
-            // revalidator.revalidate();
         },
         onError(error) {
             notify.error(JSON.parse(error.message)?.detail);
@@ -60,18 +47,8 @@ const Login: React.FC<Props> = () => {
     } = useForm<Inputs>();
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        // const navigate = useNavigate({ from: from });
         const { email, password } = data;
         mutation.mutate({ email, password });
-        // const formData = new FormData();
-        // formData.append("email", email);
-        // formData.append("password", password);
-
-        // console.log(formData);
-        // console.log(from);
-        // navigate({ to: "/" });
-
-        // submit(formData, { method: "post", action: "/login" });
     };
 
     return (
@@ -102,7 +79,7 @@ const Login: React.FC<Props> = () => {
                             error={errors?.email}
                         />
                         <Password name="password" label="Password" register={register} error={errors?.password} required="Password is required" />
-                        {isLoggingIn ? (
+                        {mutation.isPending ? (
                             <Button color="primary" isLoading variant="shadow" size="lg" fullWidth isDisabled>
                                 Logging in...
                             </Button>

@@ -1,7 +1,7 @@
 import { CustomCheckbox } from "@/components/core/checkbox";
-import { brands, categories, genders, indicators, sizes } from "@/pages/tbo/data";
 import { Accordion, AccordionItem, Checkbox, CheckboxGroup, Input, Slider } from "@nextui-org/react";
 import React from "react";
+import { brands, categories, genders, indicators, sizes } from "../-data/data";
 
 interface ComponentProps {}
 
