@@ -4,7 +4,6 @@ import React from "react";
 import { Button, Image } from "@nextui-org/react";
 import Navbar from "@/components/navbar";
 import Meta from "@/components/Meta";
-// import userService from "@/services/user.service";
 import { useAuth } from "@/store/auth-provider";
 
 interface Props {}

@@ -30,7 +30,6 @@ type Column = {
 type TableProps = {
     columns: Column[];
     rows?: { [key: string]: any }[];
-    // pagination?: Pagination;
     pagination?: Record<string, any>;
     callbackFunction: (user: any, columnKey: string | number) => ReactNode;
     onSearchChange: (value: string) => void;

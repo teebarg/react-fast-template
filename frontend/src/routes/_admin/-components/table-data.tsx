@@ -102,7 +102,6 @@ export default function TableData({
         }
         try {
             await userService.deleteUser(currentUser.id);
-            // revalidator.revalidate();
             notify.success("User deleted successfully");
             setCurrent({} as User);
             onCloseDelete();

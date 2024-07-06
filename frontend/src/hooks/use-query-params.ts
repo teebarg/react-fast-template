@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// import { useLocation } from "react-router-dom";
-
 import { useLocation } from "@tanstack/react-router";
 
 export const useQueryParams = () => {

@@ -1,17 +1,14 @@
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router";
 
-import React, { Suspense, lazy } from "react";
-// import Meta from "@/components/Meta";
+import React, { Suspense } from "react";
+import Meta from "@/components/Meta";
 import { Button } from "@nextui-org/react";
 import { User } from "@/models/user";
 import { Pagination } from "@/types";
 import { useQueryParams } from "@/hooks/use-query-params";
 import { Excel } from "@/components/core/excel-uploader";
 import { Progress } from "@/components/core/progress";
-// import TableData from "./-components/table-data";
-
-const Meta = lazy(() => import("@/components/Meta"));
-const TableData = lazy(() => import("./-components/table-data"));
+import TableData from "./-components/table-data";
 
 interface Props {}
 interface userData {
