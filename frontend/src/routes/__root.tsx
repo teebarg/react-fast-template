@@ -1,18 +1,33 @@
 import NotFound from "@/pages/NotFound";
 import type { AuthContextValue } from "@/store/auth-provider";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import React from "react";
+import React, { Suspense } from "react";
 
 interface MyRouterContext {
     auth: AuthContextValue;
 }
 
+const loadDevtools = () =>
+    Promise.all([import("@tanstack/router-devtools"), import("@tanstack/react-query-devtools")]).then(([routerDevtools, reactQueryDevtools]) => {
+        return {
+            default: () => (
+                <React.Fragment>
+                    <routerDevtools.TanStackRouterDevtools />
+                    <reactQueryDevtools.ReactQueryDevtools />
+                </React.Fragment>
+            ),
+        };
+    });
+
+const TanStackDevtools = process.env.NODE_ENV === "production" ? () => null : React.lazy(loadDevtools);
+
 export const Route = createRootRouteWithContext<MyRouterContext>()({
     component: () => (
         <React.Fragment>
             <Outlet />
-            <TanStackRouterDevtools position="bottom-right" initialIsOpen={false} />
+            <Suspense>
+                <TanStackDevtools />
+            </Suspense>
         </React.Fragment>
     ),
     notFoundComponent: NotFound,

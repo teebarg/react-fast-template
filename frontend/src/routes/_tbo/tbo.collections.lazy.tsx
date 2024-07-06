@@ -8,10 +8,13 @@ import { ProductItem } from "./-components/product-item";
 import TBONavbar from "./-components/navbar";
 import { filters, products } from "./-data/data";
 import type { Product } from "./-data/data";
+import { SlideOver } from "@/components/core/slideOver";
+import { useOverlayTriggerState } from "@react-stately/overlays";
 
 interface ComponentProps {}
 
 const Collections: React.FC<ComponentProps> = () => {
+    const state = useOverlayTriggerState({});
     return (
         <React.Fragment>
             <Meta title="Children Clothings | Collections" />
@@ -23,7 +26,11 @@ const Collections: React.FC<ComponentProps> = () => {
                     <BreadcrumbItem>Shoes</BreadcrumbItem>
                 </Breadcrumbs>
                 <div className="flex gap-6 mt-6">
-                    <CollectionsSideBar />
+                    <div className="hidden h-full max-w-[24rem] max-h-screen overflow-x-hidden overflow-y-scroll md:flex sticky top-24">
+                        <div className="h-full w-full max-w-sm rounded-medium p-6 bg-default-50">
+                            <CollectionsSideBar />
+                        </div>
+                    </div>
                     <div className="w-full flex-1 flex-col">
                         <header className="relative z-20 flex flex-col gap-2 rounded-medium bg-default-50 px-4 pb-3 pt-2 md:pt-3">
                             <div className="flex items-center gap-1 md:hidden md:gap-2">
@@ -32,7 +39,7 @@ const Collections: React.FC<ComponentProps> = () => {
                             </div>
                             <div className="flex items-center justify-between gap-2 ">
                                 <div className="flex flex-row gap-2">
-                                    <Button type="button">
+                                    <Button onPress={state.open}>
                                         <FunnelIcon size={16} role="img" className="text-default-500" focusable="false" />
                                         Filters
                                     </Button>
@@ -64,6 +71,29 @@ const Collections: React.FC<ComponentProps> = () => {
                         </main>
                     </div>
                 </div>
+                <SlideOver
+                    isOpen={state.isOpen}
+                    onClose={state.close}
+                    className="bg-default-100"
+                    direction="left"
+                    size="w-[90%]"
+                    footer={
+                        <div className="flex gap-2 justify-end px-4 py-6">
+                            <Button onPress={state.close} color="danger" className="min-w-32">
+                                Cancel
+                            </Button>
+                            <Button variant="shadow" color="primary" className="min-w-32">
+                                Submit
+                            </Button>
+                        </div>
+                    }
+                >
+                    <div className="h-full overflow-x-hidden overflow-y-auto md:flex">
+                        <div className="w-full rounded-medium py-6 bg-default-50 px-4">
+                            <CollectionsSideBar />
+                        </div>
+                    </div>
+                </SlideOver>
             </div>
         </React.Fragment>
     );

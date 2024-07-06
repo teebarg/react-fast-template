@@ -7,7 +7,7 @@ export interface CookieProps {}
 
 export const Cookie: FC<CookieProps> = () => {
     const { getCookie, setCookie } = useCookie();
-    const [showCookie, setShowCookie] = useState(true);
+    const [showCookie, setShowCookie] = useState<boolean>(Boolean(getCookie("accept_cookie")));
 
     useEffect(() => {
         const acceptCookie = getCookie("accept_cookie");

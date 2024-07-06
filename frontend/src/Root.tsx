@@ -8,7 +8,6 @@ import { Provider } from "./provider";
 import "@/styles/globals.css";
 import { AuthProvider } from "@/store/auth-provider";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const container = document.getElementById("root") as HTMLElement;
@@ -27,7 +26,6 @@ function render(App: ComponentType) {
                             <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
                                 <QueryClientProvider client={queryClient}>
                                     <App />
-                                    <ReactQueryDevtools initialIsOpen={false} />
                                 </QueryClientProvider>
                             </GoogleOAuthProvider>
                         </AuthProvider>
