@@ -1,12 +1,12 @@
 "use client";
 
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, User } from "@nextui-org/react";
-import { useFetcher } from "react-router-dom";
 import { useAuth } from "@/store/auth-provider";
+import type { AuthContextValue } from "@/store/auth-provider";
 
 export default function UserDropDown() {
     const { currentUser } = useAuth();
-    const fetcher = useFetcher();
+    const { logout } = useAuth() as AuthContextValue;
 
     return (
         <Dropdown placement="bottom-start">
@@ -39,9 +39,7 @@ export default function UserDropDown() {
                 </DropdownItem>
                 <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
                 <DropdownItem key="logout" color="danger">
-                    <fetcher.Form method="post" action="/logout">
-                        <button type="submit">Sign out</button>
-                    </fetcher.Form>
+                    <button onClick={() => logout()}>Sign out</button>
                 </DropdownItem>
             </DropdownMenu>
         </Dropdown>

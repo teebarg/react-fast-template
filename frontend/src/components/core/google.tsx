@@ -1,10 +1,10 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@nextui-org/react";
 import useNotifications from "@/store/notifications";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useAuth } from "@/store/auth-provider";
 import authService from "@/services/auth.service";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 
 interface Props {}
 
@@ -27,7 +27,7 @@ const GoogleLogin: React.FC<Props> = () => {
 
             const firstname = userInfo.given_name;
             const lastname = userInfo.family_name;
-            const email = userInfo.email;
+            const { email } = userInfo;
 
             try {
                 const user = await authService.socialLogin({
@@ -37,7 +37,7 @@ const GoogleLogin: React.FC<Props> = () => {
                 });
                 if (user) {
                     login({ firstname, lastname, email });
-                    navigate(from ?? "/");
+                    navigate({ to: from ?? "/" });
                 }
             } catch (error) {
                 notify.error(`Google Login request failed: ${error}`);

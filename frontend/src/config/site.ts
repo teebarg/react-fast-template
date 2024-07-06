@@ -17,10 +17,6 @@ export const siteConfig = {
             href: "/admin",
         },
         {
-            label: "SandBox",
-            href: "/sandbox",
-        },
-        {
             label: "TBO",
             href: "/tbo",
         },

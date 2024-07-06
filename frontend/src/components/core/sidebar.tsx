@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 import { Sidebar as ProSidebar, Menu, MenuItem, SubMenu, sidebarClasses, MenuItemStyles, menuClasses } from "react-pro-sidebar";
-import { NavLink } from "react-router-dom";
 import { AdminIcon, CalendarIcon, ChevronRightIcon, ComponentsIcon, DocumentIcon, EcommerceIcon, ProfileIcon } from "nui-react-icons";
 import { Badge, Chip } from "@nextui-org/react";
+import { Link } from "@tanstack/react-router";
 
 interface Props {}
 
@@ -179,7 +179,7 @@ const Sidebar: React.FC<Props> = () => {
             return (
                 <MenuItem
                     key={index}
-                    component={<NavLink end to={menuItem.href} />}
+                    component={<Link to={menuItem.href} activeOptions={{ exact: true }} />}
                     suffix={<ChevronRightIcon strokeWidth={2.5} width="2em" height="2em" className="hidden" />}
                 >
                     {menuItem.label}
@@ -224,7 +224,7 @@ const Sidebar: React.FC<Props> = () => {
                                 icon={menuItem.icon}
                                 suffix={menuItem.suffix}
                                 disabled={menuItem.disabled}
-                                component={<NavLink end to={menuItem.href} />}
+                                component={<Link to={menuItem.href} />}
                             >
                                 {menuItem.label}
                             </MenuItem>

@@ -46,8 +46,17 @@ class UserService {
         return await res.json();
     }
 
+    createUser2(data: CreateUser) {
+        return fetch(`${API_URL}/users/`, {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+        });
+    }
+
     async createUser(data: CreateUser): Promise<User> {
-        const res = await fetch(`${API_URL}/users`, {
+        const res = await fetch(`${API_URL}/users/`, {
             method: "POST",
             body: JSON.stringify(data),
             headers: { "Content-Type": "application/json" },
@@ -75,7 +84,7 @@ class UserService {
     }
 
     async deleteUser(id: number | string): Promise<Record<string, string>> {
-        const res = await fetch(`${API_URL}/users/${id}`, {
+        const res = await fetch(`${API_URL}/users/${id}/`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             credentials: "include",

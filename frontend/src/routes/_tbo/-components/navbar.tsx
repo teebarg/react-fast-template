@@ -11,16 +11,15 @@ import { SearchIcon } from "nui-react-icons";
 import UserDropDown from "@/components/user-menu";
 import { useAuth } from "@/store/auth-provider";
 import type { AuthContextValue } from "@/store/auth-provider";
-import Notification from "@/components/notification";
 import { Link } from "@tanstack/react-router";
 
-const AdminNavbar = () => {
-    const { isAuthenticated } = useAuth() as AuthContextValue;
+const TBONavbar = () => {
+    const { currentUser } = useAuth() as AuthContextValue;
     const searchInput = (
         <Input
             aria-label="Search"
             classNames={{
-                inputWrapper: "bg-default-100",
+                inputWrapper: "bg-default-100 min-w-[500px] lg:min-w-[500px] rounded-full",
                 input: "text-sm",
             }}
             endContent={
@@ -36,24 +35,38 @@ const AdminNavbar = () => {
     );
 
     return (
-        <NextUINavbar maxWidth="xl" position="sticky">
-            <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
+        <NextUINavbar maxWidth="full" position="sticky" className="my-2">
+            <NavbarContent className="basis-1/5 sm:basis-full flex" justify="start">
                 <NavbarBrand as="li" className="gap-3 max-w-fit">
                     <Link className="flex justify-start items-center gap-1" to="/tbo">
                         <Logo />
-                        <p className="font-bold text-inherit">RFT</p>
+                        <p className="font-bold text-inherit text-2xl">TBO</p>
                     </Link>
                 </NavbarBrand>
+                <div className="hidden sm:flex gap-2 text-sm">
+                    {[
+                        { name: "Home", to: "/" },
+                        { name: "About", to: "/" },
+                        { name: "Services", to: "/" },
+                        { name: "Collections", to: "/tbo/collections" },
+                        { name: "Checkout", to: "/tbo/checkout" },
+                    ].map((item, index) => (
+                        <NavbarMenuItem key={index}>
+                            <Link className="[&.active]:test-danger" to={item.to}>
+                                {item.name}
+                            </Link>
+                        </NavbarMenuItem>
+                    ))}
+                </div>
             </NavbarContent>
 
             <NavbarContent className="flex basis-1/5 sm:basis-full" justify="end">
-                <NavbarItem className="flex gap-2 items-baseline justify-center">
-                    <Notification />
+                <NavbarItem className="flex gap-2">
                     <ThemeSwitch />
                 </NavbarItem>
                 <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
-                <NavbarItem className="flex">
-                    {isAuthenticated ? (
+                <NavbarItem className="hidden sm:flex">
+                    {currentUser ? (
                         <UserDropDown />
                     ) : (
                         <Link to="/login" className="text-sm font-semibold leading-6">
@@ -68,7 +81,7 @@ const AdminNavbar = () => {
                 <div className="mx-4 mt-2 flex flex-col gap-2">
                     {siteConfig.navItems.map((item, index: number) => (
                         <NavbarMenuItem key={`${item}-${index}`}>
-                            <Link className="[&.active]:text-danger" to={item.href}>
+                            <Link className="[&.active]:test-danger" to={item.href}>
                                 {item.label}
                             </Link>
                         </NavbarMenuItem>
@@ -79,4 +92,4 @@ const AdminNavbar = () => {
     );
 };
 
-export default AdminNavbar;
+export default TBONavbar;

@@ -3,12 +3,14 @@ import * as path from "path";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
+import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 
 import manifest from "./public/manifest.json";
 
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
+        TanStackRouterVite(),
         react(),
         VitePWA({
             registerType: "prompt",
@@ -17,13 +19,12 @@ export default defineConfig({
             includeAssets: ["favicon.svg", "favicon.ico", "robots.txt", "apple-touch-icon.png"],
             // switch to "true" to enable sw on development
             devOptions: {
-                enabled: true,
-                navigateFallback: 'index.html',
+                enabled: false,
+                navigateFallback: "index.html",
                 suppressWarnings: true,
-                type: 'module',
             },
             workbox: {
-                globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
+                globPatterns: ["**/*.{js,css,html,svg,png,ico}"],
                 cleanupOutdatedCaches: true,
                 clientsClaim: true,
             },

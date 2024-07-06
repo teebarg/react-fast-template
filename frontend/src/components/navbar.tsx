@@ -1,5 +1,3 @@
-"use client";
-
 import { Navbar as NextUINavbar, NavbarContent, NavbarMenu, NavbarMenuToggle, NavbarBrand, NavbarItem, NavbarMenuItem } from "@nextui-org/navbar";
 import { Kbd } from "@nextui-org/kbd";
 import { Link } from "@nextui-org/link";
@@ -12,8 +10,9 @@ import { ThemeSwitch } from "@/components/theme-switch";
 import { TwitterIcon, GithubIcon, SearchIcon } from "nui-react-icons";
 import { Logo } from "@/components/icons";
 import UserDropDown from "@/components/user-menu";
-import { NavLink } from "react-router-dom";
+
 import { useAuth } from "@/store/auth-provider";
+import { Link as NavLink } from "@tanstack/react-router";
 
 const Navbar = () => {
     const { isAuthenticated } = useAuth();
@@ -62,10 +61,7 @@ const Navbar = () => {
                                 </Link>
                             ) : (
                                 <NavLink
-                                    className={cn(
-                                        linkStyles({ color: "foreground" }),
-                                        "data-[active=true]:text-primary data-[active=true]:font-medium"
-                                    )}
+                                    className={cn(linkStyles({ color: "foreground" }), "[&.active]:text-primary [&.active]:font-medium")}
                                     color="foreground"
                                     to={item.href}
                                 >
@@ -112,7 +108,7 @@ const Navbar = () => {
                 <div className="mx-4 mt-2 flex flex-col gap-2">
                     {siteConfig.navItems.map((item, index: number) => (
                         <NavbarMenuItem key={`${item}-${index}`}>
-                            <NavLink className={({ isActive, isPending }) => (isPending ? "pending" : isActive ? "text-danger" : "")} to={item.href}>
+                            <NavLink className="[&.active]:text-danger" to={item.href}>
                                 {item.label}
                             </NavLink>
                         </NavbarMenuItem>

@@ -33,6 +33,10 @@ h6 {
     @apply flex justify-center items-center h-screen;
 }
 
+.btn-custom {
+    @apply relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal overflow-hidden outline-none px-4 h-10 text-small gap-2 rounded-medium;
+}
+
 /* Example of using Lexend in a specific element */
 .lexend {
     font-family: var(--font-lexend);

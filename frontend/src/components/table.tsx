@@ -20,7 +20,7 @@ import {
 } from "@nextui-org/react";
 import { PlusIcon, SearchIcon, ChevronDownIcon } from "nui-react-icons";
 import { Column, TableProps } from "@/types";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 
 export default function Table({
     rows = [],
@@ -37,7 +37,6 @@ export default function Table({
     type Model = (typeof rows)[0];
 
     const navigate = useNavigate();
-    const location = useLocation();
 
     const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]));
     const [visibleColumns, setVisibleColumns] = React.useState<Selection>(new Set([...columns.map((column) => column.uid.toString())]));
@@ -65,11 +64,17 @@ export default function Table({
 
     const updateQueryParams = React.useCallback(
         (key: string, value: string) => {
-            const searchParams = new URLSearchParams(location.search);
-            searchParams.set(key, value);
-            navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+            navigate({
+                search: (old) => {
+                    return {
+                        ...old,
+                        [key]: value,
+                    };
+                },
+                replace: true,
+            });
         },
-        [navigate, location.search]
+        [navigate]
     );
 
     const onNextPage = React.useCallback(() => {
