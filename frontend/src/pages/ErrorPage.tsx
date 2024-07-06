@@ -2,8 +2,8 @@ import { email, messages } from "@/config";
 import resetApp from "@/utils/reset-app";
 import { Button } from "@nextui-org/react";
 import { Link } from "@nextui-org/link";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
+// import Navbar from "@/components/navbar";
+// import Footer from "@/components/footer";
 // import { redirect, useLocation, useNavigate } from "@tanstack/react-router";
 
 interface Props {
@@ -31,7 +31,7 @@ const ErrorPage: React.FC<Props> = ({ error }) => {
     return (
         <div>
             <div className="h-screen flex flex-col">
-                <Navbar />
+                {/* <Navbar /> */}
                 <div className="flex items-center justify-center flex-1 pt-12">
                     <div className="max-w-lg mx-auto rounded-lg shadow-lg overflow-hidden bg-content1 p-8">
                         <div className="px-6 py-8">
@@ -53,7 +53,7 @@ const ErrorPage: React.FC<Props> = ({ error }) => {
                         </div>
                     </div>
                 </div>
-                <Footer />
+                {/* <Footer /> */}
             </div>
         </div>
     );
