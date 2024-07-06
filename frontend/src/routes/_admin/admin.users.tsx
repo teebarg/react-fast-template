@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 import userService from "@/services/user.service";
 
@@ -9,8 +9,24 @@ const getUsersQueryOptions = ({ name, page }: any) => ({
 
 export const Route = createFileRoute("/_admin/admin/users")({
     loader: async ({ context, deps }: any) => {
-        const postsQueryOptions = getUsersQueryOptions(deps);
-        return context.queryClient.ensureQueryData(postsQueryOptions);
+        try {
+            const postsQueryOptions = getUsersQueryOptions(deps);
+            const data = await context.queryClient.ensureQueryData(postsQueryOptions);
+            return data;
+        } catch (error: any) {
+            if ([401].includes(error.status)) {
+                throw redirect({
+                    to: "/login",
+                    search: {
+                        redirect: "/admin/users",
+                    },
+                });
+            }
+            if ([400, 403].includes(error.status)) {
+                throw redirect({ to: "/admin" });
+            }
+            throw Error(error.message);
+        }
     },
     loaderDeps: ({ search }: any) => {
         return {
